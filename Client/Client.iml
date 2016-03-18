@@ -14,6 +14,7 @@
     <orderEntry type="module" module-name="Protocol" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.0.0-beta-2" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.9" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.8.Final" level="project" />
     <orderEntry type="library" name="Maven: jline:jline:2.9" level="project" />
   </component>
 </module>

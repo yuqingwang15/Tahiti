@@ -10,6 +10,9 @@ message Message {
   enum MessageType {
     NOT_IMPLEMENTED         = 0;    // Dummy
 
+    PING                    = 1;    // 客户端->服务端测试请求
+    PONG                    = 2;    // 服务端->客户端测试请求
+
     USER_SIGN_IN_REQ        = 10;   // 客户端->服务端登录请求
     USER_SIGN_IN_RESP       = 11;   // 服务端->客户端登录响应
 
@@ -26,6 +29,7 @@ message Message {
   }
   MessageType type = 1;
   oneof body {
+    PingPongBody              pingPong            = 2;
     UserSignInReqBody         userSignInReq       = 10;
     UserSignInRespBody        userSignInResp      = 11;
     ChatMessageReqBody        chatMessageReq      = 20;
@@ -36,6 +40,10 @@ message Message {
     ChatBroadcastEventBody    chatBroadcastEvent  = 50;
     ChatBroadcastAckBody      chatBroadcastAck    = 51;
   }
+}
+
+message PingPongBody {
+  string payload = 1;
 }
 
 message UserSignInReqBody {

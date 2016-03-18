@@ -3,7 +3,6 @@ package octoteam.tahiti.server;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Console {

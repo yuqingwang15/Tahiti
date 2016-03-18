@@ -32,12 +32,5 @@ public class ServerConfiguration {
         this.logging = logging;
     }
 
-    @Override
-    public String toString() {
-        return com.google.common.base.MoreObjects.toStringHelper(this)
-                .add("chatService", chatService)
-                .add("database", database)
-                .add("logging", logging)
-                .toString();
-    }
+
 }
