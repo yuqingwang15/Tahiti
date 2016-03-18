@@ -1,0 +1,7 @@
+chatService:
+    bindHost: 0.0.0.0
+    bindPort: 6666
+
+database: xxx.db
+
+logging: tahiti_server.log
