@@ -22,11 +22,22 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="TahitiClient" />
+        <module name="Client" />
+        <module name="Server" />
+      </profile>
+      <profile default="false" name="Annotation profile for Protocol" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="Protocol" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="TahitiClient" target="1.5" />
+      <module name="Client" target="1.5" />
+      <module name="Protocol" target="1.6" />
+      <module name="Server" target="1.5" />
+      <module name="Tahiti" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
