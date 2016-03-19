@@ -16,7 +16,7 @@ public class Console {
         ServerConfiguration config = yaml.loadAs(in, ServerConfiguration.class);
 
         TahitiServer server = new TahitiServer(config);
-        server.register(new Object() {
+        server.getEventBus().register(new Object() {
             @Subscribe
             public void listenAllEvent(BaseEvent event) {
                 System.out.println(event);

@@ -29,8 +29,8 @@ public class TahitiServer {
         this.config = config;
     }
 
-    public void register(Object obj) {
-        eventBus.register(obj);
+    public EventBus getEventBus() {
+        return eventBus;
     }
 
     public void run() throws Exception {
