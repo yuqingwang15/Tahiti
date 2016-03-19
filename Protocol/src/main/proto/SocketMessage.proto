@@ -7,105 +7,88 @@ option java_outer_classname = "SocketMessageProtos";
 // 服务端向客户端推送：Event；客户端反馈：Ack
 
 message Message {
-  enum MessageType {
-    NOT_IMPLEMENTED         = 0;    // Dummy
 
-    PING                    = 1;    // 客户端->服务端测试请求
-    PONG                    = 2;    // 服务端->客户端测试请求
-
-    USER_SIGN_IN_REQ        = 10;   // 客户端->服务端登录请求
-    USER_SIGN_IN_RESP       = 11;   // 服务端->客户端登录响应
-
-    CHAT_MESSAGE_REQ        = 20;   // 客户端->服务端消息
-    CHAT_MESSAGE_RESP       = 21;   // 服务端->客户端消息反馈（投递成功，投递失败-超过配额，
-
-    HEARTBEAT_EVENT         = 30;   // 服务端->客户端心跳
-    HEARTBEAT_ACK           = 31;   // 客户端->服务端心跳
-
-    SESSION_EXPIRED_EVENT   = 41;   // 服务端->客户端要求重新登录
-
-    CHAT_BROADCAST_EVENT    = 50;   // 服务端->客户端广播消息
-    CHAT_BROADCAST_ACK      = 51;   // 服务端->客户端广播消息反馈
+  enum DirectionCode {
+    REQUEST                     = 0;    // 客户端 -> 服务端(负责生成 seqId)
+    RESPONSE                    = 1;    // 服务端 -> 客户端响应(负责回复 seqId)
+    EVENT                       = 2;    // 服务端 -> 客户端(负责生成 seqId)
+    ACK                         = 3;    // 客户端 -> 服务端响应(负责回复 seqId)
   }
-  MessageType type = 1;
+
+  enum ServiceCode {
+    PING_REQUEST                = 0;    // 测试请求
+    HEARTBEAT_EVENT             = 5;    // 心跳事件
+    USER_SIGN_IN_REQUEST        = 10;   // 登录请求
+    CHAT_SEND_MESSAGE_REQUEST   = 20;   // 发送消息请求
+    SESSION_EXPIRED_EVENT       = 30;   // 会话过期事件
+    CHAT_BROADCAST_EVENT        = 40;   // 消息广播事件
+  }
+
+  enum StatusCode {
+    SUCCESS                     = 0;    // 成功
+
+    FAIL                        = 1;    // 失败
+    NACK                        = 2;    // 失败
+
+    NOT_AUTHENTICATED           = 10;   // 需要登录但未登录
+    BAD_REQUEST                 = 11;   // 无效请求
+    LIMIT_EXCEEDED              = 20;   // 超出限额
+
+    USERNAME_NOT_FOUND          = 50;   // 用户登录: 用户名未找到
+    PASSWORD_INCORRECT          = 51;   // 用户登录: 密码错误
+  }
+
+  uint64 seqId                  = 1;    // 会话中唯一的 ID,用于标记请求的响应
+
+  DirectionCode direction       = 2;
+
+  ServiceCode service           = 3;    // 请求的服务,只适用于 REQUEST 和 EVENT
+
+  StatusCode status             = 4;    // 反馈状态,只适用于 RESPONSE 和 ACK
+
   oneof body {
-    PingPongBody              pingPong            = 2;
+    PingPongBody              pingPong            = 5;
     UserSignInReqBody         userSignInReq       = 10;
     UserSignInRespBody        userSignInResp      = 11;
     ChatMessageReqBody        chatMessageReq      = 20;
-    ChatMessageRespBody       chatMessageResp     = 21;
-    HeartbeatReqBody          heartbeatReq        = 30;
-    HeartbeatRespBody         heartbeatResp       = 31;
-    SessionExpiredEventBody   sessionExpiredEvent = 40;
-    ChatBroadcastEventBody    chatBroadcastEvent  = 50;
-    ChatBroadcastAckBody      chatBroadcastAck    = 51;
+    SessionExpiredEventBody   sessionExpiredEvent = 30;
+    ChatBroadcastEventBody    chatBroadcastEvent  = 40;
   }
+  
 }
 
 message PingPongBody {
-  string payload = 1;
+  string payload                = 1;
 }
 
 message UserSignInReqBody {
-  string username = 1;
-  string password = 2;
+  string username               = 1;
+  string password               = 2;
 }
 
 message UserSignInRespBody {
-  enum Error {
-    SUCCESS = 0;
-    USERNAME_NOT_FOUND = 1;
-    PASSWORD_WRONG = 2;
-    OTHER = 99;
-  }
-  Error error = 1;
-  string clientId = 2;
-  string sessionId = 3;
+  string clientId               = 1;    // 登录成功才有
+  string sessionId              = 2;    // 登录成功才有
 }
 
 message ChatMessageReqBody {
-  string id = 1;
-  bytes payload = 2;
-  uint64 timestamp = 3;
-}
-
-message ChatMessageRespBody {
-  enum Error {
-    SUCCESS = 0;
-    LIMIT_EXCEEDED = 1;
-    OTHER = 99;
-  }
-  Error error = 1;
-}
-
-message HeartbeatReqBody {
-  string id = 1;
-}
-
-message HeartbeatRespBody {
-  string id = 1;
+  string id                     = 1;
+  bytes payload                 = 2;
+  uint64 timestamp              = 3;
 }
 
 message SessionExpiredEventBody {
   enum Reason {
-    EXPIRED = 0;
-    REVOKED = 1;
-    OTHER = 99;
+    EXPIRED                     = 0;
+    REVOKED                     = 1;
+    OTHER                       = 99;
   }
-  Reason reason = 1;
+  Reason reason                 = 1;
 }
 
 message ChatBroadcastEventBody {
-  string id = 1;
-  bytes payload = 2;
-  string senderId = 3;
-  uint64 timestamp = 4;
-}
-
-message ChatBroadcastAckBody {
-  enum Type {
-    ACK = 0;
-    NACK = 1;
-  }
-  Type type = 1;
+  string id                     = 1;
+  bytes payload                 = 2;
+  string senderId               = 3;
+  uint64 timestamp              = 4;
 }
