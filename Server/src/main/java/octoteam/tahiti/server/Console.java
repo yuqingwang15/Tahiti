@@ -1,6 +1,8 @@
 package octoteam.tahiti.server;
 
+import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+import octoteam.tahiti.server.event.BaseEvent;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.InputStream;
@@ -14,6 +16,13 @@ public class Console {
         ServerConfiguration config = yaml.loadAs(in, ServerConfiguration.class);
 
         TahitiServer server = new TahitiServer(config);
+        server.register(new Object() {
+            @Subscribe
+            public void listenAllEvent(BaseEvent event) {
+                System.out.println(event);
+            }
+        });
+
         server.run();
 
     }

@@ -1,8 +1,9 @@
 package octoteam.tahiti.server.event;
 
-import octoteam.tahiti.protocol.SocketMessageProtos.*;
+import com.google.common.base.MoreObjects;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-public class ReceiveMessageEvent {
+public class MessageEvent {
 
     private boolean authenticated;
 
@@ -24,8 +25,17 @@ public class ReceiveMessageEvent {
         this.message = message;
     }
 
-    public ReceiveMessageEvent(boolean authenticated, Message message) {
+    public MessageEvent(boolean authenticated, Message message) {
         this.authenticated = authenticated;
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("authenticated", authenticated)
+                .add("message", message)
+                .toString();
+    }
+
 }

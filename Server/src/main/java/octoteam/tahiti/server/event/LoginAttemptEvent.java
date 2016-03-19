@@ -1,6 +1,8 @@
 package octoteam.tahiti.server.event;
 
-public class LoginEvent extends BaseEvent {
+import com.google.common.base.MoreObjects;
+
+public class LoginAttemptEvent extends BaseEvent {
 
     private Boolean success;
 
@@ -22,8 +24,17 @@ public class LoginEvent extends BaseEvent {
         this.username = username;
     }
 
-    public LoginEvent(Boolean success, String username) {
+    public LoginAttemptEvent(Boolean success, String username) {
         this.success = success;
         this.username = username;
     }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("success", success)
+                .add("username", username)
+                .toString();
+    }
+
 }

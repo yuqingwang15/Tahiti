@@ -9,11 +9,12 @@ import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.util.AttributeKey;
 import octoteam.tahiti.protocol.SocketMessageProtos;
-import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
-import octoteam.tahiti.server.configuration.ServerConfiguration;
 import octoteam.tahiti.server.channelhandler.AuthHandler;
 import octoteam.tahiti.server.channelhandler.DiscardServerHandler;
 import octoteam.tahiti.server.channelhandler.PingHandler;
+import octoteam.tahiti.server.channelhandler.RawHandler;
+import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
+import octoteam.tahiti.server.configuration.ServerConfiguration;
 
 public class TahitiServer {
 
@@ -48,6 +49,7 @@ public class TahitiServer {
                         public void initChannel(Channel ch) throws Exception {
                             ch.pipeline().addLast("encoder", new ProtobufEncoder());
                             ch.pipeline().addLast("decoder", new ProtobufDecoder(SocketMessageProtos.Message.getDefaultInstance()));
+                            ch.pipeline().addLast("raw", new RawHandler(eventBus));
                             ch.pipeline().addLast("ping", new PingHandler());
                             ch.pipeline().addLast("auth", new AuthHandler(eventBus, config));
                             ch.pipeline().addLast("discard", new DiscardServerHandler());

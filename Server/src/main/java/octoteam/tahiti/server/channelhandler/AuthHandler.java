@@ -10,8 +10,8 @@ import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
-import octoteam.tahiti.server.event.LoginEvent;
-import octoteam.tahiti.server.event.ReceiveMessageEvent;
+import octoteam.tahiti.server.event.LoginAttemptEvent;
+import octoteam.tahiti.server.event.MessageEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,11 +30,11 @@ public class AuthHandler extends SimpleChannelInboundHandler<Message> {
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
 
         Boolean authenticated = ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null;
-        eventBus.post(new ReceiveMessageEvent(authenticated, msg));
+        eventBus.post(new MessageEvent(authenticated, msg));
 
         // Already authenticated: pass everything to next handler
         if (authenticated) {
-            eventBus.post(new ReceiveMessageEvent(true, msg));
+            eventBus.post(new MessageEvent(true, msg));
             ctx.fireChannelRead(msg);
             return;
         }
@@ -87,7 +87,7 @@ public class AuthHandler extends SimpleChannelInboundHandler<Message> {
             resp.setStatus(Message.StatusCode.USERNAME_NOT_FOUND);
         }
 
-        eventBus.post(new LoginEvent(
+        eventBus.post(new LoginAttemptEvent(
                 resp.getStatus() == Message.StatusCode.SUCCESS,
                 body.getUsername()
         ));

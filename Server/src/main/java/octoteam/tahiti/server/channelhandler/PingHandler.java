@@ -1,6 +1,5 @@
 package octoteam.tahiti.server.channelhandler;
 
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
