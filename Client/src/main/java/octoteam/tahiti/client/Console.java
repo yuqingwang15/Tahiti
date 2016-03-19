@@ -24,7 +24,7 @@ public class Console {
 
     public static void main(String[] args) throws Exception {
 
-        // TODO: use jline
+        // TODO: extract methods
 
         EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
         try {
