@@ -1,4 +1,4 @@
-package octoteam.tahiti.server.handler;
+package octoteam.tahiti.server.channelhandler;
 
 
 import io.netty.channel.ChannelHandlerContext;

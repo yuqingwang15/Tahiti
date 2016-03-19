@@ -1,5 +1,6 @@
-package octoteam.tahiti.server.handler;
+package octoteam.tahiti.server.channelhandler;
 
+import com.google.common.eventbus.EventBus;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
@@ -9,6 +10,8 @@ import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+import octoteam.tahiti.server.event.LoginEvent;
+import octoteam.tahiti.server.event.ReceiveMessageEvent;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,15 +19,22 @@ import java.util.UUID;
 public class AuthHandler extends SimpleChannelInboundHandler<Message> {
 
     private ServerConfiguration config;
+    private EventBus eventBus;
 
-    public AuthHandler(ServerConfiguration config) {
+    public AuthHandler(EventBus eventBus, ServerConfiguration config) {
+        this.eventBus = eventBus;
         this.config = config;
     }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+
+        Boolean authenticated = ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null;
+        eventBus.post(new ReceiveMessageEvent(authenticated, msg));
+
         // Already authenticated: pass everything to next handler
-        if (ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null) {
+        if (authenticated) {
+            eventBus.post(new ReceiveMessageEvent(true, msg));
             ctx.fireChannelRead(msg);
             return;
         }
@@ -46,6 +56,7 @@ public class AuthHandler extends SimpleChannelInboundHandler<Message> {
                 .setSeqId(msg.getSeqId())
                 .setDirection(Message.DirectionCode.RESPONSE);
 
+        Boolean found = false;
         List<AccountConfiguration> accounts = this.config.getAccounts();
         for (AccountConfiguration account : accounts) {
             if (account.getUsername().equals(body.getUsername())) {
@@ -63,19 +74,23 @@ public class AuthHandler extends SimpleChannelInboundHandler<Message> {
                                     .setSessionId(sess.getSessionId())
                                     .setClientId(body.getUsername()) // TODO
                             );
-                    ctx.writeAndFlush(resp.build());
-                    return;
                 } else {
                     // correct username, incorrect password
                     resp.setStatus(Message.StatusCode.PASSWORD_INCORRECT);
-                    ctx.writeAndFlush(resp.build());
-                    return;
                 }
+                found = true;
+                break;
             }
         }
 
-        // username not found
-        resp.setStatus(Message.StatusCode.USERNAME_NOT_FOUND);
+        if (!found) {
+            resp.setStatus(Message.StatusCode.USERNAME_NOT_FOUND);
+        }
+
+        eventBus.post(new LoginEvent(
+                resp.getStatus() == Message.StatusCode.SUCCESS,
+                body.getUsername()
+        ));
         ctx.writeAndFlush(resp.build());
     }
 

@@ -1,5 +1,6 @@
 package octoteam.tahiti.server;
 
+import com.google.common.eventbus.EventBus;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -10,18 +11,25 @@ import io.netty.util.AttributeKey;
 import octoteam.tahiti.protocol.SocketMessageProtos;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
-import octoteam.tahiti.server.handler.AuthHandler;
-import octoteam.tahiti.server.handler.DiscardServerHandler;
-import octoteam.tahiti.server.handler.PingHandler;
+import octoteam.tahiti.server.channelhandler.AuthHandler;
+import octoteam.tahiti.server.channelhandler.DiscardServerHandler;
+import octoteam.tahiti.server.channelhandler.PingHandler;
 
 public class TahitiServer {
 
     public final static AttributeKey<Session> ATTR_KEY_SESSION = new AttributeKey<>("session");
 
+    private final EventBus eventBus;
+
     private ServerConfiguration config;
 
     public TahitiServer(ServerConfiguration config) {
+        this.eventBus = new EventBus();
         this.config = config;
+    }
+
+    public void register(Object obj) {
+        eventBus.register(obj);
     }
 
     public void run() throws Exception {
@@ -41,7 +49,7 @@ public class TahitiServer {
                             ch.pipeline().addLast("encoder", new ProtobufEncoder());
                             ch.pipeline().addLast("decoder", new ProtobufDecoder(SocketMessageProtos.Message.getDefaultInstance()));
                             ch.pipeline().addLast("ping", new PingHandler());
-                            ch.pipeline().addLast("auth", new AuthHandler(config));
+                            ch.pipeline().addLast("auth", new AuthHandler(eventBus, config));
                             ch.pipeline().addLast("discard", new DiscardServerHandler());
                         }
                     });
