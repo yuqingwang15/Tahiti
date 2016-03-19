@@ -54,7 +54,7 @@ message Message {
     SessionExpiredEventBody   sessionExpiredEvent = 30;
     ChatBroadcastEventBody    chatBroadcastEvent  = 40;
   }
-  
+
 }
 
 message PingPongBody {

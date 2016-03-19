@@ -1,5 +1,7 @@
 package octoteam.tahiti.server.configuration;
 
+import java.util.List;
+
 public class ServerConfiguration {
 
     private ChatServiceConfiguration chatService;
@@ -7,6 +9,16 @@ public class ServerConfiguration {
     private String database;
 
     private String logging;
+
+    private List<AccountConfiguration> accounts;
+
+    public List<AccountConfiguration> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<AccountConfiguration> accounts) {
+        this.accounts = accounts;
+    }
 
     public ChatServiceConfiguration getChatService() {
         return chatService;

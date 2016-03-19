@@ -1,21 +1,27 @@
 package octoteam.tahiti.server.handler;
 
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import octoteam.tahiti.protocol.SocketMessageProtos;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-public class PingHandler extends SimpleChannelInboundHandler<SocketMessageProtos.Message> {
+public class PingHandler extends SimpleChannelInboundHandler<Message> {
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, SocketMessageProtos.Message msg) {
-        if (msg.getType() == SocketMessageProtos.Message.MessageType.PING) {
-            SocketMessageProtos.Message resp = SocketMessageProtos.Message
-                    .newBuilder()
-                    .setType(SocketMessageProtos.Message.MessageType.PONG)
-                    .setPingPong(msg.getPingPong())
-                    .build();
-            ctx.writeAndFlush(resp);
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+        if (msg.getService() != Message.ServiceCode.PING_REQUEST) {
+            ctx.fireChannelRead(msg);
+            return;
         }
+
+        Message.Builder resp = Message
+                .newBuilder()
+                .setSeqId(msg.getSeqId())
+                .setDirection(Message.DirectionCode.RESPONSE)
+                .setStatus(Message.StatusCode.SUCCESS)
+                .setPingPong(msg.getPingPong());
+
+        ctx.writeAndFlush(resp.build());
     }
 
 }

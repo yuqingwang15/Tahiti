@@ -5,3 +5,7 @@ chatService:
 database: xxx.db
 
 logging: tahiti_server.log
+
+accounts:
+    - { username: swx, password: swx123 }
+    - { username: admin, password: admin888 }
