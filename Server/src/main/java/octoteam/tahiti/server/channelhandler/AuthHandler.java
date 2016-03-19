@@ -21,9 +21,9 @@ public class AuthHandler extends SimpleChannelInboundHandler<Message> {
     private ServerConfiguration config;
     private EventBus eventBus;
 
-    public AuthHandler(EventBus eventBus, ServerConfiguration config) {
-        this.eventBus = eventBus;
+    public AuthHandler(ServerConfiguration config, EventBus eventBus) {
         this.config = config;
+        this.eventBus = eventBus;
     }
 
     @Override

@@ -8,9 +8,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.util.AttributeKey;
-import octoteam.tahiti.protocol.SocketMessageProtos;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.channelhandler.AuthHandler;
-import octoteam.tahiti.server.channelhandler.DiscardServerHandler;
+import octoteam.tahiti.server.channelhandler.FinalHandler;
 import octoteam.tahiti.server.channelhandler.PingHandler;
 import octoteam.tahiti.server.channelhandler.RawHandler;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
@@ -48,11 +48,11 @@ public class TahitiServer {
                         @Override
                         public void initChannel(Channel ch) throws Exception {
                             ch.pipeline().addLast("encoder", new ProtobufEncoder());
-                            ch.pipeline().addLast("decoder", new ProtobufDecoder(SocketMessageProtos.Message.getDefaultInstance()));
-                            ch.pipeline().addLast("raw", new RawHandler(eventBus));
-                            ch.pipeline().addLast("ping", new PingHandler());
-                            ch.pipeline().addLast("auth", new AuthHandler(eventBus, config));
-                            ch.pipeline().addLast("discard", new DiscardServerHandler());
+                            ch.pipeline().addLast("decoder", new ProtobufDecoder(Message.getDefaultInstance()));
+                            ch.pipeline().addLast("raw", new RawHandler(config, eventBus));
+                            ch.pipeline().addLast("ping", new PingHandler(config, eventBus));
+                            ch.pipeline().addLast("auth", new AuthHandler(config, eventBus));
+                            ch.pipeline().addLast("final", new FinalHandler(config, eventBus));
                         }
                     });
 
