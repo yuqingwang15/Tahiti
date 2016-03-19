@@ -1,5 +1,7 @@
 package octoteam.tahiti.server.configuration;
 
+import com.google.common.base.MoreObjects;
+
 public class AccountConfiguration {
 
     private String username;
@@ -20,5 +22,13 @@ public class AccountConfiguration {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("username", username)
+                .add("password", password)
+                .toString();
     }
 }

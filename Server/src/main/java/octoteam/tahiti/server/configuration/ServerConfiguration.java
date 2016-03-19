@@ -1,5 +1,7 @@
 package octoteam.tahiti.server.configuration;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.List;
 
 public class ServerConfiguration {
@@ -44,5 +46,13 @@ public class ServerConfiguration {
         this.logging = logging;
     }
 
-
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("chatService", chatService)
+                .add("database", database)
+                .add("logging", logging)
+                .add("accounts", accounts)
+                .toString();
+    }
 }
