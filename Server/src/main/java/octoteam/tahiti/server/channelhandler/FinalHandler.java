@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.DecoderException;
-import octoteam.tahiti.protocol.SocketMessageProtos.*;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 
 public class FinalHandler extends SimpleChannelInboundHandler<Message> {

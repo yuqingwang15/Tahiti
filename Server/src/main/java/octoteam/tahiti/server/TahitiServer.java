@@ -7,14 +7,14 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.channelhandler.AuthHandler;
-import octoteam.tahiti.server.channelhandler.FinalHandler;
-import octoteam.tahiti.server.channelhandler.PingHandler;
-import octoteam.tahiti.server.channelhandler.RawHandler;
+import octoteam.tahiti.server.channelhandler.*;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+
+import java.util.concurrent.TimeUnit;
 
 public class TahitiServer {
 
@@ -47,12 +47,15 @@ public class TahitiServer {
                     .childHandler(new ChannelInitializer<Channel>() {
                         @Override
                         public void initChannel(Channel ch) throws Exception {
-                            ch.pipeline().addLast("encoder", new ProtobufEncoder());
-                            ch.pipeline().addLast("decoder", new ProtobufDecoder(Message.getDefaultInstance()));
-                            ch.pipeline().addLast("raw", new RawHandler(config, eventBus));
-                            ch.pipeline().addLast("ping", new PingHandler(config, eventBus));
-                            ch.pipeline().addLast("auth", new AuthHandler(config, eventBus));
-                            ch.pipeline().addLast("final", new FinalHandler(config, eventBus));
+                            ch.pipeline()
+                                    .addLast(new ProtobufEncoder())
+                                    .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
+                                    .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
+                                    .addLast(new HeartbeatHandler(config, eventBus))
+                                    .addLast(new RawHandler(config, eventBus))
+                                    .addLast(new PingHandler(config, eventBus))
+                                    .addLast(new AuthHandler(config, eventBus))
+                                    .addLast(new FinalHandler(config, eventBus));
                         }
                     });
 
