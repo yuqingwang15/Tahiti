@@ -20,7 +20,7 @@ public class TahitiServer {
 
     public final static AttributeKey<Session> ATTR_KEY_SESSION = new AttributeKey<>("session");
 
-    private final EventBus eventBus;
+    private EventBus eventBus;
 
     private ServerConfiguration config;
 
