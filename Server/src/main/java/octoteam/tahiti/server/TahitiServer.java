@@ -10,9 +10,9 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.channelhandler.*;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+import octoteam.tahiti.server.pipeline.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -51,11 +51,11 @@ public class TahitiServer {
                                     .addLast(new ProtobufEncoder())
                                     .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
-                                    .addLast(new HeartbeatHandler(config, eventBus))
-                                    .addLast(new RawHandler(config, eventBus))
-                                    .addLast(new PingHandler(config, eventBus))
-                                    .addLast(new AuthHandler(config, eventBus))
-                                    .addLast(new FinalHandler(config, eventBus));
+                                    .addLast(new HeartbeatHandler(TahitiServer.this))
+                                    .addLast(new RawHandler(TahitiServer.this))
+                                    .addLast(new PingHandler(TahitiServer.this))
+                                    .addLast(new AuthHandler(TahitiServer.this, config.getAccounts()))
+                                    .addLast(new FinalHandler(TahitiServer.this));
                         }
                     });
 
