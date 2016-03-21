@@ -22,7 +22,7 @@ public class Console {
         client.getEventBus().register(reactor);
         renderer.getEventBus().register(reactor);
 
-        renderer.showLoginDialog();
+        renderer.actionShowLoginDialog();
 
 /*
 

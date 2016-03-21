@@ -1,6 +1,5 @@
 package octoteam.tahiti.client.ui;
 
-import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.client.event.ConnectErrorEvent;
@@ -23,15 +22,15 @@ public class Reactor {
     }
 
     void login() {
-        client.login(loginUsername, loginPassword, (msg) -> {
-            renderer.hideLoginStateDialog();
+        client.login(loginUsername, loginPassword, msg -> {
+            renderer.actionHideLoginStateDialog();
             if (msg.getStatus() == Message.StatusCode.PASSWORD_INCORRECT) {
-                renderer.showMessageDialog("Login failed", "Incorrect password");
+                renderer.actionShowMessageDialog("Login failed", "Incorrect password");
             } else if (msg.getStatus() == Message.StatusCode.USERNAME_NOT_FOUND) {
-                renderer.showMessageDialog("Login failed", "Username not found");
+                renderer.actionShowMessageDialog("Login failed", "Username not found");
             } else if (msg.getStatus() == Message.StatusCode.SUCCESS) {
-                renderer.showMessageDialog("Login success", "Success!");
-                renderer.hideLoginDialog();
+                renderer.actionShowMessageDialog("Login success", "Success!");
+                renderer.actionHideLoginDialog();
             }
             return null;
         });
@@ -39,8 +38,8 @@ public class Reactor {
 
     @Subscribe
     public void onConnected(ConnectedEvent event) {
-        renderer.showLoginStateDialog("Log in...");
         try {
+            renderer.actionShowLoginStateDialog("Log in...");
             login();
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,20 +48,28 @@ public class Reactor {
 
     @Subscribe
     public void onConnectError(ConnectErrorEvent event) {
-        renderer.hideLoginStateDialog();
-        renderer.showMessageDialog("Login failed", "Cannot connect to server");
+        try {
+            renderer.actionHideLoginStateDialog();
+            renderer.actionShowMessageDialog("Login failed", "Cannot connect to server");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe
     public void onLoginCommand(UIOnLoginCommandEvent event) {
-        loginUsername = event.getUsername();
-        loginPassword = event.getPassword();
-        if (client.isConnected()) {
-            login();
-        } else {
-            client.connectAsync();
+        try {
+            loginUsername = event.getUsername();
+            loginPassword = event.getPassword();
+            if (client.isConnected()) {
+                login();
+            } else {
+                client.connectAsync();
+            }
+            renderer.actionShowLoginStateDialog("Connecting to server...");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        renderer.showLoginStateDialog("Connecting to server...");
     }
 
 }

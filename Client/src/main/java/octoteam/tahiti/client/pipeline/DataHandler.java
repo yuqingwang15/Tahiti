@@ -1,6 +1,5 @@
 package octoteam.tahiti.client.pipeline;
 
-import com.google.common.eventbus.EventBus;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import octoteam.tahiti.client.TahitiClient;

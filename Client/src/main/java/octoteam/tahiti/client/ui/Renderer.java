@@ -16,8 +16,6 @@ import java.util.Arrays;
 
 public class Renderer {
 
-    private Terminal terminal;
-
     private Screen screen;
 
     private UtopiaMultiWindowTextGUI gui;
@@ -27,17 +25,15 @@ public class Renderer {
     private Store store = new Store();
 
     public Renderer() throws IOException, InterruptedException {
-        terminal = new DefaultTerminalFactory().createTerminal();
+        Terminal terminal = new DefaultTerminalFactory().createTerminal();
         screen = new TerminalScreen(terminal);
         screen.startScreen();
         gui = new UtopiaMultiWindowTextGUI(new SeparateTextGUIThread.Factory(), screen);
+        gui.setEOFWhenNoWindows(false);
+        ((AsynchronousTextGUIThread) gui.getGUIThread()).start();
 
         initLoginDialog();
         initLoginStateDialog();
-
-        gui.setEOFWhenNoWindows(false);
-
-        ((AsynchronousTextGUIThread) gui.getGUIThread()).start();
     }
 
     private void initLoginDialog() {
@@ -67,9 +63,10 @@ public class Renderer {
         dialog.setHints(Arrays.asList(Window.Hint.CENTERED));
 
         store.init("login.dialog.visible", false);
-        store.observe("login.dialog.visible", () -> {
-            gui.addOrRemoveWindow((Boolean) store.get("login.dialog.visible"), dialog);
+        store.observe("login.dialog.visible", v -> {
+            gui.addOrRemoveWindow((Boolean) v, dialog);
             gui.updateScreen();
+            return null;
         });
     }
 
@@ -91,12 +88,14 @@ public class Renderer {
 
         store.init("login.statedialog.visible", false);
         store.init("login.statedialog.text", "");
-        store.observe("login.statedialog.text", () -> {
-            label.setText((String) store.get("login.statedialog.text"));
+        store.observe("login.statedialog.text", v -> {
+            label.setText((String) v);
+            return null;
         });
-        store.observe("login.statedialog.visible", () -> {
-            gui.addOrRemoveWindow((Boolean) store.get("login.statedialog.visible"), dialog);
+        store.observe("login.statedialog.visible", v -> {
+            gui.addOrRemoveWindow((Boolean) v, dialog);
             gui.updateScreen();
+            return null;
         });
     }
 
@@ -110,33 +109,33 @@ public class Renderer {
         return eventBus;
     }
 
-    public void showLoginDialog() {
-        store.beginUpdate();
-        store.put("login.dialog.visible", true);
-        store.endUpdate();
-    }
-
-    public void hideLoginDialog() {
-        store.beginUpdate();
-        store.put("login.dialog.visible", false);
-        store.endUpdate();
-    }
-
-    public void showLoginStateDialog(String text) {
-        store.beginUpdate();
-        store.put("login.statedialog.text", text);
-        store.put("login.statedialog.visible", true);
-        store.endUpdate();
-    }
-
-    public void hideLoginStateDialog() {
-        store.beginUpdate();
-        store.put("login.statedialog.visible", false);
-        store.endUpdate();
-    }
-
-    public void showMessageDialog(String title, String text, MessageDialogButton... buttons) {
+    public void actionShowMessageDialog(String title, String text, MessageDialogButton... buttons) {
         MessageDialog.showMessageDialog(gui, title, text, buttons);
+    }
+
+    public void actionShowLoginDialog() {
+        store.update(() -> {
+            store.put("login.dialog.visible", true);
+        });
+    }
+
+    public void actionHideLoginDialog() {
+        store.update(() -> {
+            store.put("login.dialog.visible", false);
+        });
+    }
+
+    public void actionShowLoginStateDialog(String text) {
+        store.update(() -> {
+            store.put("login.statedialog.text", text);
+            store.put("login.statedialog.visible", true);
+        });
+    }
+
+    public void actionHideLoginStateDialog() {
+        store.update(() -> {
+            store.put("login.statedialog.visible", false);
+        });
     }
 
 }

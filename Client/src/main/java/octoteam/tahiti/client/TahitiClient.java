@@ -17,7 +17,6 @@ import octoteam.tahiti.client.pipeline.DataHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
