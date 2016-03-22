@@ -31,6 +31,7 @@ public class Reactor {
             } else if (msg.getStatus() == Message.StatusCode.SUCCESS) {
                 renderer.actionShowMessageDialog("Login success", "Success!");
                 renderer.actionHideLoginDialog();
+                renderer.actionShowMainWindow();
             }
             return null;
         });
