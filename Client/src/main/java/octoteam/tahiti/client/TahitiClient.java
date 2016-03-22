@@ -13,7 +13,7 @@ import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.event.ConnectErrorEvent;
 import octoteam.tahiti.client.event.ConnectedEvent;
 import octoteam.tahiti.client.event.DisconnectedEvent;
-import octoteam.tahiti.client.pipeline.DataHandler;
+import octoteam.tahiti.client.pipeline.ResponseHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
@@ -63,7 +63,7 @@ public class TahitiClient {
                         ch.pipeline()
                                 .addLast(new ProtobufEncoder())
                                 .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
-                                .addLast(new DataHandler(TahitiClient.this));
+                                .addLast(new ResponseHandler(TahitiClient.this));
                     }
                 });
     }

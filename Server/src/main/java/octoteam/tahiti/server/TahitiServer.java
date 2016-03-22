@@ -53,8 +53,8 @@ public class TahitiServer {
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
                                     .addLast(new HeartbeatHandler(TahitiServer.this))
                                     .addLast(new RawHandler(TahitiServer.this))
-                                    .addLast(new PingHandler(TahitiServer.this))
-                                    .addLast(new AuthHandler(TahitiServer.this, config.getAccounts()))
+                                    .addLast(new PingRequestHandler(TahitiServer.this))
+                                    .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
                                     .addLast(new FinalHandler(TahitiServer.this));
                         }
                     });

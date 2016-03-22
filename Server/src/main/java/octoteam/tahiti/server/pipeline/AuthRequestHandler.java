@@ -13,12 +13,12 @@ import octoteam.tahiti.server.event.MessageEvent;
 import java.util.List;
 import java.util.UUID;
 
-public class AuthHandler extends PipelineMessageHandler {
+public class AuthRequestHandler extends PipelineMessageHandler {
 
     // TODO: Replace with database based
     List<AccountConfiguration> accounts;
 
-    public AuthHandler(TahitiServer server, List<AccountConfiguration> accounts) {
+    public AuthRequestHandler(TahitiServer server, List<AccountConfiguration> accounts) {
         super(server);
         this.accounts = accounts;
     }

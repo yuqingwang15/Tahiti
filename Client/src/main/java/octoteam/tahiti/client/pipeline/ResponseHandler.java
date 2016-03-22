@@ -6,11 +6,11 @@ import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.client.event.MessageEvent;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-public class DataHandler extends SimpleChannelInboundHandler<Message> {
+public class ResponseHandler extends SimpleChannelInboundHandler<Message> {
 
     private TahitiClient client;
 
-    public DataHandler(TahitiClient client) {
+    public ResponseHandler(TahitiClient client) {
         this.client = client;
     }
 
