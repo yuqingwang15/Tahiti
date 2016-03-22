@@ -2,9 +2,7 @@ package octoteam.tahiti.client.ui;
 
 import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.client.TahitiClient;
-import octoteam.tahiti.client.event.ConnectErrorEvent;
-import octoteam.tahiti.client.event.ConnectedEvent;
-import octoteam.tahiti.client.event.UIOnLoginCommandEvent;
+import octoteam.tahiti.client.event.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
 public class Reactor {
@@ -76,36 +74,14 @@ public class Reactor {
         }
     }
 
-    void receiveCount() {
-        client.login(loginUsername, loginPassword, msg -> {
-            renderer.actionHideLoginStateDialog();
-            if (msg.getStatus() == Message.StatusCode.PASSWORD_INCORRECT) {
-                renderer.actionShowMessageDialog("Login failed", "Incorrect password");
-            } else if (msg.getStatus() == Message.StatusCode.USERNAME_NOT_FOUND) {
-                renderer.actionShowMessageDialog("Login failed", "Username not found");
-            } else if (msg.getStatus() == Message.StatusCode.SUCCESS) {
-                renderer.actionShowMessageDialog("Login success", "Success!");
-                renderer.actionHideLoginDialog();
-                renderer.actionShowMainWindow();
-            }
-            return null;
-        });
+    @Subscribe
+    public void onClickSend(UIOnSendCommandEvent event) {
+        client.sendMessage(event.getPayload());
     }
 
-
-    //add receive part
-    void receive(){
-        client.receive(sendername, msg -> {
-            renderer.actionHideMainWindow();
-            if(msg.getStatus() == Message.StatusCode.SUCCESS){
-                renderer.actionShowMessageDialog("Send Succcessfully","Please send next");
-            }else if(msg.getStatus() == Message.StatusCode.valueOf(100)){
-                renderer.actionShowMessageDialog("Overflowed Messages","Please log out");
-            }
-            // should have messages number control per second, unaware how to achieve time limiting
-            return null;
-        });
-
+    @Subscribe
+    public void onReceiveMessage(MessageEvent event) {
+        renderer.actionAppendLog(event.getMessage().toString());
     }
 
 }
