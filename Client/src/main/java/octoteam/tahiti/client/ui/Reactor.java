@@ -57,6 +57,9 @@ public class Reactor {
         }
     }
 
+    //
+
+
     @Subscribe
     public void onLoginCommand(UIOnLoginCommandEvent event) {
         try {
@@ -73,4 +76,38 @@ public class Reactor {
         }
     }
 
+    void receiveCount() {
+        client.login(loginUsername, loginPassword, msg -> {
+            renderer.actionHideLoginStateDialog();
+            if (msg.getStatus() == Message.StatusCode.PASSWORD_INCORRECT) {
+                renderer.actionShowMessageDialog("Login failed", "Incorrect password");
+            } else if (msg.getStatus() == Message.StatusCode.USERNAME_NOT_FOUND) {
+                renderer.actionShowMessageDialog("Login failed", "Username not found");
+            } else if (msg.getStatus() == Message.StatusCode.SUCCESS) {
+                renderer.actionShowMessageDialog("Login success", "Success!");
+                renderer.actionHideLoginDialog();
+                renderer.actionShowMainWindow();
+            }
+            return null;
+        });
+    }
+
+
+    //add receive part
+    void receive(){
+        client.receive(sendername, msg -> {
+            renderer.actionHideMainWindow();
+            if(msg.getStatus() == Message.StatusCode.SUCCESS){
+                renderer.actionShowMessageDialog("Send Succcessfully","Please send next");
+            }else if(msg.getStatus() == Message.StatusCode.valueOf(100)){
+                renderer.actionShowMessageDialog("Overflowed Messages","Please log out");
+            }
+            // should have messages number control per second, unaware how to achieve time limiting
+            return null;
+        });
+
+    }
+
 }
+
+
