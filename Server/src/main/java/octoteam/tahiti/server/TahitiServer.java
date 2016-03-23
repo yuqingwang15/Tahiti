@@ -7,6 +7,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
@@ -48,7 +50,9 @@ public class TahitiServer {
                         @Override
                         public void initChannel(Channel ch) throws Exception {
                             ch.pipeline()
+                                    .addLast(new ProtobufVarint32LengthFieldPrepender())
                                     .addLast(new ProtobufEncoder())
+                                    .addLast(new ProtobufVarint32FrameDecoder())
                                     .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
                                     .addLast(new HeartbeatHandler(TahitiServer.this))
