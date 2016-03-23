@@ -14,10 +14,7 @@ public class HeartbeatHandler extends InboundMessageHandler {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
-        // eat HEARTBEAT ack
-        if (msg.getService() != Message.ServiceCode.HEARTBEAT_EVENT) {
-            ctx.fireChannelRead(msg);
-        }
+        ctx.fireChannelRead(msg);
     }
 
     @Override

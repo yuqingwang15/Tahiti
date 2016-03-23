@@ -19,7 +19,7 @@ public class AuthFilterHandler extends OutboundMessageHandler {
         }
 
         Boolean authenticated = ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null;
-        if (authenticated) {
+        if (authenticated || msg.getService() == Message.ServiceCode.HEARTBEAT_EVENT) {
             ctx.write(msg, promise);
         }
     }
