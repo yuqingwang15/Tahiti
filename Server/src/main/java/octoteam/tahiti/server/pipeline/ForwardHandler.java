@@ -8,7 +8,7 @@ import octoteam.tahiti.server.TahitiServer;
  * jdquanyi
  * Created by nick on 2016/3/23.
  */
-public class ForwardHandler extends PipelineMessageHandler{
+public class ForwardHandler extends InboundMessageHandler{
 
     public ForwardHandler(TahitiServer server) {
         super(server);
