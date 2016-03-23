@@ -68,7 +68,6 @@ public class TahitiServer {
                                     .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
                                     .addLast(new HeartbeatHandler(TahitiServer.this))
-                                    .addLast(new RawHandler(TahitiServer.this))
                                     .addLast(new PingRequestHandler(TahitiServer.this))
                                     .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
                                     .addLast(new RateLimitHandler(TahitiServer.this, "perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
@@ -76,8 +75,7 @@ public class TahitiServer {
                                     .addLast(new SessionExpireHandler(TahitiServer.this))
                                     .addLast(new AuthFilterHandler(TahitiServer.this))
                                     .addLast(new MessageRequestHandler(TahitiServer.this))
-                                    .addLast(new ForwardHandler(TahitiServer.this))
-                                    .addLast(new FinalHandler(TahitiServer.this));
+                                    .addLast(new ForwardHandler(TahitiServer.this));
                         }
                     });
 
