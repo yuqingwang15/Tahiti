@@ -1,8 +1,6 @@
 package octoteam.tahiti.server.event;
 
 import com.google.common.base.MoreObjects;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 
 public class RateLimitExceededEvent extends BaseEvent {
 

@@ -22,7 +22,7 @@ public class RateLimitHandler extends InboundMessageHandler {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
-        SimpleRateLimiter rateLimiter = (SimpleRateLimiter)getSession(ctx).get(sessionKey);
+        SimpleRateLimiter rateLimiter = (SimpleRateLimiter) getSession(ctx).get(sessionKey);
         if (rateLimiter == null) {
             rateLimiter = this.rateLimiterFactory.apply(null);
             getSession(ctx).put(sessionKey, rateLimiter);
