@@ -1,42 +1,46 @@
 package octoteam.tahiti.server.pipeline;
 
-import com.google.common.util.concurrent.RateLimiter;
+import com.google.common.base.Function;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.util.AttributeKey;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
-import octoteam.tahiti.server.event.TimeBasedRateLimitedExceededEvent;
+import octoteam.tahiti.server.event.RateLimitExceededEvent;
+import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 
 public class RateLimitHandler extends InboundMessageHandler {
 
-    public final static AttributeKey<RateLimiter> ATTR_KEY_RATELIMITER = new AttributeKey<>("ratelimiter");
-    public final static AttributeKey<Integer> ATTR_KEY_COUNTER = new AttributeKey<>("counter");
+    private String name;
+    private String sessionKey;
+    private Function<Void, SimpleRateLimiter> rateLimiterFactory;
 
-    public RateLimitHandler(TahitiServer server) {
+    public RateLimitHandler(TahitiServer server, String name, Function<Void, SimpleRateLimiter> factory) {
         super(server);
+        this.name = name;
+        this.sessionKey = "ratelimiter_" + name;
+        this.rateLimiterFactory = factory;
     }
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
-
-        RateLimiter rateLimiter = ctx.channel().attr(RateLimitHandler.ATTR_KEY_RATELIMITER).get();
-        if (rateLimiter != null) {
-            if (rateLimiter.tryAcquire()) {
-                int counter = ctx.channel().attr(ATTR_KEY_COUNTER).get();
-                if (--counter >= 0) { ctx.fireChannelRead(msg); }
-                else { ctx.writeAndFlush(buildExceededMsg(msg.getSeqId()));}
-            } else {
-                // post event and response msg
-                this.server.getEventBus().post(new TimeBasedRateLimitedExceededEvent(ctx.channel()));
-                ctx.writeAndFlush(buildExceededMsg(msg.getSeqId()));
-            }
+        SimpleRateLimiter rateLimiter = (SimpleRateLimiter)getSession(ctx).get(sessionKey);
+        if (rateLimiter == null) {
+            rateLimiter = this.rateLimiterFactory.apply(null);
+            getSession(ctx).put(sessionKey, rateLimiter);
+        }
+        if (rateLimiter.tryAcquire()) {
+            ctx.fireChannelRead(msg);
+        } else {
+            RateLimitExceededEvent ev = new RateLimitExceededEvent(name);
+            this.server.getEventBus().post(ev);
+            ctx.fireUserEventTriggered(ev);
+            ctx.writeAndFlush(buildExceededMsg(msg));
         }
     }
 
-    private Message buildExceededMsg(long seqId) {
+    private Message buildExceededMsg(Message req) {
         Message.Builder resp = Message
                 .newBuilder()
-                .setSeqId(seqId)
+                .setSeqId(req.getSeqId())
                 .setDirection(Message.DirectionCode.RESPONSE)
                 .setStatus(Message.StatusCode.LIMIT_EXCEEDED);
         return resp.build();

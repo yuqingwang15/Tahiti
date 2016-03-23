@@ -18,6 +18,8 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 import octoteam.tahiti.server.pipeline.*;
+import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
+import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -69,7 +71,9 @@ public class TahitiServer {
                                     .addLast(new RawHandler(TahitiServer.this))
                                     .addLast(new PingRequestHandler(TahitiServer.this))
                                     .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
-                                    .addLast(new RateLimitHandler(TahitiServer.this))
+                                    .addLast(new RateLimitHandler(TahitiServer.this, "perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
+                                    .addLast(new RateLimitHandler(TahitiServer.this, "perSession", (unused) -> new CounterBasedRateLimiter(100)))
+                                    .addLast(new SessionExpireHandler(TahitiServer.this))
                                     .addLast(new AuthFilterHandler(TahitiServer.this))
                                     .addLast(new MessageRequestHandler(TahitiServer.this))
                                     .addLast(new ForwardHandler(TahitiServer.this))
