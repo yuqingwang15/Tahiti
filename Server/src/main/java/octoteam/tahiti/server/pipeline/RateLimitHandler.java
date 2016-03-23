@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos;
 import octoteam.tahiti.server.TahitiServer;
 
-public class RateLimitHandler extends PipelineMessageHandler {
+public class RateLimitHandler extends InboundMessageHandler {
 
     public RateLimitHandler(TahitiServer server) {
         super(server);

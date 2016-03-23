@@ -6,7 +6,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public class HeartbeatHandler extends PipelineMessageHandler {
+public class HeartbeatHandler extends InboundMessageHandler {
 
     public HeartbeatHandler(TahitiServer server) {
         super(server);

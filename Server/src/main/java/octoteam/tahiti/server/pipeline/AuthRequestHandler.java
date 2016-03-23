@@ -13,7 +13,7 @@ import octoteam.tahiti.server.event.MessageEvent;
 import java.util.List;
 import java.util.UUID;
 
-public class AuthRequestHandler extends PipelineMessageHandler {
+public class AuthRequestHandler extends InboundMessageHandler {
 
     // TODO: Replace with database based
     List<AccountConfiguration> accounts;
