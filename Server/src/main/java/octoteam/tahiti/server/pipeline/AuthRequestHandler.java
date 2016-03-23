@@ -1,6 +1,5 @@
 package octoteam.tahiti.server.pipeline;
 
-import com.google.common.util.concurrent.RateLimiter;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
@@ -88,7 +87,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
                 body.getUsername()
         ));
 
-        // TODO: 
+        // TODO:
         if (resp.getStatus() == Message.StatusCode.SUCCESS) {
             this.server.getAllConnected().add(ctx.channel());
         }
