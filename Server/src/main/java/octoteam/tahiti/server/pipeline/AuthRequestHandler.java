@@ -92,6 +92,7 @@ public class AuthRequestHandler extends PipelineMessageHandler {
         if (resp.getStatus() == Message.StatusCode.SUCCESS) {
             ctx.channel().attr(RateLimitHandler.ATTR_KEY_RATELIMITER).set(RateLimiter.create(5.0));
             ctx.channel().attr(RateLimitHandler.ATTR_KEY_COUNTER).set(100);
+            this.server.getAllConnected().add(ctx.channel());
         }
 
         ctx.writeAndFlush(resp.build());

@@ -3,12 +3,15 @@ package octoteam.tahiti.server;
 import com.google.common.eventbus.EventBus;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
@@ -24,13 +27,20 @@ public class TahitiServer {
 
     private ServerConfiguration config;
 
+    private ChannelGroup allConnected;
+
     public TahitiServer(ServerConfiguration config) {
         this.eventBus = new EventBus();
         this.config = config;
+        this.allConnected = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     }
 
     public EventBus getEventBus() {
         return eventBus;
+    }
+
+    public ChannelGroup getAllConnected() {
+        return allConnected;
     }
 
     public void run() throws Exception {
@@ -56,6 +66,7 @@ public class TahitiServer {
                                     .addLast(new PingRequestHandler(TahitiServer.this))
                                     .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
                                     .addLast(new RateLimitHandler(TahitiServer.this))
+                                    .addLast(new ForwardHandler(TahitiServer.this))
                                     .addLast(new MessageRequestHandler(TahitiServer.this))
                                     .addLast(new FinalHandler(TahitiServer.this));
                         }
