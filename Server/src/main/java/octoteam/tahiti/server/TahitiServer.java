@@ -75,7 +75,7 @@ public class TahitiServer {
                                     .addLast(new SessionExpireHandler(TahitiServer.this))
                                     .addLast(new AuthFilterHandler(TahitiServer.this))
                                     .addLast(new MessageRequestHandler(TahitiServer.this))
-                                    .addLast(new ForwardHandler(TahitiServer.this));
+                                    .addLast(new MessageForwardHandler(TahitiServer.this));
                         }
                     });
 

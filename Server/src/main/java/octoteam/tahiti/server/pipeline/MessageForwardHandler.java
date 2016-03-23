@@ -4,9 +4,9 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public class ForwardHandler extends InboundMessageHandler {
+public class MessageForwardHandler extends InboundMessageHandler {
 
-    public ForwardHandler(TahitiServer server) {
+    public MessageForwardHandler(TahitiServer server) {
         super(server);
     }
 
