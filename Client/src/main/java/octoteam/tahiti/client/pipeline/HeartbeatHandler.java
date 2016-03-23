@@ -3,9 +3,9 @@ package octoteam.tahiti.client.pipeline;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import octoteam.tahiti.client.TahitiClient;
-import octoteam.tahiti.protocol.SocketMessageProtos;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-public class HeartbeatHandler extends SimpleChannelInboundHandler<SocketMessageProtos.Message> {
+public class HeartbeatHandler extends SimpleChannelInboundHandler<Message> {
 
     private TahitiClient client;
 
@@ -14,7 +14,7 @@ public class HeartbeatHandler extends SimpleChannelInboundHandler<SocketMessageP
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, SocketMessageProtos.Message msg) {
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
         // TODO: handle heartbeat event
         ctx.fireChannelRead(msg);
     }
