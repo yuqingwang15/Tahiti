@@ -1,5 +1,6 @@
 package octoteam.tahiti.server.pipeline;
 
+import com.google.common.util.concurrent.RateLimiter;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
@@ -87,6 +88,11 @@ public class AuthRequestHandler extends PipelineMessageHandler {
                 resp.getStatus() == Message.StatusCode.SUCCESS,
                 body.getUsername()
         ));
+
+        if (resp.getStatus() == Message.StatusCode.SUCCESS) {
+            ctx.channel().attr(RateLimitHandler.ATTR_KEY_RATELIMITER).set(RateLimiter.create(5.0));
+        }
+
         ctx.writeAndFlush(resp.build());
     }
 
