@@ -7,7 +7,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.event.TimeBasedRateLimitedExceededEvent;
 
-public class RateLimitHandler extends PipelineMessageHandler {
+public class RateLimitHandler extends InboundMessageHandler {
 
     public final static AttributeKey<RateLimiter> ATTR_KEY_RATELIMITER = new AttributeKey<>("ratelimiter");
     public final static AttributeKey<Integer> ATTR_KEY_COUNTER = new AttributeKey<>("counter");

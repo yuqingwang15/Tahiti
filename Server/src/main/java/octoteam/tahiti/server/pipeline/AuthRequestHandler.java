@@ -14,7 +14,7 @@ import octoteam.tahiti.server.event.MessageEvent;
 import java.util.List;
 import java.util.UUID;
 
-public class AuthRequestHandler extends PipelineMessageHandler {
+public class AuthRequestHandler extends InboundMessageHandler {
 
     // TODO: Replace with database based
     List<AccountConfiguration> accounts;
@@ -27,7 +27,7 @@ public class AuthRequestHandler extends PipelineMessageHandler {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
 
-        Boolean authenticated = ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null;
+        Boolean authenticated = getSession(ctx) != null;
         this.server.getEventBus().post(new MessageEvent(authenticated, msg));
 
         // Already authenticated: pass everything to next handler
@@ -59,10 +59,9 @@ public class AuthRequestHandler extends PipelineMessageHandler {
             if (account.getUsername().equals(body.getUsername())) {
                 if (account.getPassword().equals(body.getPassword())) {
                     // correct username, correct password
-                    Session sess = new Session();
-                    sess.setSessionId(UUID.randomUUID().toString());
-                    sess.setUsername(account.getUsername());
-                    ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).set(sess);
+                    Session sess = new Session(UUID.randomUUID().toString());
+                    sess.put("username", account.getUsername());        // TODO
+                    setSession(ctx, sess);
 
                     resp
                             .setStatus(Message.StatusCode.SUCCESS)

@@ -8,6 +8,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import octoteam.tahiti.client.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.event.ConnectErrorEvent;
@@ -61,7 +63,9 @@ public class TahitiClient {
                     @Override
                     protected void initChannel(Channel ch) throws Exception {
                         ch.pipeline()
+                                .addLast(new ProtobufVarint32LengthFieldPrepender())
                                 .addLast(new ProtobufEncoder())
+                                .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
                                 .addLast(new ResponseHandler(TahitiClient.this));
                     }

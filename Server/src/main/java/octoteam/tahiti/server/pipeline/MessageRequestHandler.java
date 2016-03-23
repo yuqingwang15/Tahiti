@@ -1,27 +1,27 @@
 package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.ChannelHandlerContext;
-import octoteam.tahiti.protocol.SocketMessageProtos;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public class MessageRequestHandler extends PipelineMessageHandler {
+public class MessageRequestHandler extends InboundMessageHandler {
 
     public MessageRequestHandler(TahitiServer server) {
         super(server);
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, SocketMessageProtos.Message msg) {
-        if (msg.getService() != SocketMessageProtos.Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST) {
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+        if (msg.getService() != Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST) {
             ctx.fireChannelRead(msg);
             return;
         }
 
-        SocketMessageProtos.Message.Builder resp = SocketMessageProtos.Message
+        Message.Builder resp = Message
                 .newBuilder()
                 .setSeqId(msg.getSeqId())
-                .setDirection(SocketMessageProtos.Message.DirectionCode.RESPONSE)
-                .setStatus(SocketMessageProtos.Message.StatusCode.SUCCESS);
+                .setDirection(Message.DirectionCode.RESPONSE)
+                .setStatus(Message.StatusCode.SUCCESS);
 
         ctx.writeAndFlush(resp.build());
 

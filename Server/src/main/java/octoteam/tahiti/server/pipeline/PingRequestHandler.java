@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public class PingRequestHandler extends PipelineMessageHandler {
+public class PingRequestHandler extends InboundMessageHandler {
 
     public PingRequestHandler(TahitiServer server) {
         super(server);

@@ -6,7 +6,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public class HeartbeatHandler extends PipelineMessageHandler {
+public class HeartbeatHandler extends InboundMessageHandler {
 
     public HeartbeatHandler(TahitiServer server) {
         super(server);
@@ -14,10 +14,7 @@ public class HeartbeatHandler extends PipelineMessageHandler {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
-        // eat HEARTBEAT ack
-        if (msg.getService() != Message.ServiceCode.HEARTBEAT_EVENT) {
-            ctx.fireChannelRead(msg);
-        }
+        ctx.fireChannelRead(msg);
     }
 
     @Override

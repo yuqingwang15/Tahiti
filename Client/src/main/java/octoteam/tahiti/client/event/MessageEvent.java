@@ -25,5 +25,5 @@ public class MessageEvent extends BaseEvent {
                 .add("message", message)
                 .toString();
     }
-    
+
 }

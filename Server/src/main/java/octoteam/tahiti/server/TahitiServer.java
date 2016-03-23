@@ -9,6 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
+import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GlobalEventExecutor;
@@ -58,7 +60,9 @@ public class TahitiServer {
                         @Override
                         public void initChannel(Channel ch) throws Exception {
                             ch.pipeline()
+                                    .addLast(new ProtobufVarint32LengthFieldPrepender())
                                     .addLast(new ProtobufEncoder())
+                                    .addLast(new ProtobufVarint32FrameDecoder())
                                     .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
                                     .addLast(new HeartbeatHandler(TahitiServer.this))
@@ -67,6 +71,7 @@ public class TahitiServer {
                                     .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
                                     .addLast(new RateLimitHandler(TahitiServer.this))
                                     .addLast(new ForwardHandler(TahitiServer.this))
+                                    .addLast(new AuthFilterHandler(TahitiServer.this))
                                     .addLast(new MessageRequestHandler(TahitiServer.this))
                                     .addLast(new FinalHandler(TahitiServer.this));
                         }

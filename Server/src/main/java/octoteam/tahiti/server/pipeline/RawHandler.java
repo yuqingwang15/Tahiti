@@ -5,7 +5,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.event.RawMessageEvent;
 
-public class RawHandler extends PipelineMessageHandler {
+public class RawHandler extends InboundMessageHandler {
 
     public RawHandler(TahitiServer server) {
         super(server);

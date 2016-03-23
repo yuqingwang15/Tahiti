@@ -5,7 +5,7 @@ import io.netty.handler.codec.DecoderException;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public class FinalHandler extends PipelineMessageHandler {
+public class FinalHandler extends InboundMessageHandler {
 
     public FinalHandler(TahitiServer server) {
         super(server);
