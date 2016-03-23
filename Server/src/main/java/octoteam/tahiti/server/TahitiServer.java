@@ -59,6 +59,7 @@ public class TahitiServer {
                                     .addLast(new RawHandler(TahitiServer.this))
                                     .addLast(new PingRequestHandler(TahitiServer.this))
                                     .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
+                                    .addLast(new AuthFilterHandler(TahitiServer.this))
                                     .addLast(new RateLimitHandler(TahitiServer.this))
                                     .addLast(new MessageRequestHandler(TahitiServer.this))
                                     .addLast(new FinalHandler(TahitiServer.this));
