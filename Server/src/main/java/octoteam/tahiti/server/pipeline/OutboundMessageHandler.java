@@ -6,7 +6,9 @@ import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public abstract class OutboundMessageHandler extends ChannelOutboundHandlerAdapter {
+public abstract class OutboundMessageHandler
+        extends ChannelOutboundHandlerAdapter
+        implements SessionHandlerTrait {
 
     protected final TahitiServer server;
 

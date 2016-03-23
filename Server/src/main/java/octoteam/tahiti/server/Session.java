@@ -2,34 +2,45 @@ package octoteam.tahiti.server;
 
 import com.google.common.base.MoreObjects;
 
+import java.util.HashMap;
+
 public class Session {
+
+    private HashMap<String, Object> data;
 
     private String sessionId;
 
-    // TODO: Change to UserBean after introducing database
-    private String username;
+    public Session(String sessionId) {
+        this.sessionId = sessionId;
+        this.data = new HashMap<>();
+    }
 
     public String getSessionId() {
         return sessionId;
     }
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+    public Object get(String key) {
+        return data.get(key);
     }
 
-    public String getUsername() {
-        return username;
+    public void put(String key, Object value) {
+        data.put(key, value);
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void remove(String key) {
+        data.remove(key);
+    }
+
+    public boolean containsKey(String key) {
+        return data.containsKey(key);
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
+                .add("data", data)
                 .add("sessionId", sessionId)
-                .add("username", username)
                 .toString();
     }
+
 }

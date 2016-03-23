@@ -5,7 +5,9 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
-public abstract class InboundMessageHandler extends ChannelInboundHandlerAdapter {
+public abstract class InboundMessageHandler
+        extends ChannelInboundHandlerAdapter
+        implements SessionHandlerTrait {
 
     protected final TahitiServer server;
 

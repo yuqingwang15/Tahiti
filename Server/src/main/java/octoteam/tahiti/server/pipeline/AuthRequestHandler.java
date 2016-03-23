@@ -26,7 +26,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
 
-        Boolean authenticated = ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null;
+        Boolean authenticated = getSession(ctx) != null;
         this.server.getEventBus().post(new MessageEvent(authenticated, msg));
 
         // Already authenticated: pass everything to next handler
@@ -58,10 +58,9 @@ public class AuthRequestHandler extends InboundMessageHandler {
             if (account.getUsername().equals(body.getUsername())) {
                 if (account.getPassword().equals(body.getPassword())) {
                     // correct username, correct password
-                    Session sess = new Session();
-                    sess.setSessionId(UUID.randomUUID().toString());
-                    sess.setUsername(account.getUsername());
-                    ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).set(sess);
+                    Session sess = new Session(UUID.randomUUID().toString());
+                    sess.put("username", account.getUsername());        // TODO
+                    setSession(ctx, sess);
 
                     resp
                             .setStatus(Message.StatusCode.SUCCESS)
