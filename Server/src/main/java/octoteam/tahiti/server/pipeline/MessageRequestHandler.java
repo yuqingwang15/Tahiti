@@ -3,17 +3,12 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.TahitiServer;
 
 @ChannelHandler.Sharable
 public class MessageRequestHandler extends InboundMessageHandler {
 
-    public MessageRequestHandler(TahitiServer server) {
-        super(server);
-    }
-
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
         if (msg.getService() != Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST) {
             ctx.fireChannelRead(msg);
             return;

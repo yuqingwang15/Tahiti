@@ -9,10 +9,6 @@ import octoteam.tahiti.server.TahitiServer;
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends OutboundMessageHandler {
 
-    public AuthFilterHandler(TahitiServer server) {
-        super(server);
-    }
-
     @Override
     protected void write0(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
         if (msg.getDirection() != Message.DirectionCode.EVENT) {

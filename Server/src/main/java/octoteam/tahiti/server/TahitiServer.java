@@ -33,16 +33,13 @@ public class TahitiServer {
 
     private ChannelGroup allConnected;
 
-    public TahitiServer(ServerConfiguration config) {
-        this.eventBus = new EventBus();
+    public TahitiServer(EventBus eventBus, ServerConfiguration config) {
+        this.eventBus = eventBus;
         this.config = config;
         this.allConnected = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     }
 
-    public EventBus getEventBus() {
-        return eventBus;
-    }
-
+    @Deprecated
     public ChannelGroup getAllConnected() {
         return allConnected;
     }
@@ -67,15 +64,17 @@ public class TahitiServer {
                                     .addLast(new ProtobufVarint32FrameDecoder())
                                     .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
-                                    .addLast(new HeartbeatHandler(TahitiServer.this))
-                                    .addLast(new PingRequestHandler(TahitiServer.this))
+                                    .addLast(new HeartbeatHandler())
+                                    .addLast(new PingRequestHandler())
                                     .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
-                                    .addLast(new RateLimitHandler(TahitiServer.this, "perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
-                                    .addLast(new RateLimitHandler(TahitiServer.this, "perSession", (unused) -> new CounterBasedRateLimiter(100)))
-                                    .addLast(new SessionExpireHandler(TahitiServer.this))
-                                    .addLast(new AuthFilterHandler(TahitiServer.this))
-                                    .addLast(new MessageRequestHandler(TahitiServer.this))
-                                    .addLast(new MessageForwardHandler(TahitiServer.this));
+                                    .addLast(new RateLimitHandler("perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
+                                    .addLast(new RateLimitHandler("perSession", (unused) -> new CounterBasedRateLimiter(100)))
+                                    .addLast(new SessionExpireHandler())
+                                    .addLast(new AuthFilterHandler())
+                                    .addLast(new MessageRequestHandler())
+                                    .addLast(new MessageForwardHandler(TahitiServer.this))
+                                    .addLast(new UserEventHandler(eventBus))
+                            ;
                         }
                     });
 

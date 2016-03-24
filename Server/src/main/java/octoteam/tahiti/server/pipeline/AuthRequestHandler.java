@@ -20,20 +20,23 @@ public class AuthRequestHandler extends InboundMessageHandler {
     // TODO: Replace with database based
     List<AccountConfiguration> accounts;
 
+    @Deprecated
+    TahitiServer server;
+
     public AuthRequestHandler(TahitiServer server, List<AccountConfiguration> accounts) {
-        super(server);
+        this.server = server;
         this.accounts = accounts;
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
 
         Boolean authenticated = getSession(ctx) != null;
-        this.server.getEventBus().post(new MessageEvent(authenticated, msg));
+        ctx.fireUserEventTriggered(new MessageEvent(authenticated, msg));
 
         // Already authenticated: pass everything to next handler
         if (authenticated) {
-            this.server.getEventBus().post(new MessageEvent(true, msg));
+            ctx.fireUserEventTriggered(new MessageEvent(true, msg));
             ctx.fireChannelRead(msg);
             return;
         }
@@ -84,7 +87,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
             resp.setStatus(Message.StatusCode.USERNAME_NOT_FOUND);
         }
 
-        this.server.getEventBus().post(new LoginAttemptEvent(
+        ctx.fireUserEventTriggered(new LoginAttemptEvent(
                 resp.getStatus() == Message.StatusCode.SUCCESS,
                 body.getUsername()
         ));

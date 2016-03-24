@@ -8,8 +8,11 @@ import octoteam.tahiti.server.TahitiServer;
 @ChannelHandler.Sharable
 public class MessageForwardHandler extends InboundMessageHandler {
 
+    @Deprecated
+    TahitiServer server;
+
     public MessageForwardHandler(TahitiServer server) {
-        super(server);
+        this.server = server;
     }
 
     @Override

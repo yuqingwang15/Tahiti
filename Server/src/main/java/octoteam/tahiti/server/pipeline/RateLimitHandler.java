@@ -4,7 +4,6 @@ import com.google.common.base.Function;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 
@@ -15,8 +14,7 @@ public class RateLimitHandler extends InboundMessageHandler {
     private String sessionKey;
     private Function<Void, SimpleRateLimiter> rateLimiterFactory;
 
-    public RateLimitHandler(TahitiServer server, String name, Function<Void, SimpleRateLimiter> factory) {
-        super(server);
+    public RateLimitHandler(String name, Function<Void, SimpleRateLimiter> factory) {
         this.name = name;
         this.sessionKey = "ratelimiter_" + name;
         this.rateLimiterFactory = factory;
@@ -32,9 +30,8 @@ public class RateLimitHandler extends InboundMessageHandler {
         if (rateLimiter.tryAcquire()) {
             ctx.fireChannelRead(msg);
         } else {
-            RateLimitExceededEvent ev = new RateLimitExceededEvent(name);
-            this.server.getEventBus().post(ev);
-            ctx.fireUserEventTriggered(ev);
+            RateLimitExceededEvent evt = new RateLimitExceededEvent(name);
+            ctx.fireUserEventTriggered(evt);
             ctx.writeAndFlush(buildExceededMsg(msg));
         }
     }
