@@ -4,8 +4,9 @@ import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 import octoteam.tahiti.server.event.BaseEvent;
 import org.yaml.snakeyaml.Yaml;
-import java.util.Timer;
+
 import java.io.InputStream;
+import java.util.Timer;
 
 public class Console {
 
@@ -25,9 +26,8 @@ public class Console {
         });
 
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(new LoggingPerMinTask(), 60*1000, 60*1000); //after 60s, count for per 60s
+        timer.scheduleAtFixedRate(new LoggingPerMinTask(), 60 * 1000, 60 * 1000); //after 60s, count for per 60s
         server.run();
-
 
     }
 

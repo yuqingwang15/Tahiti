@@ -7,7 +7,7 @@
         </Console>
 
         <!--<File name="File" fileName="logs/testFile.log">-->
-              <!--<PatternLayout pattern="%m%n" />-->
+        <!--<PatternLayout pattern="%m%n" />-->
         <!--</File>-->
 
         <RollingFile name="RollingFile" fileName="logs/server.log"
@@ -28,14 +28,13 @@
         </root>
 
         <!--<Logger name="octoteam.tahiti.server.Logging" level="INFO" >-->
-            <!--<AppenderRef ref="File" />-->
+        <!--<AppenderRef ref="File" />-->
         <!--</Logger>-->
 
-        <Logger name="octoteam.tahiti.server.Logging" level="INFO"  >
+        <Logger name="octoteam.tahiti.server.Logging" level="INFO">
             <AppenderRef ref="RollingFile"/>
         </Logger>
     </loggers>
-
 
 
 </configuration>

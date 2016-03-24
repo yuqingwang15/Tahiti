@@ -26,21 +26,23 @@ public class Logging {
         }
 
     }
+
     //count received/ignored message
     @Subscribe
     private void onMessage(MessageEvent event) {
-        if(event.isAuthenticated()){
+        if (event.isAuthenticated()) {
             receivedMessageTimes++;
-        }else{
+        } else {
             ignoredMessageTimes++;
         }
     }
+
     //log into server.log and show in console
-    public static void  loggingForServer(){
-        Logging.logger.info("server valid login :  "+validLoginTimes+" times");
-        Logging.logger.info("server invalid login :  "+invalidLoginTimes+" times");
-        Logging.logger.info("server received message :  "+receivedMessageTimes+" times");
-        Logging.logger.info("server ignored message :  "+ignoredMessageTimes+" times");
+    public static void loggingForServer() {
+        Logging.logger.info("server valid login :  " + validLoginTimes + " times");
+        Logging.logger.info("server invalid login :  " + invalidLoginTimes + " times");
+        Logging.logger.info("server received message :  " + receivedMessageTimes + " times");
+        Logging.logger.info("server ignored message :  " + ignoredMessageTimes + " times");
         Logging.logger.info("--------------");
     }
 
