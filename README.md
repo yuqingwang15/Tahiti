@@ -1,4 +1,12 @@
+# Tahiti
+
+Tahiti is a simple chatting service.
+
 ## Getting Started
+
+### IDE
+
+Tahiti includes JetBrains Intellij IDEA project files. You can directly use IDEA to open the project.
 
 ### Install ProtoBuf
 
@@ -14,16 +22,27 @@ The good news is that we have already integrated step 2 into the maven goal `com
 
 Documentation: https://github.com/google/protobuf#protocol-compiler-installation
 
-For OS X: You can use [homebrew](http://brew.sh/) to install it.
+Notice: You need to download or compile protoc version 3.0.
+
+> For OS X: You can use [homebrew](http://brew.sh/) to install: `brew install protobuf --devel --c++11`
+
+### Setting Environment Variables for Maven
+
+`Tahiti.Protocol` will invoke `protoc` based on the path from the environment variable. In Intellij IDEA, you could set up the env var as follows:
+
+1. Open Maven window by clicking `View` menu -> `Tool Windows`
+
+2. In Maven window, right click `tahiti.protocol` -> `Lifecycles` -> `compile`, choose `Create [tahiti.protocol] (compile)` to create a new profile
+
+3. Select `Runner` tab in the new window and uncheck `Use project settings`
+
+4. Add a environment variable called `PROTOC_PATH` (case sensitive), whose value is the path of your `protoc` binary, e.g, `/usr/local/bin/protoc`.
+
+5. Save
 
 ### Compile Protocol Serializer
 
-After obtaining the ProtoBuf compiler, you could start to generate the serializer source code.
-
-```bash
-cd Tahiti/Protocol
-mvn compile
-```
+Now you can start to generate the serializer source code by executing your newly created profile.
 
 Then should find out that you can use `octoteam.tahiti.protocol.SocketMessageProtos` now, which is the protocol serializer and deserializer.
 
