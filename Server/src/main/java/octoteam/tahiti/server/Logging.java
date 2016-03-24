@@ -6,15 +6,27 @@ import octoteam.tahiti.server.event.MessageEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 
 public class Logging {
 
     public static Logger logger = LogManager.getLogger(Logging.class.getName());
 
-    private static int validLoginTimes = 0;
-    private static int invalidLoginTimes = 0;
-    private static int receivedMessageTimes = 0;
-    private static int ignoredMessageTimes = 0;
+    private  int validLoginTimes = 0;
+    private  int invalidLoginTimes = 0;
+    private  int receivedMessageTimes = 0;
+    private  int ignoredMessageTimes = 0;
+
+    //constructor
+    public Logging(){
+
+        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+        exec.scheduleAtFixedRate( ()->loggingForServer(),
+                60*1000, 60*1000, TimeUnit.MILLISECONDS);
+
+    }
 
     //count valid/invalid login
     @Subscribe
@@ -38,7 +50,7 @@ public class Logging {
     }
 
     //log into server.log and show in console
-    public static void loggingForServer() {
+    public void loggingForServer() {
         Logging.logger.info("server valid login :  " + validLoginTimes + " times");
         Logging.logger.info("server invalid login :  " + invalidLoginTimes + " times");
         Logging.logger.info("server received message :  " + receivedMessageTimes + " times");
