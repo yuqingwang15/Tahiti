@@ -1,10 +1,12 @@
 package octoteam.tahiti.server.pipeline;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 
+@ChannelHandler.Sharable
 public class SessionExpireHandler extends InboundMessageHandler {
 
     public SessionExpireHandler(TahitiServer server) {

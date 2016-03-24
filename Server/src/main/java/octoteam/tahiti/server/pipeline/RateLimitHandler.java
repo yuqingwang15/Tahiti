@@ -1,12 +1,14 @@
 package octoteam.tahiti.server.pipeline;
 
 import com.google.common.base.Function;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 
+@ChannelHandler.Sharable
 public class RateLimitHandler extends InboundMessageHandler {
 
     private String name;

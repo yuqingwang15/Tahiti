@@ -1,11 +1,13 @@
 package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
+@ChannelHandler.Sharable
 public class HeartbeatHandler extends InboundMessageHandler {
 
     public HeartbeatHandler(TahitiServer server) {

@@ -1,10 +1,12 @@
 package octoteam.tahiti.server.pipeline;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
 
+@ChannelHandler.Sharable
 public class AuthFilterHandler extends OutboundMessageHandler {
 
     public AuthFilterHandler(TahitiServer server) {

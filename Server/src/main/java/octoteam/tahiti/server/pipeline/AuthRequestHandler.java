@@ -1,5 +1,6 @@
 package octoteam.tahiti.server.pipeline;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
@@ -13,6 +14,7 @@ import octoteam.tahiti.server.event.MessageEvent;
 import java.util.List;
 import java.util.UUID;
 
+@ChannelHandler.Sharable
 public class AuthRequestHandler extends InboundMessageHandler {
 
     // TODO: Replace with database based

@@ -1,10 +1,12 @@
 package octoteam.tahiti.client.pipeline;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
+@ChannelHandler.Sharable
 public class HeartbeatHandler extends SimpleChannelInboundHandler<Message> {
 
     private TahitiClient client;
