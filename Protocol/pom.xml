@@ -27,7 +27,7 @@
                 <artifactId>protobuf-maven-plugin</artifactId>
                 <version>0.5.0</version>
                 <configuration>
-                    <protocExecutable>D:\Developer\protoc-3.0.0-beta-2-win32\protoc.exe</protocExecutable>
+                    <protocExecutable>${env.PROTOC_PATH}</protocExecutable>
                 </configuration>
                 <executions>
                     <execution>
