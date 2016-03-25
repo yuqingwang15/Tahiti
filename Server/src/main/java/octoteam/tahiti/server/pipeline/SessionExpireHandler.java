@@ -26,7 +26,7 @@ public class SessionExpireHandler extends InboundMessageHandler {
 
         if (evt instanceof RateLimitExceededEvent) {
             RateLimitExceededEvent event = (RateLimitExceededEvent)evt;
-            if (event.getName().equals("perSession")) {
+            if (event.getName().equals(RateLimitExceededEvent.NAME_PER_SESSION)) {
                 Message.Builder resp = Message.newBuilder()
                         .setDirection(Message.DirectionCode.RESPONSE)
                         .setService(Message.ServiceCode.SESSION_EXPIRED_EVENT);

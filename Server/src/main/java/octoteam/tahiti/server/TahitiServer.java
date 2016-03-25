@@ -16,6 +16,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.pipeline.*;
 import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
 import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
@@ -65,8 +66,8 @@ public class TahitiServer {
                                     .addLast(new PingRequestHandler())
                                     .addLast(new AuthRequestHandler(config.getAccounts()))
                                     .addLast(new AuthFilterHandler())
-                                    .addLast(new RateLimitHandler("perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
-                                    .addLast(new RateLimitHandler("perSession", (unused) -> new CounterBasedRateLimiter(100)))
+                                    .addLast(new RateLimitHandler(RateLimitExceededEvent.NAME_PER_SECOND, (unused) -> new TimeBasedRateLimiter(5.0)))
+                                    .addLast(new RateLimitHandler(RateLimitExceededEvent.NAME_PER_SESSION, (unused) -> new CounterBasedRateLimiter(100)))
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
                                     .addLast(new MessageForwardHandler(TahitiServer.this))

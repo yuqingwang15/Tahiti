@@ -4,6 +4,10 @@ import com.google.common.base.MoreObjects;
 
 public class RateLimitExceededEvent extends BaseEvent {
 
+    public static final String NAME_PER_SESSION = "perSession";
+
+    public static final String NAME_PER_SECOND = "perSecond";
+
     private String name;
 
     public RateLimitExceededEvent(String name) {
