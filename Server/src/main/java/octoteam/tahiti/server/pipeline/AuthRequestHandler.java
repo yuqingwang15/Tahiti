@@ -18,9 +18,10 @@ import java.util.UUID;
 public class AuthRequestHandler extends InboundMessageHandler {
 
     // TODO: Replace with database based
-    List<AccountConfiguration> accounts;
+    private final List<AccountConfiguration> accounts;
 
     @Deprecated
+    private final
     TahitiServer server;
 
     public AuthRequestHandler(TahitiServer server, List<AccountConfiguration> accounts) {
@@ -29,7 +30,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
 
         Boolean authenticated = getSession(ctx) != null;
         ctx.fireUserEventTriggered(new MessageEvent(authenticated, msg));

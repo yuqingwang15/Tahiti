@@ -5,7 +5,7 @@ import io.netty.channel.ChannelOutboundHandlerAdapter;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-public abstract class OutboundMessageHandler
+abstract class OutboundMessageHandler
         extends ChannelOutboundHandlerAdapter
         implements SessionHandlerTrait {
 

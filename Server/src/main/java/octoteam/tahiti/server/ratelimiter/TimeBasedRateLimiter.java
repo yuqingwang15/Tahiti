@@ -4,7 +4,7 @@ import com.google.common.util.concurrent.RateLimiter;
 
 public class TimeBasedRateLimiter implements SimpleRateLimiter {
 
-    private RateLimiter rl;
+    private final RateLimiter rl;
 
     public TimeBasedRateLimiter(double QPS) {
         rl = RateLimiter.create(QPS);

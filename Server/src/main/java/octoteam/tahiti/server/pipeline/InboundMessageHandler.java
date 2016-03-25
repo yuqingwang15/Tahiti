@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
-public abstract class InboundMessageHandler
+abstract class InboundMessageHandler
         extends ChannelInboundHandlerAdapter
         implements SessionHandlerTrait {
 
@@ -17,6 +17,6 @@ public abstract class InboundMessageHandler
         }
     }
 
-    protected abstract void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception;
+    protected abstract void channelRead0(ChannelHandlerContext ctx, Message msg);
 
 }

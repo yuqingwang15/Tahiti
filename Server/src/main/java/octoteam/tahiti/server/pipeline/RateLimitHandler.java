@@ -10,9 +10,9 @@ import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 @ChannelHandler.Sharable
 public class RateLimitHandler extends InboundMessageHandler {
 
-    private String name;
-    private String sessionKey;
-    private Function<Void, SimpleRateLimiter> rateLimiterFactory;
+    private final String name;
+    private final String sessionKey;
+    private final Function<Void, SimpleRateLimiter> rateLimiterFactory;
 
     public RateLimitHandler(String name, Function<Void, SimpleRateLimiter> factory) {
         this.name = name;

@@ -9,6 +9,7 @@ import octoteam.tahiti.server.TahitiServer;
 public class MessageForwardHandler extends InboundMessageHandler {
 
     @Deprecated
+    private final
     TahitiServer server;
 
     public MessageForwardHandler(TahitiServer server) {
@@ -16,7 +17,7 @@ public class MessageForwardHandler extends InboundMessageHandler {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Message message) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Message message) {
         Message.Builder resp = Message
                 .newBuilder()
                 .setSeqId(message.getSeqId())

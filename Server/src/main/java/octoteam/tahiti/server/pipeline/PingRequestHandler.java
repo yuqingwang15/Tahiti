@@ -8,7 +8,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 public class PingRequestHandler extends InboundMessageHandler {
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
         if (msg.getService() != Message.ServiceCode.PING_REQUEST) {
             ctx.fireChannelRead(msg);
             return;

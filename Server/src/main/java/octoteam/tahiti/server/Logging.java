@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Logging {
 
-    public static Logger logger = LogManager.getLogger(Logging.class.getName());
+    private static final Logger logger = LogManager.getLogger(Logging.class.getName());
 
     private  int validLoginTimes = 0;
     private  int invalidLoginTimes = 0;
@@ -23,7 +23,7 @@ public class Logging {
     public Logging(){
 
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-        exec.scheduleAtFixedRate( ()->loggingForServer(),
+        exec.scheduleAtFixedRate(this::loggingForServer,
                 60*1000, 60*1000, TimeUnit.MILLISECONDS);
 
     }
@@ -50,7 +50,7 @@ public class Logging {
     }
 
     //log into server.log and show in console
-    public void loggingForServer() {
+    private void loggingForServer() {
         Logging.logger.info("server valid login :  " + validLoginTimes + " times");
         Logging.logger.info("server invalid login :  " + invalidLoginTimes + " times");
         Logging.logger.info("server received message :  " + receivedMessageTimes + " times");

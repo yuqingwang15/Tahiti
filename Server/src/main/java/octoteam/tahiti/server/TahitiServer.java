@@ -27,11 +27,11 @@ public class TahitiServer {
 
     public final static AttributeKey<Session> ATTR_KEY_SESSION = new AttributeKey<>("session");
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
-    private ServerConfiguration config;
+    private final ServerConfiguration config;
 
-    private ChannelGroup allConnected;
+    private final ChannelGroup allConnected;
 
     public TahitiServer(EventBus eventBus, ServerConfiguration config) {
         this.eventBus = eventBus;

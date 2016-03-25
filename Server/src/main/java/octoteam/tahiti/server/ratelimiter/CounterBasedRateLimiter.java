@@ -2,7 +2,7 @@ package octoteam.tahiti.server.ratelimiter;
 
 public class CounterBasedRateLimiter implements SimpleRateLimiter {
 
-    private int maxLimit;
+    private final int maxLimit;
     private int acquired = 0;
 
     public CounterBasedRateLimiter(int maxLimit) {

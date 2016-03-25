@@ -6,9 +6,9 @@ import java.util.HashMap;
 
 public class Session {
 
-    private HashMap<String, Object> data;
+    private final HashMap<String, Object> data;
 
-    private String sessionId;
+    private final String sessionId;
 
     public Session(String sessionId) {
         this.sessionId = sessionId;

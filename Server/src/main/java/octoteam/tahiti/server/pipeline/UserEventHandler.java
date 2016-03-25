@@ -7,7 +7,7 @@ import octoteam.tahiti.server.event.BaseEvent;
 
 public class UserEventHandler extends ChannelInboundHandlerAdapter {
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
 
     public UserEventHandler(EventBus eventBus) {
         this.eventBus = eventBus;
