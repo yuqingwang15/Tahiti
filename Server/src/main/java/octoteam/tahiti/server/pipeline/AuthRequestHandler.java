@@ -68,13 +68,6 @@ public class AuthRequestHandler extends MessageHandler {
                 body.getUsername()
         ));
 
-        // TODO:
-        /*
-        if (resp.getStatus() == Message.StatusCode.SUCCESS) {
-            this.server.getAllConnected().add(ctx.channel());
-        }
-        */
-
         ctx.writeAndFlush(resp.build());
     }
 
