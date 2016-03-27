@@ -11,10 +11,7 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 @ChannelHandler.Sharable
 public class MessageForwardHandler extends MessageHandler {
 
-    private final static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);;
-
-    public MessageForwardHandler() {
-    }
+    private final static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
@@ -36,4 +33,5 @@ public class MessageForwardHandler extends MessageHandler {
         clients.add(ctx.channel());
         ctx.fireChannelActive();
     }
+
 }
