@@ -19,12 +19,16 @@ public class MessageForwardHandler extends MessageHandler {
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
-        Message.Builder resp = Message
-                .newBuilder()
-                .setSeqId(msg.getSeqId())
-                .setDirection(Message.DirectionCode.EVENT)
-                .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
-                .setChatMessageReq(msg.getChatMessageReq());
-        this.server.getAllConnected().writeAndFlush(resp.build());
+        if (msg.getService().equals(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)) {
+            Message.Builder resp = Message
+                    .newBuilder()
+                    .setSeqId(msg.getSeqId())
+                    .setDirection(Message.DirectionCode.EVENT)
+                    .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
+                    .setChatMessageReq(msg.getChatMessageReq());
+            this.server.getAllConnected().writeAndFlush(resp.build());
+        } else {
+            ctx.fireChannelRead(msg);
+        }
     }
 }
