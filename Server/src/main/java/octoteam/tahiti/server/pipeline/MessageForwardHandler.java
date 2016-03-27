@@ -7,9 +7,11 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.ChatBroadcastEventBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.server.event.MessageForwardEvent;
 import octoteam.tahiti.server.session.Credential;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
+
 
 @ChannelHandler.Sharable
 public class MessageForwardHandler extends MessageHandler {
@@ -35,6 +37,7 @@ public class MessageForwardHandler extends MessageHandler {
                             .setSenderUsername(currentCredential.getUsername())
                     );
             clients.writeAndFlush(resp.build(), channel -> channel != ctx.channel());
+            ctx.fireUserEventTriggered(new MessageForwardEvent(msg));
         } else {
             ctx.fireChannelRead(msg);
         }

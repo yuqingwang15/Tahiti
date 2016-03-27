@@ -3,6 +3,7 @@ package octoteam.tahiti.server;
 import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
 import octoteam.tahiti.server.event.MessageEvent;
+import octoteam.tahiti.server.event.MessageForwardEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,14 +19,15 @@ public class Logging {
     private int invalidLoginTimes = 0;
     private int receivedMessageTimes = 0;
     private int ignoredMessageTimes = 0;
+    private int forwardedMessageTimes = 0;
 
     //constructor
     public Logging() {
 
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
         exec.scheduleAtFixedRate(this::loggingForServer,
-                60 * 1000, 60 * 1000, TimeUnit.MILLISECONDS);
-
+                3 ,  3 , TimeUnit.SECONDS);
+        
     }
 
     //count valid/invalid login
@@ -41,12 +43,18 @@ public class Logging {
 
     //count received/ignored message
     @Subscribe
-    private void onMessage(MessageEvent event) {
+    public void onMessage(MessageEvent event) {
         if (event.isAuthenticated()) {
             receivedMessageTimes++;
         } else {
             ignoredMessageTimes++;
         }
+    }
+
+    //count forwarded message
+    @Subscribe
+    public void onForwardedMessage(MessageForwardEvent event) {
+       forwardedMessageTimes++;
     }
 
     //log into server.log and show in console
@@ -55,8 +63,8 @@ public class Logging {
         Logging.logger.info("server invalid login :  " + invalidLoginTimes + " times");
         Logging.logger.info("server received message :  " + receivedMessageTimes + " times");
         Logging.logger.info("server ignored message :  " + ignoredMessageTimes + " times");
+        Logging.logger.info("server forwarded message :  " + forwardedMessageTimes + " times");
         Logging.logger.info("--------------");
     }
-
 
 }
