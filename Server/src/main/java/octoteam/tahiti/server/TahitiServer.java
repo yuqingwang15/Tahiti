@@ -14,6 +14,8 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message.DirectionCode;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 import octoteam.tahiti.server.pipeline.*;
@@ -65,8 +67,14 @@ public class TahitiServer {
                                     .addLast(new PingRequestHandler())
                                     .addLast(new AuthRequestHandler(config.getAccounts()))
                                     .addLast(new AuthFilterHandler())
-                                    .addLast(new RateLimitHandler("perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
-                                    .addLast(new RateLimitHandler("perSession", (unused) -> new CounterBasedRateLimiter(100)))
+                                    .addLast(new RateLimitHandler(
+                                            DirectionCode.REQUEST, ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
+                                            "perSecond", (unused) -> new TimeBasedRateLimiter(5.0))
+                                    )
+                                    .addLast(new RateLimitHandler(
+                                            DirectionCode.REQUEST, ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
+                                            "perSession", (unused) -> new CounterBasedRateLimiter(100))
+                                    )
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
                                     .addLast(new MessageForwardHandler(TahitiServer.this))
