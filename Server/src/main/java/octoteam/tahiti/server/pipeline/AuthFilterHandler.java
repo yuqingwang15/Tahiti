@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.PipelineUtil;
-import octoteam.tahiti.server.TahitiServer;
 
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends OutboundMessageHandler {

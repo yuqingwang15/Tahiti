@@ -2,8 +2,6 @@ package octoteam.tahiti.server;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import octoteam.tahiti.server.Session;
-import octoteam.tahiti.server.TahitiServer;
 
 public class PipelineUtil {
 

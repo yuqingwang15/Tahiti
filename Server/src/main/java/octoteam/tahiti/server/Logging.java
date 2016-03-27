@@ -14,17 +14,17 @@ public class Logging {
 
     private static final Logger logger = LogManager.getLogger(Logging.class.getName());
 
-    private  int validLoginTimes = 0;
-    private  int invalidLoginTimes = 0;
-    private  int receivedMessageTimes = 0;
-    private  int ignoredMessageTimes = 0;
+    private int validLoginTimes = 0;
+    private int invalidLoginTimes = 0;
+    private int receivedMessageTimes = 0;
+    private int ignoredMessageTimes = 0;
 
     //constructor
-    public Logging(){
+    public Logging() {
 
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
         exec.scheduleAtFixedRate(this::loggingForServer,
-                60*1000, 60*1000, TimeUnit.MILLISECONDS);
+                60 * 1000, 60 * 1000, TimeUnit.MILLISECONDS);
 
     }
 
