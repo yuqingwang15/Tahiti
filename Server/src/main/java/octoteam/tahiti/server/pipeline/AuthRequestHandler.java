@@ -21,12 +21,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
     // TODO: Replace with database based
     private final List<AccountConfiguration> accounts;
 
-    @Deprecated
-    private final
-    TahitiServer server;
-
-    public AuthRequestHandler(TahitiServer server, List<AccountConfiguration> accounts) {
-        this.server = server;
+    public AuthRequestHandler(List<AccountConfiguration> accounts) {
         this.accounts = accounts;
     }
 
@@ -95,9 +90,11 @@ public class AuthRequestHandler extends InboundMessageHandler {
         ));
 
         // TODO:
+        /*
         if (resp.getStatus() == Message.StatusCode.SUCCESS) {
             this.server.getAllConnected().add(ctx.channel());
         }
+        */
 
         ctx.writeAndFlush(resp.build());
     }

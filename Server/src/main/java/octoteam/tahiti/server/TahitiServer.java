@@ -66,7 +66,7 @@ public class TahitiServer {
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
                                     .addLast(new HeartbeatHandler())
                                     .addLast(new PingRequestHandler())
-                                    .addLast(new AuthRequestHandler(TahitiServer.this, config.getAccounts()))
+                                    .addLast(new AuthRequestHandler(config.getAccounts()))
                                     .addLast(new RateLimitHandler("perSecond", (unused) -> new TimeBasedRateLimiter(5.0)))
                                     .addLast(new RateLimitHandler("perSession", (unused) -> new CounterBasedRateLimiter(100)))
                                     .addLast(new SessionExpireHandler())
