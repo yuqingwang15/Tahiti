@@ -9,7 +9,6 @@ import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
-import octoteam.tahiti.server.event.MessageEvent;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 import java.util.List;

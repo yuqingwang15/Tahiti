@@ -1,7 +1,8 @@
 package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.embedded.EmbeddedChannel;
-import octoteam.tahiti.protocol.SocketMessageProtos.*;
+import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

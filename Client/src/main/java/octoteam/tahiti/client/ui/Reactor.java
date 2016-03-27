@@ -1,10 +1,10 @@
 package octoteam.tahiti.client.ui;
 
 import com.google.common.eventbus.Subscribe;
+import octoteam.tahiti.client.Logging;
 import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.client.event.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.client.Logging;
 
 public class Reactor {
 

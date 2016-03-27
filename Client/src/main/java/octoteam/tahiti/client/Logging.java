@@ -1,11 +1,8 @@
 package octoteam.tahiti.client;
 
-import com.google.common.eventbus.Subscribe;
-import octoteam.tahiti.client.event.ConnectErrorEvent;
-import octoteam.tahiti.client.event.ConnectedEvent;
-import octoteam.tahiti.client.event.DisconnectedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -18,25 +15,25 @@ public class Logging {
 
 
     //constructor
-    public Logging(){
+    public Logging() {
 
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-        exec.scheduleAtFixedRate( ()->loggingForClient(),
+        exec.scheduleAtFixedRate(() -> loggingForClient(),
                 3, 3, TimeUnit.SECONDS);
 
     }
 
-    public static void addLoginSucceededTimes(){
+    public static void addLoginSucceededTimes() {
 
         successfulLoginTimes++;
     }
 
-    public static void addLoginFailedTimes(){
+    public static void addLoginFailedTimes() {
 
         failedLoginTimes++;
     }
 
-    public static void addSendMeassageTimes(){
+    public static void addSendMeassageTimes() {
 
         sendMessageTimes++;
     }
