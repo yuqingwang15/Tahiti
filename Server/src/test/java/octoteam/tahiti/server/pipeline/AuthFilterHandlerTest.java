@@ -165,4 +165,33 @@ public class AuthFilterHandlerTest {
 
     }
 
+    @Test
+    public void testAnonymousRequest() {
+
+        // AuthFilterHandler should filter requests if user is a guest
+
+        EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
+        PipelineHelper.getSession(channel).put("credential", new Credential(1, "guest", false));
+
+        Message chatRequest = Message.newBuilder()
+                .setSeqId(123)
+                .setDirection(Message.DirectionCode.REQUEST)
+                .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
+                .build();
+
+        channel.writeInbound(chatRequest);
+        channel.finish();
+
+        assertNull(channel.readInbound());
+
+        Object response = channel.readOutbound();
+        assertTrue(response instanceof Message);
+
+        Message responseMsg = (Message) response;
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertEquals(Message.StatusCode.NOT_AUTHENTICATED, responseMsg.getStatus());
+
+    }
+
 }
