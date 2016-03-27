@@ -9,3 +9,7 @@ logging: tahiti_server.log
 accounts:
     - { username: swx, password: swx123 }
     - { username: admin, password: admin888 }
+
+rateLimit:
+    perSecond: 5
+    perSession: 100

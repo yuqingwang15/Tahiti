@@ -14,6 +14,8 @@ public class ServerConfiguration {
 
     private List<AccountConfiguration> accounts;
 
+    private RateLimitConfiguration rateLimit;
+
     public List<AccountConfiguration> getAccounts() {
         return accounts;
     }
@@ -46,6 +48,14 @@ public class ServerConfiguration {
         this.logging = logging;
     }
 
+    public RateLimitConfiguration getRateLimit() {
+        return rateLimit;
+    }
+
+    public void setRateLimit(RateLimitConfiguration rateLimit) {
+        this.rateLimit = rateLimit;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
@@ -53,6 +63,8 @@ public class ServerConfiguration {
                 .add("database", database)
                 .add("logging", logging)
                 .add("accounts", accounts)
+                .add("rateLimit", rateLimit)
                 .toString();
     }
+    
 }

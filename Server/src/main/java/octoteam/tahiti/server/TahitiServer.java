@@ -70,12 +70,12 @@ public class TahitiServer {
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
                                             RateLimitExceededEvent.NAME_PER_SECOND,
-                                            () -> new TimeBasedRateLimiter(5.0))
+                                            () -> new TimeBasedRateLimiter(config.getRateLimit().getPerSecond()))
                                     )
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
                                             RateLimitExceededEvent.NAME_PER_SESSION,
-                                            () -> new CounterBasedRateLimiter(100))
+                                            () -> new CounterBasedRateLimiter(config.getRateLimit().getPerSession()))
                                     )
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
