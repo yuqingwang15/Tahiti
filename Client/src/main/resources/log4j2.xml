@@ -7,10 +7,10 @@
             <PatternLayout pattern="%d{HH:mm:ss} - %msg%n"/>
         </Console>
 
-        <RollingFile name="RollingFile" fileName="logs/tahiti_server.log"
+        <RollingFile name="RollingFile" fileName="logs/tahiti_clien.log"
                      filePattern="logs/$${date:yyyy-MM}/app-%d{yyyy-MM-dd-HH-mm}-%i.log.gz">
             <PatternLayout>
-                <Pattern>%d %m%n</Pattern>
+                <Pattern>%d %m%n [%t]</Pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="10" modulate="true"/>
@@ -26,7 +26,7 @@
             <appenderRef ref="Console"/>
         </root>
 
-        <Logger name="octoteam.tahiti.server.Logging" level="INFO">
+        <Logger name="octoteam.tahiti.client.Logging" level="INFO">
             <AppenderRef ref="RollingFile"/>
         </Logger>
 

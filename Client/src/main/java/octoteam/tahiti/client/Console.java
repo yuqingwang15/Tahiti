@@ -20,6 +20,7 @@ public class Console {
 
         Reactor reactor = new Reactor(client, renderer);
         client.getEventBus().register(reactor);
+        client.getEventBus().register(new Logging());
         renderer.getEventBus().register(reactor);
 
         renderer.actionShowLoginDialog();
