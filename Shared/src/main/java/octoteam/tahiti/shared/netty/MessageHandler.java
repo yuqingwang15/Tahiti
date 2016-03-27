@@ -16,7 +16,7 @@ public class MessageHandler extends ChannelHandlerAdapter {
         }
     }
 
-    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) throws Exception {
         ctx.fireChannelRead(msg);
     }
 
@@ -29,7 +29,7 @@ public class MessageHandler extends ChannelHandlerAdapter {
         }
     }
 
-    protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
+    protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) throws Exception {
         ctx.write(msg, promise);
     }
 

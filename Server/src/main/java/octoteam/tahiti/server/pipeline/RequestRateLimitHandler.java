@@ -9,18 +9,20 @@ import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+import java.util.concurrent.Callable;
+
 @ChannelHandler.Sharable
 public class RequestRateLimitHandler extends MessageHandler {
 
     private final Message.ServiceCode serviceCode;
     private final String name;
     private final String sessionKey;
-    private final Function<Void, SimpleRateLimiter> rateLimiterFactory;
+    private final Callable<SimpleRateLimiter> rateLimiterFactory;
 
     public RequestRateLimitHandler(
             Message.ServiceCode serviceCode,
             String name,
-            Function<Void, SimpleRateLimiter> factory
+            Callable<SimpleRateLimiter> factory
     ) {
         this.serviceCode = serviceCode;
         this.name = name;
@@ -29,14 +31,14 @@ public class RequestRateLimitHandler extends MessageHandler {
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) throws Exception {
         if (msg.getDirection() != Message.DirectionCode.REQUEST || msg.getService() != serviceCode) {
             ctx.fireChannelRead(msg);
             return;
         }
         SimpleRateLimiter rateLimiter = (SimpleRateLimiter) PipelineUtil.getSession(ctx).get(sessionKey);
         if (rateLimiter == null) {
-            rateLimiter = this.rateLimiterFactory.apply(null);
+            rateLimiter = this.rateLimiterFactory.call();
             PipelineUtil.getSession(ctx).put(sessionKey, rateLimiter);
         }
         if (rateLimiter.tryAcquire()) {

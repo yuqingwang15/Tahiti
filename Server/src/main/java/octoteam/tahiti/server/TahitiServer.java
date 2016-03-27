@@ -69,11 +69,11 @@ public class TahitiServer {
                                     .addLast(new AuthFilterHandler())
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
-                                            "perSecond", (unused) -> new TimeBasedRateLimiter(5.0))
+                                            "perSecond", () -> new TimeBasedRateLimiter(5.0))
                                     )
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
-                                            "perSession", (unused) -> new CounterBasedRateLimiter(100))
+                                            "perSession", () -> new CounterBasedRateLimiter(100))
                                     )
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
