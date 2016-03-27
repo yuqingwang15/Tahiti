@@ -17,6 +17,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.pipeline.*;
 import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
 import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
@@ -68,11 +69,13 @@ public class TahitiServer {
                                     .addLast(new AuthFilterHandler())
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
-                                            "perSecond", () -> new TimeBasedRateLimiter(5.0))
+                                            RateLimitExceededEvent.NAME_PER_SECOND,
+                                            () -> new TimeBasedRateLimiter(5.0))
                                     )
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
-                                            "perSession", () -> new CounterBasedRateLimiter(100))
+                                            RateLimitExceededEvent.NAME_PER_SESSION,
+                                            () -> new CounterBasedRateLimiter(100))
                                     )
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
