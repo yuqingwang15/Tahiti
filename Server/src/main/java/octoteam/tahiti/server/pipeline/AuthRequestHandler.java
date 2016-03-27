@@ -68,6 +68,7 @@ public class AuthRequestHandler extends MessageHandler {
         ));
 
         ctx.writeAndFlush(resp.build());
+        ctx.fireChannelRead(msg);
     }
 
 }

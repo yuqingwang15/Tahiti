@@ -23,6 +23,7 @@ public class PingRequestHandler extends MessageHandler {
                 .setPingPong(msg.getPingPong());
 
         ctx.writeAndFlush(resp.build());
+        ctx.fireChannelRead(msg);
     }
 
 }

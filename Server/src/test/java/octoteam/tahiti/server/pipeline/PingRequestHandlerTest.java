@@ -28,9 +28,8 @@ public class PingRequestHandlerTest {
         channel.writeInbound(pingRequest);
         channel.finish();
 
-        // this message should be consumed
-        // so that next handler will not receive it
-        assertNull(channel.readInbound());
+        // this message should not be consumed
+        assertEquals(pingRequest, channel.readInbound());
 
         // expect a response from PingRequestHandler
         Object response = channel.readOutbound();

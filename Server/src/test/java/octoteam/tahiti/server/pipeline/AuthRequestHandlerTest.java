@@ -46,7 +46,7 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(loginRequest);
         channel.finish();
 
-        assertNull(channel.readInbound());
+        assertEquals(loginRequest, channel.readInbound());
 
         Object response = channel.readOutbound();
         assertTrue(response instanceof Message);
@@ -78,7 +78,7 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(loginRequest);
         channel.finish();
 
-        assertNull(channel.readInbound());
+        assertEquals(loginRequest, channel.readInbound());
 
         Object response = channel.readOutbound();
         assertTrue(response instanceof Message);
@@ -110,7 +110,7 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(loginRequest);
         channel.finish();
 
-        assertNull(channel.readInbound());
+        assertEquals(loginRequest, channel.readInbound());
 
         Object response = channel.readOutbound();
         assertTrue(response instanceof Message);

@@ -13,7 +13,6 @@ public class SessionExpireHandler extends MessageHandler {
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-
         if (evt instanceof RateLimitExceededEvent) {
             RateLimitExceededEvent event = (RateLimitExceededEvent) evt;
             if (event.getName().equals(RateLimitExceededEvent.NAME_PER_SESSION)) {
@@ -27,9 +26,7 @@ public class SessionExpireHandler extends MessageHandler {
                 PipelineHelper.clearSession(ctx);
             }
         }
-
         ctx.fireUserEventTriggered(evt);
-
     }
 
 }
