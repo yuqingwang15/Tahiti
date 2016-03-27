@@ -56,7 +56,7 @@ public class AuthFilterHandlerTest {
     @Test
     public void testFilterAnonymousEvent() {
 
-        // AuthFilterHandler should pass events to the next handler when user is authenticated
+        // AuthFilterHandler should filter events when user is a guest
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
         PipelineHelper.getSession(channel).put("credential", new Credential(1, "guest", false));
