@@ -10,21 +10,18 @@ import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
-public class RateLimitHandler extends MessageHandler {
+public class RequestRateLimitHandler extends MessageHandler {
 
-    private final Message.DirectionCode directionCode;
     private final Message.ServiceCode serviceCode;
     private final String name;
     private final String sessionKey;
     private final Function<Void, SimpleRateLimiter> rateLimiterFactory;
 
-    public RateLimitHandler(
-            Message.DirectionCode directionCode,
+    public RequestRateLimitHandler(
             Message.ServiceCode serviceCode,
             String name,
             Function<Void, SimpleRateLimiter> factory
     ) {
-        this.directionCode = directionCode;
         this.serviceCode = serviceCode;
         this.name = name;
         this.sessionKey = "ratelimiter_" + name;
@@ -33,7 +30,7 @@ public class RateLimitHandler extends MessageHandler {
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
-        if (msg.getDirection() != directionCode || msg.getService() != serviceCode) {
+        if (msg.getDirection() != Message.DirectionCode.REQUEST || msg.getService() != serviceCode) {
             ctx.fireChannelRead(msg);
             return;
         }
