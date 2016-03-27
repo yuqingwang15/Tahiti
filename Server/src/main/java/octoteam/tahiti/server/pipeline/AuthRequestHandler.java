@@ -10,12 +10,13 @@ import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
 import octoteam.tahiti.server.event.MessageEvent;
+import octoteam.tahiti.shared.netty.MessageHandler;
 
 import java.util.List;
 import java.util.UUID;
 
 @ChannelHandler.Sharable
-public class AuthRequestHandler extends InboundMessageHandler {
+public class AuthRequestHandler extends MessageHandler {
 
     // TODO: Replace with database based
     private final List<AccountConfiguration> accounts;
@@ -25,7 +26,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
 
         if (msg.getDirection() != Message.DirectionCode.REQUEST) {
             ctx.fireChannelRead(msg);

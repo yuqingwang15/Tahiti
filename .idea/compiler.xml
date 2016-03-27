@@ -25,12 +25,14 @@
         <module name="Client" />
         <module name="Protocol" />
         <module name="Server" />
+        <module name="Shared" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Client" target="1.8" />
       <module name="Protocol" target="1.8" />
       <module name="Server" target="1.8" />
+      <module name="Shared" target="1.8" />
       <module name="Tahiti" target="1.8" />
     </bytecodeTargetLevel>
   </component>

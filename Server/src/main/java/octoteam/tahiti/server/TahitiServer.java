@@ -12,7 +12,6 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
@@ -24,8 +23,6 @@ import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
 import java.util.concurrent.TimeUnit;
 
 public class TahitiServer {
-
-    public final static AttributeKey<Session> ATTR_KEY_SESSION = new AttributeKey<>("session");
 
     private final EventBus eventBus;
 

@@ -7,9 +7,10 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
+import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
-public class RateLimitHandler extends InboundMessageHandler {
+public class RateLimitHandler extends MessageHandler {
 
     private final String name;
     private final String sessionKey;
@@ -22,7 +23,7 @@ public class RateLimitHandler extends InboundMessageHandler {
     }
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
         SimpleRateLimiter rateLimiter = (SimpleRateLimiter) PipelineUtil.getSession(ctx).get(sessionKey);
         if (rateLimiter == null) {
             rateLimiter = this.rateLimiterFactory.apply(null);

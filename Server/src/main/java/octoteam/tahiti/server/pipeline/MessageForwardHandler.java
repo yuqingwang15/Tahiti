@@ -4,9 +4,10 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.TahitiServer;
+import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
-public class MessageForwardHandler extends InboundMessageHandler {
+public class MessageForwardHandler extends MessageHandler {
 
     @Deprecated
     private final
@@ -17,13 +18,13 @@ public class MessageForwardHandler extends InboundMessageHandler {
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Message message) {
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
         Message.Builder resp = Message
                 .newBuilder()
-                .setSeqId(message.getSeqId())
+                .setSeqId(msg.getSeqId())
                 .setDirection(Message.DirectionCode.EVENT)
                 .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
-                .setChatMessageReq(message.getChatMessageReq());
-        this.server.getAllConnected().flushAndWrite(resp.build());
+                .setChatMessageReq(msg.getChatMessageReq());
+        this.server.getAllConnected().writeAndFlush(resp.build());
     }
 }

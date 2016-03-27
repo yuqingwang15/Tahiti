@@ -6,12 +6,13 @@ import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class AuthRequestHandlerTest {
 

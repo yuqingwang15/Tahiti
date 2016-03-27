@@ -1,11 +1,11 @@
 package octoteam.tahiti.server.pipeline;
 
 import com.google.common.eventbus.EventBus;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import octoteam.tahiti.server.event.BaseEvent;
 
-public class UserEventHandler extends ChannelInboundHandlerAdapter {
+public class UserEventHandler extends ChannelHandlerAdapter {
 
     private final EventBus eventBus;
 

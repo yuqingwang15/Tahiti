@@ -2,11 +2,14 @@ package octoteam.tahiti.server;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.util.AttributeKey;
 
 public class PipelineUtil {
 
+    private final static AttributeKey<Session> ATTR_KEY_SESSION = AttributeKey.valueOf("__session");
+
     public static Session getSession(Channel channel) {
-        return channel.attr(TahitiServer.ATTR_KEY_SESSION).get();
+        return channel.attr(ATTR_KEY_SESSION).get();
     }
 
     public static Session getSession(ChannelHandlerContext ctx) {
@@ -14,7 +17,7 @@ public class PipelineUtil {
     }
 
     public static void setSession(Channel channel, Session session) {
-        channel.attr(TahitiServer.ATTR_KEY_SESSION).set(session);
+        channel.attr(ATTR_KEY_SESSION).set(session);
     }
 
     public static void setSession(ChannelHandlerContext ctx, Session session) {

@@ -5,12 +5,13 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.PipelineUtil;
+import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
-public class AuthFilterHandler extends OutboundMessageHandler {
+public class AuthFilterHandler extends MessageHandler {
 
     @Override
-    protected void write0(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
+    protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
         if (msg.getDirection() != Message.DirectionCode.EVENT) {
             ctx.write(msg, promise);
             return;
@@ -23,4 +24,5 @@ public class AuthFilterHandler extends OutboundMessageHandler {
             promise.setSuccess();
         }
     }
+
 }

@@ -3,12 +3,13 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
-public class PingRequestHandler extends InboundMessageHandler {
+public class PingRequestHandler extends MessageHandler {
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
         if (msg.getService() != Message.ServiceCode.PING_REQUEST) {
             ctx.fireChannelRead(msg);
             return;
