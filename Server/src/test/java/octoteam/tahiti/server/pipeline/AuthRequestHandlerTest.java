@@ -6,7 +6,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,15 +43,15 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(chatRequest);
         channel.finish();
 
-        Assert.assertNull(channel.readInbound());
+        assertNull(channel.readInbound());
 
         Object response = channel.readOutbound();
-        Assert.assertTrue(response instanceof Message);
+        assertTrue(response instanceof Message);
 
         Message responseMsg = (Message) response;
-        Assert.assertEquals(123, responseMsg.getSeqId());
-        Assert.assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
-        Assert.assertEquals(Message.StatusCode.NOT_AUTHENTICATED, responseMsg.getStatus());
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertEquals(Message.StatusCode.NOT_AUTHENTICATED, responseMsg.getStatus());
 
     }
 
@@ -72,8 +72,8 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(chatRequest);
         channel.finish();
 
-        Assert.assertEquals(chatRequest, channel.readInbound());
-        Assert.assertNull(channel.readOutbound());
+        assertEquals(chatRequest, channel.readInbound());
+        assertNull(channel.readOutbound());
 
     }
 
@@ -92,8 +92,8 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(msgAck);
         channel.finish();
 
-        Assert.assertEquals(msgAck, channel.readInbound());
-        Assert.assertNull(channel.readOutbound());
+        assertEquals(msgAck, channel.readInbound());
+        assertNull(channel.readOutbound());
 
     }
 
@@ -117,15 +117,15 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(loginRequest);
         channel.finish();
 
-        Assert.assertNull(channel.readInbound());
+        assertNull(channel.readInbound());
 
         Object response = channel.readOutbound();
-        Assert.assertTrue(response instanceof Message);
+        assertTrue(response instanceof Message);
 
         Message responseMsg = (Message) response;
-        Assert.assertEquals(123, responseMsg.getSeqId());
-        Assert.assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
-        Assert.assertEquals(Message.StatusCode.USERNAME_NOT_FOUND, responseMsg.getStatus());
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertEquals(Message.StatusCode.USERNAME_NOT_FOUND, responseMsg.getStatus());
 
     }
 
@@ -149,15 +149,15 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(loginRequest);
         channel.finish();
 
-        Assert.assertNull(channel.readInbound());
+        assertNull(channel.readInbound());
 
         Object response = channel.readOutbound();
-        Assert.assertTrue(response instanceof Message);
+        assertTrue(response instanceof Message);
 
         Message responseMsg = (Message) response;
-        Assert.assertEquals(123, responseMsg.getSeqId());
-        Assert.assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
-        Assert.assertEquals(Message.StatusCode.PASSWORD_INCORRECT, responseMsg.getStatus());
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertEquals(Message.StatusCode.PASSWORD_INCORRECT, responseMsg.getStatus());
 
     }
 
@@ -181,17 +181,17 @@ public class AuthRequestHandlerTest {
         channel.writeInbound(loginRequest);
         channel.finish();
 
-        Assert.assertNull(channel.readInbound());
+        assertNull(channel.readInbound());
 
         Object response = channel.readOutbound();
-        Assert.assertTrue(response instanceof Message);
+        assertTrue(response instanceof Message);
 
         Message responseMsg = (Message) response;
-        Assert.assertEquals(123, responseMsg.getSeqId());
-        Assert.assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
-        Assert.assertEquals(Message.StatusCode.SUCCESS, responseMsg.getStatus());
-        Assert.assertTrue(responseMsg.getUserSignInResp().isInitialized());
-        Assert.assertEquals("testUser", responseMsg.getUserSignInResp().getClientId());  // to be replaced by ID
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertEquals(Message.StatusCode.SUCCESS, responseMsg.getStatus());
+        assertTrue(responseMsg.getUserSignInResp().isInitialized());
+        assertEquals("testUser", responseMsg.getUserSignInResp().getClientId());  // to be replaced by ID
 
     }
 

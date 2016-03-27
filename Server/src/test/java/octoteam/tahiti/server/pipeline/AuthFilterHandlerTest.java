@@ -4,7 +4,7 @@ import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class AuthFilterHandlerTest {
@@ -25,8 +25,8 @@ public class AuthFilterHandlerTest {
         channel.writeOutbound(chatEvent);
         channel.finish();
 
-        Assert.assertNull(channel.readInbound());
-        Assert.assertNull(channel.readOutbound());
+        assertNull(channel.readInbound());
+        assertNull(channel.readOutbound());
 
     }
 
@@ -47,8 +47,8 @@ public class AuthFilterHandlerTest {
         channel.writeOutbound(chatEvent);
         channel.finish();
 
-        Assert.assertEquals(chatEvent, channel.readOutbound());
-        Assert.assertNull(channel.readInbound());
+        assertEquals(chatEvent, channel.readOutbound());
+        assertNull(channel.readInbound());
 
     }
 
@@ -68,8 +68,8 @@ public class AuthFilterHandlerTest {
         channel.writeOutbound(someResponse);
         channel.finish();
 
-        Assert.assertEquals(someResponse, channel.readOutbound());
-        Assert.assertNull(channel.readInbound());
+        assertEquals(someResponse, channel.readOutbound());
+        assertNull(channel.readInbound());
 
     }
 
@@ -90,8 +90,8 @@ public class AuthFilterHandlerTest {
         channel.writeOutbound(someResponse);
         channel.finish();
 
-        Assert.assertEquals(someResponse, channel.readOutbound());
-        Assert.assertNull(channel.readInbound());
+        assertEquals(someResponse, channel.readOutbound());
+        assertNull(channel.readInbound());
 
     }
 
@@ -110,8 +110,8 @@ public class AuthFilterHandlerTest {
         channel.writeInbound(someRequest);
         channel.finish();
 
-        Assert.assertEquals(someRequest, channel.readInbound());
-        Assert.assertNull(channel.readOutbound());
+        assertEquals(someRequest, channel.readInbound());
+        assertNull(channel.readOutbound());
 
     }
 

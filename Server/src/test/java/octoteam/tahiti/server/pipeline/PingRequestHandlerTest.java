@@ -3,7 +3,7 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.PingPongBody;
-import org.junit.Assert;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class PingRequestHandlerTest {
@@ -29,18 +29,18 @@ public class PingRequestHandlerTest {
 
         // this message should be consumed
         // so that next handler will not receive it
-        Assert.assertNull(channel.readInbound());
+        assertNull(channel.readInbound());
 
         // expect a response from PingRequestHandler
         Object response = channel.readOutbound();
-        Assert.assertTrue(response instanceof Message);
+        assertTrue(response instanceof Message);
 
         Message responseMsg = (Message) response;
-        Assert.assertTrue(responseMsg.isInitialized());
-        Assert.assertEquals(123, responseMsg.getSeqId());
-        Assert.assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
-        Assert.assertTrue(responseMsg.getPingPong().isInitialized());
-        Assert.assertEquals("magic payload", responseMsg.getPingPong().getPayload());
+        assertTrue(responseMsg.isInitialized());
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertTrue(responseMsg.getPingPong().isInitialized());
+        assertEquals("magic payload", responseMsg.getPingPong().getPayload());
 
     }
 
@@ -61,10 +61,10 @@ public class PingRequestHandlerTest {
         channel.finish();
 
         // next handler should be able to read this "otherRequest"
-        Assert.assertEquals(otherRequest, channel.readInbound());
+        assertEquals(otherRequest, channel.readInbound());
 
         // no outbound data should be written
-        Assert.assertNull(channel.readOutbound());
+        assertNull(channel.readOutbound());
 
     }
 
