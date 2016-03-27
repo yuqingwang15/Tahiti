@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 
@@ -22,10 +23,10 @@ public class RateLimitHandler extends InboundMessageHandler {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
-        SimpleRateLimiter rateLimiter = (SimpleRateLimiter) getSession(ctx).get(sessionKey);
+        SimpleRateLimiter rateLimiter = (SimpleRateLimiter) PipelineUtil.getSession(ctx).get(sessionKey);
         if (rateLimiter == null) {
             rateLimiter = this.rateLimiterFactory.apply(null);
-            getSession(ctx).put(sessionKey, rateLimiter);
+            PipelineUtil.getSession(ctx).put(sessionKey, rateLimiter);
         }
         if (rateLimiter.tryAcquire()) {
             ctx.fireChannelRead(msg);

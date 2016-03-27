@@ -6,8 +6,7 @@ import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
 abstract class OutboundMessageHandler
-        extends ChannelOutboundHandlerAdapter
-        implements SessionHandlerTrait {
+        extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {

@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.TahitiServer;
 
 @ChannelHandler.Sharable
@@ -16,9 +17,11 @@ public class AuthFilterHandler extends OutboundMessageHandler {
             return;
         }
 
-        Boolean authenticated = ctx.channel().attr(TahitiServer.ATTR_KEY_SESSION).get() != null;
+        Boolean authenticated = PipelineUtil.getSession(ctx) != null;
         if (authenticated) {
             ctx.write(msg, promise);
+        } else {
+            promise.setSuccess();
         }
     }
 }

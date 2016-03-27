@@ -5,6 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInRespBody;
+import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
@@ -32,7 +33,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
 
-        Boolean authenticated = getSession(ctx) != null;
+        Boolean authenticated = PipelineUtil.getSession(ctx) != null;
         ctx.fireUserEventTriggered(new MessageEvent(authenticated, msg));
 
         // Already authenticated: pass everything to next handler
@@ -66,7 +67,7 @@ public class AuthRequestHandler extends InboundMessageHandler {
                     // correct username, correct password
                     Session sess = new Session(UUID.randomUUID().toString());
                     sess.put("username", account.getUsername());        // TODO
-                    setSession(ctx, sess);
+                    PipelineUtil.setSession(ctx, sess);
 
                     resp
                             .setStatus(Message.StatusCode.SUCCESS)
