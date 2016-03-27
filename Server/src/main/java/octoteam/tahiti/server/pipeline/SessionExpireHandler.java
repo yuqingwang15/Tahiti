@@ -2,24 +2,14 @@ package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
-<<<<<<< e7c0f36d32ca1a46bc5d5d2f9eeba1bdfe7989ad
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.shared.netty.MessageHandler;
+
+import static octoteam.tahiti.server.PipelineUtil.setSession;
 
 @ChannelHandler.Sharable
 public class SessionExpireHandler extends MessageHandler {
-=======
-import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.TahitiServer;
-import octoteam.tahiti.server.event.RateLimitExceededEvent;
-
-@ChannelHandler.Sharable
-public class SessionExpireHandler extends InboundMessageHandler {
-
-    @Override
-    public void channelRead0(ChannelHandlerContext ctx, Message msg) {
-        ctx.fireChannelRead(msg);
-    }
->>>>>>> handle RateLimitExceededEvent
 
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
