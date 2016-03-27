@@ -30,17 +30,9 @@ public class TahitiServer {
 
     private final ServerConfiguration config;
 
-    private final ChannelGroup allConnected;
-
     public TahitiServer(EventBus eventBus, ServerConfiguration config) {
         this.eventBus = eventBus;
         this.config = config;
-        this.allConnected = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-    }
-
-    @Deprecated
-    public ChannelGroup getAllConnected() {
-        return allConnected;
     }
 
     public void run() throws Exception {
@@ -79,7 +71,7 @@ public class TahitiServer {
                                     )
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
-                                    .addLast(new MessageForwardHandler(TahitiServer.this))
+                                    .addLast(new MessageForwardHandler())
                                     .addLast(new UserEventHandler(eventBus))
                             ;
                         }
