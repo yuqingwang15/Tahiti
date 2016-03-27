@@ -34,6 +34,10 @@ public class Account {
         this.hash = hashPassword(password, salt);
     }
 
+    public void assignId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -62,7 +66,7 @@ public class Account {
         this.salt = salt;
     }
 
-    public boolean isPasswordMatch(String password) {
+    public boolean isPasswordMatches(String password) {
         return hashPassword(password, salt).equals(hash);
     }
 

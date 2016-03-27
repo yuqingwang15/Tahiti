@@ -3,27 +3,25 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
-import octoteam.tahiti.server.configuration.AccountConfiguration;
+import octoteam.tahiti.server.repository.MemoryAccountRepository;
+import octoteam.tahiti.server.service.AccountService;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AuthRequestHandlerTest {
 
-    private static List<AccountConfiguration> accounts;
+    private MemoryAccountRepository repository;
+    private AccountService accountService;
 
     @Before
     public void initialize() {
-        AccountConfiguration account = new AccountConfiguration();
-        account.setUsername("testUser");
-        account.setPassword("password123");
+        repository = new MemoryAccountRepository();
+        accountService = new AccountService(repository);
 
-        accounts = new LinkedList<>();
-        accounts.add(account);
+        repository.createAccount("testUser", "password123");    // ID = 1
     }
 
     @Test
@@ -31,7 +29,7 @@ public class AuthRequestHandlerTest {
 
         // AuthRequestHandler should handle username_not_found login request
 
-        EmbeddedChannel channel = new EmbeddedChannel(new AuthRequestHandler(accounts));
+        EmbeddedChannel channel = new EmbeddedChannel(new AuthRequestHandler(accountService));
 
         Message loginRequest = Message.newBuilder()
                 .setSeqId(123)
@@ -63,7 +61,7 @@ public class AuthRequestHandlerTest {
 
         // AuthRequestHandler should handle wrong_password login request
 
-        EmbeddedChannel channel = new EmbeddedChannel(new AuthRequestHandler(accounts));
+        EmbeddedChannel channel = new EmbeddedChannel(new AuthRequestHandler(accountService));
 
         Message loginRequest = Message.newBuilder()
                 .setSeqId(123)
@@ -95,7 +93,7 @@ public class AuthRequestHandlerTest {
 
         // AuthRequestHandler should handle success login request
 
-        EmbeddedChannel channel = new EmbeddedChannel(new AuthRequestHandler(accounts));
+        EmbeddedChannel channel = new EmbeddedChannel(new AuthRequestHandler(accountService));
 
         Message loginRequest = Message.newBuilder()
                 .setSeqId(123)
@@ -120,7 +118,7 @@ public class AuthRequestHandlerTest {
         assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
         assertEquals(Message.StatusCode.SUCCESS, responseMsg.getStatus());
         assertEquals(Message.BodyCase.USERSIGNINRESP, responseMsg.getBodyCase());
-        // assertEquals("testUser", responseMsg.getUserSignInResp().getClientId());  // to be replaced by ID
+        assertEquals(1, responseMsg.getUserSignInResp().getUID());
 
     }
 

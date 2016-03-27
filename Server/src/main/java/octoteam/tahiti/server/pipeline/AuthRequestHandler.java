@@ -5,22 +5,22 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInRespBody;
-import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
+import octoteam.tahiti.server.model.Account;
+import octoteam.tahiti.server.service.AccountNotFoundException;
+import octoteam.tahiti.server.service.AccountNotMatchException;
+import octoteam.tahiti.server.service.AccountService;
 import octoteam.tahiti.server.session.Credential;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
-import java.util.List;
-
 @ChannelHandler.Sharable
 public class AuthRequestHandler extends MessageHandler {
 
-    // TODO: Replace with database based
-    private final List<AccountConfiguration> accounts;
+    private final AccountService accountService;
 
-    public AuthRequestHandler(List<AccountConfiguration> accounts) {
-        this.accounts = accounts;
+    public AuthRequestHandler(AccountService accountService) {
+        this.accountService = accountService;
     }
 
     @Override
@@ -36,29 +36,19 @@ public class AuthRequestHandler extends MessageHandler {
                 .setSeqId(msg.getSeqId())
                 .setDirection(Message.DirectionCode.RESPONSE);
 
-        Boolean found = false;
-        for (AccountConfiguration account : accounts) {
-            if (account.getUsername().equals(body.getUsername())) {
-                if (account.getPassword().equals(body.getPassword())) {
-                    // correct username, correct password
-                    PipelineHelper.clearSession(ctx);
-                    PipelineHelper.getSession(ctx).put("credential", new Credential(0, account.getUsername(), true));
-                    resp
-                            .setStatus(Message.StatusCode.SUCCESS)
-                            .setUserSignInResp(UserSignInRespBody
-                                    .newBuilder()
-                                    .setUID(0) // TODO
-                            );
-                } else {
-                    // correct username, incorrect password
-                    resp.setStatus(Message.StatusCode.PASSWORD_INCORRECT);
-                }
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
+        try {
+            Account account = accountService.getMatchedAccount(body.getUsername(), body.getPassword());
+            PipelineHelper.clearSession(ctx);
+            PipelineHelper.getSession(ctx).put("credential", new Credential(account));
+            resp
+                    .setStatus(Message.StatusCode.SUCCESS)
+                    .setUserSignInResp(UserSignInRespBody
+                            .newBuilder()
+                            .setUID(account.getId())
+                    );
+        } catch (AccountNotMatchException e) {
+            resp.setStatus(Message.StatusCode.PASSWORD_INCORRECT);
+        } catch (AccountNotFoundException e) {
             resp.setStatus(Message.StatusCode.USERNAME_NOT_FOUND);
         }
 

@@ -18,6 +18,7 @@ import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.pipeline.*;
 import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
 import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
+import octoteam.tahiti.server.service.AccountService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,9 +28,12 @@ public class TahitiServer {
 
     private final ServerConfiguration config;
 
-    public TahitiServer(EventBus eventBus, ServerConfiguration config) {
+    private final AccountService accountService;
+
+    public TahitiServer(ServerConfiguration config, EventBus eventBus, AccountService accountService) {
         this.eventBus = eventBus;
         this.config = config;
+        this.accountService = accountService;
     }
 
     public void run() throws Exception {
@@ -54,7 +58,7 @@ public class TahitiServer {
                                     .addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS))
                                     .addLast(new HeartbeatHandler())
                                     .addLast(new PingRequestHandler())
-                                    .addLast(new AuthRequestHandler(config.getAccounts()))
+                                    .addLast(new AuthRequestHandler(accountService))
                                     .addLast(new AuthFilterHandler())
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
