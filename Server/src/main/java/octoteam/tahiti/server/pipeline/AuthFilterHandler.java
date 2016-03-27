@@ -5,10 +5,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.PipelineUtil;
+import octoteam.tahiti.server.event.MessageEvent;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends MessageHandler {
+
+    private boolean isContextAuthenticated(ChannelHandlerContext ctx) {
+        return PipelineUtil.getSession(ctx) != null;
+    }
 
     @Override
     protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
@@ -17,11 +22,36 @@ public class AuthFilterHandler extends MessageHandler {
             return;
         }
 
-        Boolean authenticated = PipelineUtil.getSession(ctx) != null;
+        Boolean authenticated = isContextAuthenticated(ctx);
         if (authenticated) {
             ctx.write(msg, promise);
         } else {
             promise.setSuccess();
+        }
+    }
+
+    @Override
+    protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
+        if (msg.getDirection() != Message.DirectionCode.REQUEST) {
+            // Not a request: pass to next handler
+            ctx.fireChannelRead(msg);
+            return;
+        }
+
+        Boolean authenticated = isContextAuthenticated(ctx);
+        ctx.fireUserEventTriggered(new MessageEvent(authenticated, msg));
+
+        if (authenticated) {
+            // Already authenticated: pass everything to next handler
+            ctx.fireChannelRead(msg);
+        } else {
+            // Not authenticated: response NOT_AUTHENTICATED
+            Message.Builder resp = Message
+                    .newBuilder()
+                    .setSeqId(msg.getSeqId())
+                    .setDirection(Message.DirectionCode.RESPONSE)
+                    .setStatus(Message.StatusCode.NOT_AUTHENTICATED);
+            ctx.writeAndFlush(resp.build());
         }
     }
 

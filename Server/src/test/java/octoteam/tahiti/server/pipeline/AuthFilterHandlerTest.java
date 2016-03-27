@@ -6,15 +6,14 @@ import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class AuthFilterHandlerTest {
 
     @Test
-    public void testFilteringNotAuthenticatedEvent() throws Exception {
+    public void testFilteringNotAuthenticatedEvent() {
 
-        // AuthFilterHandler should eat all event when user is not authenticated
+        // AuthFilterHandler should filter events if user is not authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
 
@@ -33,9 +32,9 @@ public class AuthFilterHandlerTest {
     }
 
     @Test
-    public void testPassAuthenticatedEvent() throws Exception {
+    public void testPassAuthenticatedEvent() {
 
-        // AuthFilterHandler should pass all event when user is authenticated
+        // AuthFilterHandler should pass events to the next handler when user is authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
         PipelineUtil.setSession(channel, new Session("abc"));
@@ -55,10 +54,9 @@ public class AuthFilterHandlerTest {
     }
 
     @Test
-    public void testPassNotAuthenticatedResponse() throws Exception {
+    public void testPassNotAuthenticatedResponse() {
 
-        // AuthFilterHandler should pass response to the next handler
-        // if user is not authenticated
+        // AuthFilterHandler should pass responses to the next handler even if user is not authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
 
@@ -76,43 +74,71 @@ public class AuthFilterHandlerTest {
     }
 
     @Test
-    public void testPassAuthenticatedResponse() throws Exception {
+    public void testNotAuthenticatedAck() {
 
-        // AuthFilterHandler should pass response to the next handler
-        // if user is authenticated
+        // AuthFilterHandler should pass acks to the next handler even if user is not authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
-        PipelineUtil.setSession(channel, new Session("abc"));
 
-        Message someResponse = Message.newBuilder()
-                .setSeqId(345)
-                .setDirection(Message.DirectionCode.RESPONSE)
+        Message someAck = Message.newBuilder()
+                .setSeqId(321)
+                .setDirection(Message.DirectionCode.ACK)
                 .build();
 
-        channel.writeOutbound(someResponse);
+        channel.writeInbound(someAck);
         channel.finish();
 
-        assertEquals(someResponse, channel.readOutbound());
-        assertNull(channel.readInbound());
+        assertEquals(someAck, channel.readInbound());
+        assertNull(channel.readOutbound());
 
     }
 
     @Test
-    public void testInboundMessage() throws Exception {
+    public void testNotAuthenticatedRequest() {
 
-        // AuthFilterHandler should do nothing to the inbound message
+        // AuthFilterHandler should filter requests if user is not authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
 
-        Message someRequest = Message.newBuilder()
-                .setSeqId(345)
+        Message chatRequest = Message.newBuilder()
+                .setSeqId(123)
                 .setDirection(Message.DirectionCode.REQUEST)
+                .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
                 .build();
 
-        channel.writeInbound(someRequest);
+        channel.writeInbound(chatRequest);
         channel.finish();
 
-        assertEquals(someRequest, channel.readInbound());
+        assertNull(channel.readInbound());
+
+        Object response = channel.readOutbound();
+        assertTrue(response instanceof Message);
+
+        Message responseMsg = (Message) response;
+        assertEquals(123, responseMsg.getSeqId());
+        assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
+        assertEquals(Message.StatusCode.NOT_AUTHENTICATED, responseMsg.getStatus());
+
+    }
+
+    @Test
+    public void testAuthenticatedRequest() {
+
+        // AuthFilterHandler should pass requests to the next handler if user is authenticated
+
+        EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
+        PipelineUtil.setSession(channel, new Session("foo"));
+
+        Message chatRequest = Message.newBuilder()
+                .setSeqId(123)
+                .setDirection(Message.DirectionCode.REQUEST)
+                .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
+                .build();
+
+        channel.writeInbound(chatRequest);
+        channel.finish();
+
+        assertEquals(chatRequest, channel.readInbound());
         assertNull(channel.readOutbound());
 
     }

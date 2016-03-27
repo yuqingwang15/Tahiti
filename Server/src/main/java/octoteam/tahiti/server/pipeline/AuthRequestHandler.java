@@ -27,30 +27,8 @@ public class AuthRequestHandler extends MessageHandler {
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
-
-        if (msg.getDirection() != Message.DirectionCode.REQUEST) {
-            ctx.fireChannelRead(msg);
-            return;
-        }
-
-        Boolean authenticated = PipelineUtil.getSession(ctx) != null;
-        ctx.fireUserEventTriggered(new MessageEvent(authenticated, msg));
-
-        // Already authenticated: pass everything to next handler
-        if (authenticated) {
-            ctx.fireUserEventTriggered(new MessageEvent(true, msg));
-            ctx.fireChannelRead(msg);
-            return;
-        }
-
-        // Only allows USER_SIGN_IN_REQUEST, otherwise, emit NOT_AUTHENTICATED
         if (msg.getService() != Message.ServiceCode.USER_SIGN_IN_REQUEST) {
-            Message.Builder resp = Message
-                    .newBuilder()
-                    .setSeqId(msg.getSeqId())
-                    .setDirection(Message.DirectionCode.RESPONSE)
-                    .setStatus(Message.StatusCode.NOT_AUTHENTICATED);
-            ctx.writeAndFlush(resp.build());
+            ctx.fireChannelRead(msg);
             return;
         }
 
