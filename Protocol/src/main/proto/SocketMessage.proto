@@ -70,11 +70,10 @@ message UserSignInReqBody {
 }
 
 message UserSignInRespBody {
-  string clientId               = 1;    // 登录成功才有
+  int32 UID                     = 1;    // 登录成功才有
 }
 
 message ChatMessageReqBody {
-  string id                     = 1;
   string payload                = 2;
   uint64 timestamp              = 3;
 }
@@ -90,8 +89,8 @@ message SessionExpiredEventBody {
 }
 
 message ChatBroadcastEventBody {
-  string id                     = 1;
   string payload                = 2;
-  string senderId               = 3;
-  uint64 timestamp              = 4;
+  uint64 timestamp              = 3;
+  int32 senderUID               = 4;
+  string senderUsername         = 5;
 }
