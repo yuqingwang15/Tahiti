@@ -37,7 +37,7 @@ public class AuthFilterHandlerTest {
         // AuthFilterHandler should pass events to the next handler when user is authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
-        PipelineHelper.getSession(channel).put("credential", new Credential("foo"));
+        PipelineHelper.getSession(channel).put("credential", new Credential(1, "foo", true));
 
         Message chatEvent = Message.newBuilder()
                 .setSeqId(123)
@@ -50,6 +50,28 @@ public class AuthFilterHandlerTest {
 
         assertEquals(chatEvent, channel.readOutbound());
         assertNull(channel.readInbound());
+
+    }
+
+    @Test
+    public void testFilterAnonymousEvent() {
+
+        // AuthFilterHandler should pass events to the next handler when user is authenticated
+
+        EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
+        PipelineHelper.getSession(channel).put("credential", new Credential(1, "guest", false));
+
+        Message chatEvent = Message.newBuilder()
+                .setSeqId(123)
+                .setDirection(Message.DirectionCode.EVENT)
+                .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
+                .build();
+
+        channel.writeOutbound(chatEvent);
+        channel.finish();
+
+        assertNull(channel.readInbound());
+        assertNull(channel.readOutbound());
 
     }
 
@@ -127,7 +149,7 @@ public class AuthFilterHandlerTest {
         // AuthFilterHandler should pass requests to the next handler if user is authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
-        PipelineHelper.getSession(channel).put("credential", new Credential("foo"));
+        PipelineHelper.getSession(channel).put("credential", new Credential(1, "foo", true));
 
         Message chatRequest = Message.newBuilder()
                 .setSeqId(123)

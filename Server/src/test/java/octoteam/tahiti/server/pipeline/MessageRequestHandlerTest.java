@@ -29,7 +29,7 @@ public class MessageRequestHandlerTest {
         channel.writeInbound(msgRequest);
         channel.finish();
 
-        assertNull(channel.readInbound());
+        assertEquals(msgRequest, channel.readInbound());
 
         Object response = channel.readOutbound();
         assertTrue(response instanceof Message);

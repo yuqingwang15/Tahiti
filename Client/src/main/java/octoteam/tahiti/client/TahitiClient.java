@@ -19,6 +19,7 @@ import octoteam.tahiti.client.pipeline.ResponseHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 
+import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -155,6 +156,7 @@ public class TahitiClient {
                 .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
                 .setChatMessageReq(SocketMessageProtos.ChatMessageReqBody.newBuilder()
                         .setPayload(message)
+                        .setTimestamp(new Date().getTime())
                 );
         Message msg = req.build();
         channel.writeAndFlush(msg);

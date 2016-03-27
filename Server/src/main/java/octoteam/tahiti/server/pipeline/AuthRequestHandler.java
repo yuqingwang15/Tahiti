@@ -42,13 +42,12 @@ public class AuthRequestHandler extends MessageHandler {
                 if (account.getPassword().equals(body.getPassword())) {
                     // correct username, correct password
                     PipelineHelper.clearSession(ctx);
-                    PipelineHelper.getSession(ctx).put("credential", new Credential(account.getUsername()));
-
+                    PipelineHelper.getSession(ctx).put("credential", new Credential(0, account.getUsername(), true));
                     resp
                             .setStatus(Message.StatusCode.SUCCESS)
                             .setUserSignInResp(UserSignInRespBody
                                     .newBuilder()
-                                    .setClientId(body.getUsername()) // TODO
+                                    .setUID(0) // TODO
                             );
                 } else {
                     // correct username, incorrect password

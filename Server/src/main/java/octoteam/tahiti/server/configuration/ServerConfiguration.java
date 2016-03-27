@@ -66,5 +66,5 @@ public class ServerConfiguration {
                 .add("rateLimit", rateLimit)
                 .toString();
     }
-    
+
 }

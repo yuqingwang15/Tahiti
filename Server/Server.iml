@@ -11,12 +11,21 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.6.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial.thirdparty:nestedvm:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.j256.ormlite:ormlite-core:4.43" level="project" />
+    <orderEntry type="library" name="Maven: com.j256.ormlite:ormlite-jdbc:4.43" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial:sqlite-jdbc:3.6.6.2" level="project" />
+    <orderEntry type="library" name="Maven: org.xerial.thirdparty:nestedvm:1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.j256.ormlite:ormlite-core:4.43" level="project" />
+    <orderEntry type="library" name="Maven: com.j256.ormlite:ormlite-jdbc:4.43" level="project" />
     <orderEntry type="module" module-name="Protocol" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.0.0-beta-2" level="project" />
     <orderEntry type="module" module-name="Shared" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:5.0.0.Alpha2" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.9" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.4" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.0-rc1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.0-rc1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: junit:junit:4.12" level="project" />

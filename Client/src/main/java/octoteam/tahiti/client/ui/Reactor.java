@@ -31,7 +31,6 @@ public class Reactor {
                 renderer.actionShowMessageDialog("Login failed", "Username not found");
             } else if (msg.getStatus() == Message.StatusCode.SUCCESS) {
                 Logging.addLoginSucceededTimes();
-                renderer.actionShowMessageDialog("Login success", "Success!");
                 renderer.actionHideLoginDialog();
                 renderer.actionShowMainWindow();
             }
