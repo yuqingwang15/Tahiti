@@ -2,19 +2,18 @@ package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
 public class MessageForwardHandler extends MessageHandler {
 
-    @Deprecated
-    private final
-    TahitiServer server;
+    private final static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);;
 
-    public MessageForwardHandler(TahitiServer server) {
-        this.server = server;
+    public MessageForwardHandler() {
     }
 
     @Override
@@ -26,9 +25,15 @@ public class MessageForwardHandler extends MessageHandler {
                     .setDirection(Message.DirectionCode.EVENT)
                     .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
                     .setChatMessageReq(msg.getChatMessageReq());
-            this.server.getAllConnected().writeAndFlush(resp.build());
+            clients.writeAndFlush(resp.build(), channel -> channel != ctx.channel());
         } else {
             ctx.fireChannelRead(msg);
         }
+    }
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        clients.add(ctx.channel());
+        ctx.fireChannelActive();
     }
 }

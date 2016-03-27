@@ -22,7 +22,7 @@ public class MessageRequestHandler extends MessageHandler {
                 .setStatus(Message.StatusCode.SUCCESS);
 
         ctx.writeAndFlush(resp.build());
-
+        ctx.fireChannelRead(msg);
     }
 
 }
