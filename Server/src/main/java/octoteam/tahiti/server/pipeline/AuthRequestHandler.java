@@ -7,7 +7,6 @@ import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInRespBody;
 import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.Session;
-import octoteam.tahiti.server.TahitiServer;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
 import octoteam.tahiti.server.event.MessageEvent;
@@ -27,6 +26,11 @@ public class AuthRequestHandler extends InboundMessageHandler {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, Message msg) {
+
+        if (msg.getDirection() != Message.DirectionCode.REQUEST) {
+            ctx.fireChannelRead(msg);
+            return;
+        }
 
         Boolean authenticated = PipelineUtil.getSession(ctx) != null;
         ctx.fireUserEventTriggered(new MessageEvent(authenticated, msg));
