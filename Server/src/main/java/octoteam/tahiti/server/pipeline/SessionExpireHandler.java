@@ -32,11 +32,6 @@ public class SessionExpireHandler extends InboundMessageHandler {
                         .setService(Message.ServiceCode.SESSION_EXPIRED_EVENT);
                 ctx.channel().writeAndFlush(resp.build());
                 setSession(ctx, null);
-            } else {
-                Message.Builder resp = Message.newBuilder()
-                        .setDirection(Message.DirectionCode.RESPONSE)
-                        .setStatus(Message.StatusCode.LIMIT_EXCEEDED);
-                ctx.channel().writeAndFlush(resp.build());
             }
         }
         ctx.fireUserEventTriggered(evt);
