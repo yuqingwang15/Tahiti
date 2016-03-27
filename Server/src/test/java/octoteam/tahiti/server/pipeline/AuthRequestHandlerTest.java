@@ -119,7 +119,7 @@ public class AuthRequestHandlerTest {
         assertEquals(123, responseMsg.getSeqId());
         assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
         assertEquals(Message.StatusCode.SUCCESS, responseMsg.getStatus());
-        assertTrue(responseMsg.getUserSignInResp().isInitialized());
+        assertEquals(Message.BodyCase.USERSIGNINRESP, responseMsg.getBodyCase());
         assertEquals("testUser", responseMsg.getUserSignInResp().getClientId());  // to be replaced by ID
 
     }

@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 public class PingRequestHandlerTest {
 
     @Test
-    public void testPingRequest() throws Exception {
+    public void testPingRequest() {
 
         // PingRequestHandler should handle PING_REQUEST
 
@@ -40,13 +40,13 @@ public class PingRequestHandlerTest {
         assertTrue(responseMsg.isInitialized());
         assertEquals(123, responseMsg.getSeqId());
         assertEquals(Message.DirectionCode.RESPONSE, responseMsg.getDirection());
-        assertTrue(responseMsg.getPingPong().isInitialized());
+        assertEquals(Message.BodyCase.PINGPONG, responseMsg.getBodyCase());
         assertEquals("magic payload", responseMsg.getPingPong().getPayload());
 
     }
 
     @Test
-    public void testOtherRequest() throws Exception {
+    public void testOtherRequest() {
 
         // PingRequestHandler should NOT handle messages other than PING_REQUEST
 
