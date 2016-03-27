@@ -1,6 +1,5 @@
 package octoteam.tahiti.server.pipeline;
 
-import com.google.common.base.Function;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;

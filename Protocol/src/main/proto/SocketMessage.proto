@@ -71,7 +71,6 @@ message UserSignInReqBody {
 
 message UserSignInRespBody {
   string clientId               = 1;    // 登录成功才有
-  string sessionId              = 2;    // 登录成功才有
 }
 
 message ChatMessageReqBody {

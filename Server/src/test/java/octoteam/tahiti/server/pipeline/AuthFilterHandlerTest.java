@@ -2,8 +2,8 @@ package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.server.Credential;
 import octoteam.tahiti.server.PipelineUtil;
-import octoteam.tahiti.server.Session;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -37,7 +37,7 @@ public class AuthFilterHandlerTest {
         // AuthFilterHandler should pass events to the next handler when user is authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
-        PipelineUtil.setSession(channel, new Session("abc"));
+        PipelineUtil.getSession(channel).put("credential", new Credential("foo"));
 
         Message chatEvent = Message.newBuilder()
                 .setSeqId(123)
@@ -127,7 +127,7 @@ public class AuthFilterHandlerTest {
         // AuthFilterHandler should pass requests to the next handler if user is authenticated
 
         EmbeddedChannel channel = new EmbeddedChannel(new AuthFilterHandler());
-        PipelineUtil.setSession(channel, new Session("foo"));
+        PipelineUtil.getSession(channel).put("credential", new Credential("foo"));
 
         Message chatRequest = Message.newBuilder()
                 .setSeqId(123)

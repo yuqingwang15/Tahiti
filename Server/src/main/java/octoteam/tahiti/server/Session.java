@@ -8,15 +8,8 @@ public class Session {
 
     private final HashMap<String, Object> data;
 
-    private final String sessionId;
-
-    public Session(String sessionId) {
-        this.sessionId = sessionId;
+    public Session() {
         this.data = new HashMap<>();
-    }
-
-    public String getSessionId() {
-        return sessionId;
     }
 
     public Object get(String key) {
@@ -35,11 +28,14 @@ public class Session {
         return data.containsKey(key);
     }
 
+    public void clear() {
+        data.clear();
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("data", data)
-                .add("sessionId", sessionId)
                 .toString();
     }
 

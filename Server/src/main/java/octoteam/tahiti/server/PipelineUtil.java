@@ -8,20 +8,35 @@ public class PipelineUtil {
 
     private final static AttributeKey<Session> ATTR_KEY_SESSION = AttributeKey.valueOf("__session");
 
+    public static Session initSession(Channel channel) {
+        Session session = new Session();
+        setSession(channel, session);
+        return session;
+    }
+
     public static Session getSession(Channel channel) {
-        return channel.attr(ATTR_KEY_SESSION).get();
+        Session session = channel.attr(ATTR_KEY_SESSION).get();
+        if (session == null) {
+            return initSession(channel);
+        } else {
+            return session;
+        }
     }
 
     public static Session getSession(ChannelHandlerContext ctx) {
         return getSession(ctx.channel());
     }
 
-    public static void setSession(Channel channel, Session session) {
+    private static void setSession(Channel channel, Session session) {
         channel.attr(ATTR_KEY_SESSION).set(session);
     }
 
-    public static void setSession(ChannelHandlerContext ctx, Session session) {
-        setSession(ctx.channel(), session);
+    public static void clearSession(Channel channel) {
+        getSession(channel).clear();
+    }
+
+    public static void clearSession(ChannelHandlerContext ctx) {
+        clearSession(ctx.channel());
     }
 
 }

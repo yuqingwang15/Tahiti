@@ -12,7 +12,7 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 public class AuthFilterHandler extends MessageHandler {
 
     private boolean isContextAuthenticated(ChannelHandlerContext ctx) {
-        return PipelineUtil.getSession(ctx) != null;
+        return PipelineUtil.getSession(ctx).containsKey("credential");
     }
 
     @Override

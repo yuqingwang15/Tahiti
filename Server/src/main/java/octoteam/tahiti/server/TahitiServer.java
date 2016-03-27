@@ -14,7 +14,6 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.protocol.SocketMessageProtos.Message.DirectionCode;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;

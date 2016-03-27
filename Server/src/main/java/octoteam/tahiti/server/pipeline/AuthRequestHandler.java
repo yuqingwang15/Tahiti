@@ -5,14 +5,13 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInRespBody;
+import octoteam.tahiti.server.Credential;
 import octoteam.tahiti.server.PipelineUtil;
-import octoteam.tahiti.server.Session;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 import java.util.List;
-import java.util.UUID;
 
 @ChannelHandler.Sharable
 public class AuthRequestHandler extends MessageHandler {
@@ -42,15 +41,13 @@ public class AuthRequestHandler extends MessageHandler {
             if (account.getUsername().equals(body.getUsername())) {
                 if (account.getPassword().equals(body.getPassword())) {
                     // correct username, correct password
-                    Session sess = new Session(UUID.randomUUID().toString());
-                    sess.put("username", account.getUsername());        // TODO
-                    PipelineUtil.setSession(ctx, sess);
+                    PipelineUtil.clearSession(ctx);
+                    PipelineUtil.getSession(ctx).put("credential", new Credential(account.getUsername()));
 
                     resp
                             .setStatus(Message.StatusCode.SUCCESS)
                             .setUserSignInResp(UserSignInRespBody
                                     .newBuilder()
-                                    .setSessionId(sess.getSessionId())
                                     .setClientId(body.getUsername()) // TODO
                             );
                 } else {
