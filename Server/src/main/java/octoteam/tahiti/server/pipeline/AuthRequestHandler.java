@@ -5,10 +5,10 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInRespBody;
-import octoteam.tahiti.server.Credential;
-import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.configuration.AccountConfiguration;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
+import octoteam.tahiti.server.session.Credential;
+import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 import java.util.List;
@@ -41,8 +41,8 @@ public class AuthRequestHandler extends MessageHandler {
             if (account.getUsername().equals(body.getUsername())) {
                 if (account.getPassword().equals(body.getPassword())) {
                     // correct username, correct password
-                    PipelineUtil.clearSession(ctx);
-                    PipelineUtil.getSession(ctx).put("credential", new Credential(account.getUsername()));
+                    PipelineHelper.clearSession(ctx);
+                    PipelineHelper.getSession(ctx).put("credential", new Credential(account.getUsername()));
 
                     resp
                             .setStatus(Message.StatusCode.SUCCESS)

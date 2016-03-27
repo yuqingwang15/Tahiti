@@ -1,14 +1,14 @@
-package octoteam.tahiti.server;
+package octoteam.tahiti.server.session;
 
 import com.google.common.base.MoreObjects;
 
 import java.util.HashMap;
 
-public class Session {
+public class SessionContainer {
 
     private final HashMap<String, Object> data;
 
-    public Session() {
+    public SessionContainer() {
         this.data = new HashMap<>();
     }
 

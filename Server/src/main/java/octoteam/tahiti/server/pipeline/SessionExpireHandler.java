@@ -4,8 +4,8 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredEventBody;
-import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
+import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
@@ -24,7 +24,7 @@ public class SessionExpireHandler extends MessageHandler {
                                 .setReason(SessionExpiredEventBody.Reason.EXPIRED)
                         );
                 ctx.channel().writeAndFlush(resp.build());
-                PipelineUtil.clearSession(ctx);
+                PipelineHelper.clearSession(ctx);
             }
         }
 

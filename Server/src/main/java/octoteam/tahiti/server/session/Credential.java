@@ -1,4 +1,4 @@
-package octoteam.tahiti.server;
+package octoteam.tahiti.server.session;
 
 import com.google.common.base.MoreObjects;
 

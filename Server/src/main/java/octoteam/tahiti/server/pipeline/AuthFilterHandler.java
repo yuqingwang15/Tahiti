@@ -4,15 +4,15 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.event.MessageEvent;
+import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends MessageHandler {
 
     private boolean isContextAuthenticated(ChannelHandlerContext ctx) {
-        return PipelineUtil.getSession(ctx).containsKey("credential");
+        return PipelineHelper.getSession(ctx).containsKey("credential");
     }
 
     @Override

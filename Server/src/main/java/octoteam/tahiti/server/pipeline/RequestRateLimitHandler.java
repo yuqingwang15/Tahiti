@@ -3,9 +3,9 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.server.PipelineUtil;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
+import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 import java.util.concurrent.Callable;
@@ -35,10 +35,10 @@ public class RequestRateLimitHandler extends MessageHandler {
             ctx.fireChannelRead(msg);
             return;
         }
-        SimpleRateLimiter rateLimiter = (SimpleRateLimiter) PipelineUtil.getSession(ctx).get(sessionKey);
+        SimpleRateLimiter rateLimiter = (SimpleRateLimiter) PipelineHelper.getSession(ctx).get(sessionKey);
         if (rateLimiter == null) {
             rateLimiter = this.rateLimiterFactory.call();
-            PipelineUtil.getSession(ctx).put(sessionKey, rateLimiter);
+            PipelineHelper.getSession(ctx).put(sessionKey, rateLimiter);
         }
         if (rateLimiter.tryAcquire()) {
             ctx.fireChannelRead(msg);
