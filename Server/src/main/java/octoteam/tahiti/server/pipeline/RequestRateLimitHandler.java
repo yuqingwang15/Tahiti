@@ -12,7 +12,10 @@ import octoteam.tahiti.shared.protocol.ProtocolUtil;
 import java.util.concurrent.Callable;
 
 /**
- * TODO
+ * 该模块可以限制管道中的下行消息. 若下行消息超过了限制, 会产生 RateLimitExceededEvent 事件,
+ * 并产生状态为 LIMIT_EXCEEDED 的上行消息.
+ *
+ * 超出限制的消息会被丢弃.
  */
 @ChannelHandler.Sharable
 public class RequestRateLimitHandler extends MessageHandler {
@@ -23,11 +26,9 @@ public class RequestRateLimitHandler extends MessageHandler {
     private final Callable<SimpleRateLimiter> rateLimiterFactory;
 
     /**
-     * TODO
-     *
-     * @param serviceCode
-     * @param name
-     * @param factory
+     * @param serviceCode 要限制的消息类别, 只有这个参数指定的消息会被限制
+     * @param name        产生的事件中所包含的名称
+     * @param factory     一个返回新限流器实例的 Callable 对象, 将会使用该限流器进行限流
      */
     public RequestRateLimitHandler(
             Message.ServiceCode serviceCode,
