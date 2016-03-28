@@ -2,6 +2,12 @@ package octoteam.tahiti.server.configuration;
 
 import com.google.common.base.MoreObjects;
 
+/**
+ * RequestRateLimitHandler 可用参数<br>
+ *     perSecond， 每秒消息次数限制<br>
+ *     perSession，总消息次数限制<br>
+ */
+
 public class RateLimitConfiguration {
 
     private int perSecond;
