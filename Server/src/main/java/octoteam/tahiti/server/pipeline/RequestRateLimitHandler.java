@@ -11,6 +11,13 @@ import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 import java.util.concurrent.Callable;
 
+
+/**构造函数：根据不同的传入参数构造相应的方法：
+ * 若传入perSecond,则基于时间，
+ * 若传入perSession,则基于session
+ *
+ */
+
 @ChannelHandler.Sharable
 public class RequestRateLimitHandler extends MessageHandler {
 

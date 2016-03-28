@@ -8,6 +8,10 @@ import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+/**
+ * 传入一个RateLimitExceededEvent类型的event，
+ * 如果event.getName()为NAME_PER_SESSION，给客户端发送session过期的消息。
+ */
 @ChannelHandler.Sharable
 public class SessionExpireHandler extends MessageHandler {
 

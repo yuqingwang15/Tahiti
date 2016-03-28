@@ -7,6 +7,9 @@ import octoteam.tahiti.client.event.SendMessageEvent;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+/**
+ * 客户端向服务端发送需要转发的消息的触发一个SendMessageEvent。
+ */
 @ChannelHandler.Sharable
 public class SendMessageFilterHandler extends MessageHandler {
 

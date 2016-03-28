@@ -6,6 +6,9 @@ import octoteam.tahiti.client.event.LoginAttemptEvent;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+/**
+ * 发送登陆成功事件。
+ */
 @ChannelHandler.Sharable
 public class LoginResponseHandler extends MessageHandler {
 
