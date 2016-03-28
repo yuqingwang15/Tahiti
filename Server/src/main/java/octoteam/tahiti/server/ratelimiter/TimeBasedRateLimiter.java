@@ -3,16 +3,17 @@ package octoteam.tahiti.server.ratelimiter;
 import com.google.common.util.concurrent.RateLimiter;
 
 /**
- * TODO
+ * 计时器，限制 1 秒内的阈值
+ * 使用 tryAcquire() 判断是否到达阈值
  */
 public class TimeBasedRateLimiter implements SimpleRateLimiter {
 
     private final RateLimiter rl;
 
     /**
-     * TODO
+     * 初始化阈值
      *
-     * @param QPS
+     * @param QPS 每秒中允许的阈值
      */
     public TimeBasedRateLimiter(double QPS) {
         rl = RateLimiter.create(QPS);

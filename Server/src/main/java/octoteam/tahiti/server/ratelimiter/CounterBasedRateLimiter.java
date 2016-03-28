@@ -1,7 +1,7 @@
 package octoteam.tahiti.server.ratelimiter;
 
 /**
- * TODO
+ * 计数器，限制阈值（不限时间）
  */
 public class CounterBasedRateLimiter implements SimpleRateLimiter {
 
@@ -9,9 +9,9 @@ public class CounterBasedRateLimiter implements SimpleRateLimiter {
     private int acquired = 0;
 
     /**
-     * TODO
+     * 根据传入数值设置阈值
      *
-     * @param maxLimit
+     * @param maxLimit 阈值（int）
      */
     public CounterBasedRateLimiter(int maxLimit) {
         this.maxLimit = maxLimit;
