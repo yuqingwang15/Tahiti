@@ -43,9 +43,8 @@ public class MessageForwardHandler extends MessageHandler {
                     );
             clients.writeAndFlush(resp.build(), channel -> channel != ctx.channel());
             ctx.fireUserEventTriggered(new MessageForwardEvent(msg));
-        } else {
-            ctx.fireChannelRead(msg);
         }
+        ctx.fireChannelRead(msg);
     }
 
     @Override

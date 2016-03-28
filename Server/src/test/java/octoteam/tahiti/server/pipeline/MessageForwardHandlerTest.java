@@ -31,8 +31,8 @@ public class MessageForwardHandlerTest {
         channel.writeInbound(msgRequest);
         channel.finish();
 
-        // message is handled so inbound got nothing
-        assertNull(channel.readInbound());
+        assertEquals(msgRequest, channel.readInbound());
+
         // not writing CHAT_BROADCAST_EVENT message to itself
         assertNull(channel.readOutbound());
     }
