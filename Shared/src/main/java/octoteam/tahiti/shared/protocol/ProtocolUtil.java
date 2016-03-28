@@ -20,4 +20,16 @@ public class ProtocolUtil {
                 .setSeqId(request.getSeqId());
     }
 
+    /**
+     * TODO
+     *
+     * @param event
+     * @return
+     */
+    public static Message.Builder buildAck(Message event) {
+        return Message.newBuilder()
+                .setDirection(Message.DirectionCode.ACK)
+                .setService(event.getService());
+    }
+
 }

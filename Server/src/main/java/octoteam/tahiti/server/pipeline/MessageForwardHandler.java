@@ -25,14 +25,13 @@ public class MessageForwardHandler extends MessageHandler {
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
-        if (msg.getService().equals(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)) {
+        if (msg.getService() == Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST) {
             Credential currentCredential = (Credential) PipelineHelper.getSession(ctx).get("credential");
             if (currentCredential == null) {
                 currentCredential = Credential.getGuestCredential();
             }
             Message.Builder resp = Message
                     .newBuilder()
-                    .setSeqId(msg.getSeqId())
                     .setDirection(Message.DirectionCode.EVENT)
                     .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
                     .setChatBroadcastEvent(ChatBroadcastEventBody.newBuilder()
