@@ -8,6 +8,9 @@ import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class SessionExpireHandler extends MessageHandler {
 

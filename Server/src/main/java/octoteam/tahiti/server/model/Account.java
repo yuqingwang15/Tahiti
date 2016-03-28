@@ -12,15 +12,27 @@ import java.security.NoSuchAlgorithmException;
 @DatabaseTable(tableName = "accounts")
 public class Account {
 
+    /**
+     * TODO
+     */
     @DatabaseField(generatedId = true)
     private int id;
 
+    /**
+     * TODO
+     */
     @DatabaseField(canBeNull = false)
     private String username;
 
+    /**
+     * TODO
+     */
     @DatabaseField(canBeNull = false)
     private String hash;
 
+    /**
+     * TODO
+     */
     @DatabaseField(canBeNull = false)
     private String salt;
 
@@ -66,10 +78,23 @@ public class Account {
         this.salt = salt;
     }
 
+    /**
+     * TODO
+     *
+     * @param password
+     * @return
+     */
     public boolean isPasswordMatches(String password) {
         return hashPassword(password, salt).equals(hash);
     }
 
+    /**
+     * TODO
+     *
+     * @param password
+     * @param salt
+     * @return
+     */
     public static String hashPassword(String password, String salt) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");

@@ -3,10 +3,19 @@ package octoteam.tahiti.server.event;
 import com.google.common.base.MoreObjects;
 import octoteam.tahiti.shared.event.BaseEvent;
 
+/**
+ * TODO
+ */
 public class LoginAttemptEvent extends BaseEvent {
 
+    /**
+     * TODO
+     */
     private Boolean success;
 
+    /**
+     * TODO
+     */
     private String username;
 
     public Boolean getSuccess() {

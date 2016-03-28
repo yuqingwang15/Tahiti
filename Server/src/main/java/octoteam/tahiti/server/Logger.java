@@ -23,6 +23,11 @@ public class Logger extends StatisticsLogger {
         clear(FORWARDED_MESSAGE);
     }
 
+    /**
+     * TODO
+     *
+     * @param event
+     */
     @Subscribe
     public void onLoginAttempt(LoginAttemptEvent event) {
         if (event.getSuccess()) {
@@ -32,6 +37,11 @@ public class Logger extends StatisticsLogger {
         }
     }
 
+    /**
+     * TODO
+     *
+     * @param event
+     */
     @Subscribe
     public void onMessage(MessageEvent event) {
         if (event.isAuthenticated()) {
@@ -41,6 +51,11 @@ public class Logger extends StatisticsLogger {
         }
     }
 
+    /**
+     * TODO
+     *
+     * @param event
+     */
     @Subscribe
     public void onForwardedMessage(MessageForwardEvent event) {
         increase(FORWARDED_MESSAGE);

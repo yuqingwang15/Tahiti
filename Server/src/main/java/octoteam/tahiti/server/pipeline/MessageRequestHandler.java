@@ -6,6 +6,9 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class MessageRequestHandler extends MessageHandler {
 

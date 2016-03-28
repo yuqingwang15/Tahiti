@@ -1,22 +1,28 @@
 package octoteam.tahiti.server.event;
 
 import com.google.common.base.MoreObjects;
-import octoteam.tahiti.protocol.SocketMessageProtos;
+import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.event.BaseEvent;
 
+/**
+ * TODO
+ */
 public class MessageForwardEvent extends BaseEvent {
 
-    private SocketMessageProtos.Message message;
+    /**
+     * TODO
+     */
+    private Message message;
 
-    public SocketMessageProtos.Message getMessage() {
+    public Message getMessage() {
         return message;
     }
 
-    public void setMessage(SocketMessageProtos.Message message) {
+    public void setMessage(Message message) {
         this.message = message;
     }
 
-    public MessageForwardEvent(SocketMessageProtos.Message message) {
+    public MessageForwardEvent(Message message) {
         this.message = message;
     }
 

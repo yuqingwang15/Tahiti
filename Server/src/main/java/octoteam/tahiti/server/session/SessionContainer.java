@@ -4,6 +4,9 @@ import com.google.common.base.MoreObjects;
 
 import java.util.HashMap;
 
+/**
+ * TODO
+ */
 public class SessionContainer {
 
     private final HashMap<String, Object> data;

@@ -13,7 +13,10 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class StatisticsLogger {
+/**
+ * TODO
+ */
+public abstract class StatisticsLogger {
 
     private final Logger logger = (Logger) LoggerFactory.getLogger(StatisticsLogger.class);
 
@@ -50,15 +53,32 @@ public class StatisticsLogger {
         logger.info("------------------");
     }
 
+    /**
+     * TODO
+     *
+     * @param filePath
+     * @param periodSeconds
+     */
     public StatisticsLogger(String filePath, int periodSeconds) {
         initLogger(filePath);
         initScheduler(periodSeconds);
     }
 
+    /**
+     * TODO
+     *
+     * @param key
+     */
     protected void clear(String key) {
         counters.put(key, new AtomicInteger());
     }
 
+    /**
+     * TODO
+     *
+     * @param key
+     * @return
+     */
     protected int increase(String key) {
         return counters.get(key).incrementAndGet();
     }

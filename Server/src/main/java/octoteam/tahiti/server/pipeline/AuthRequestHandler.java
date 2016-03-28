@@ -15,11 +15,19 @@ import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class AuthRequestHandler extends MessageHandler {
 
     private final AccountService accountService;
 
+    /**
+     * TODO
+     *
+     * @param accountService
+     */
     public AuthRequestHandler(AccountService accountService) {
         this.accountService = accountService;
     }

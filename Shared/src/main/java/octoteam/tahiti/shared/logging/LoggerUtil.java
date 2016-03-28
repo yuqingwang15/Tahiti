@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 
 public class LoggerUtil {
 
+    /**
+     * TODO
+     */
     public static void reset() {
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
         loggerContext.reset();

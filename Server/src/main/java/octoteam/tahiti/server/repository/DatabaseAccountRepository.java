@@ -9,10 +9,19 @@ import octoteam.tahiti.server.model.Account;
 
 import java.sql.SQLException;
 
+/**
+ * TODO
+ */
 public class DatabaseAccountRepository implements AccountRepository {
 
     private Dao<Account, Integer> accountDAO;
 
+    /**
+     * TODO
+     *
+     * @param connectionSource
+     * @throws Exception
+     */
     public DatabaseAccountRepository(ConnectionSource connectionSource) throws Exception {
         accountDAO = DaoManager.createDao(connectionSource, Account.class);
         try {

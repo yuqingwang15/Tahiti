@@ -4,6 +4,9 @@ import octoteam.tahiti.server.model.Account;
 
 import java.util.HashMap;
 
+/**
+ * TODO
+ */
 public class MemoryAccountRepository implements AccountRepository {
 
     private HashMap<String, Account> accounts = new HashMap<>();

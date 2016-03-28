@@ -23,6 +23,9 @@ import octoteam.tahiti.shared.netty.pipeline.UserEventToEventBusHandler;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * TODO
+ */
 public class TahitiServer {
 
     private final EventBus eventBus;
@@ -31,12 +34,24 @@ public class TahitiServer {
 
     private final AccountService accountService;
 
+    /**
+     * TODO
+     *
+     * @param config
+     * @param eventBus
+     * @param accountService
+     */
     public TahitiServer(ServerConfiguration config, EventBus eventBus, AccountService accountService) {
         this.eventBus = eventBus;
         this.config = config;
         this.accountService = accountService;
     }
 
+    /**
+     * TODO
+     *
+     * @throws Exception
+     */
     public void run() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();

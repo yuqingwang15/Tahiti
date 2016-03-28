@@ -11,6 +11,9 @@ import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 import java.util.concurrent.Callable;
 
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class RequestRateLimitHandler extends MessageHandler {
 
@@ -19,6 +22,13 @@ public class RequestRateLimitHandler extends MessageHandler {
     private final String sessionKey;
     private final Callable<SimpleRateLimiter> rateLimiterFactory;
 
+    /**
+     * TODO
+     *
+     * @param serviceCode
+     * @param name
+     * @param factory
+     */
     public RequestRateLimitHandler(
             Message.ServiceCode serviceCode,
             String name,
@@ -50,6 +60,12 @@ public class RequestRateLimitHandler extends MessageHandler {
         }
     }
 
+    /**
+     * TODO
+     *
+     * @param req
+     * @return
+     */
     private Message buildExceededMsg(Message req) {
         Message.Builder resp = ProtocolUtil
                 .buildResponse(req)

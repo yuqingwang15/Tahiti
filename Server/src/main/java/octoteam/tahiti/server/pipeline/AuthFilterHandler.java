@@ -10,9 +10,18 @@ import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends MessageHandler {
 
+    /**
+     * TODO
+     *
+     * @param ctx
+     * @return
+     */
     private boolean isContextAuthenticated(ChannelHandlerContext ctx) {
         Credential c = (Credential) PipelineHelper.getSession(ctx).get("credential");
         return (c != null && c.isAuthenticated());

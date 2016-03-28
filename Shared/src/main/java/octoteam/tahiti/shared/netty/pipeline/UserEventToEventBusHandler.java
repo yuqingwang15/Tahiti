@@ -5,10 +5,18 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.shared.event.BaseEvent;
 
+/**
+ * TODO
+ */
 public class UserEventToEventBusHandler extends ChannelHandlerAdapter {
 
     private final EventBus eventBus;
 
+    /**
+     * TODO
+     *
+     * @param eventBus
+     */
     public UserEventToEventBusHandler(EventBus eventBus) {
         this.eventBus = eventBus;
     }

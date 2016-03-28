@@ -12,10 +12,15 @@ import octoteam.tahiti.server.session.Credential;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
-
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class MessageForwardHandler extends MessageHandler {
 
+    /**
+     * TODO
+     */
     private final static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override

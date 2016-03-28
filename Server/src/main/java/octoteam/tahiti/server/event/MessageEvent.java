@@ -4,10 +4,19 @@ import com.google.common.base.MoreObjects;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.event.BaseEvent;
 
+/**
+ * TODO
+ */
 public class MessageEvent extends BaseEvent {
 
+    /**
+     * TODO
+     */
     private boolean authenticated;
 
+    /**
+     * TODO
+     */
     private Message message;
 
     public boolean isAuthenticated() {

@@ -6,6 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+/**
+ * TODO
+ */
 @ChannelHandler.Sharable
 public class HeartbeatHandler extends MessageHandler {
 
