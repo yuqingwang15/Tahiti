@@ -4,17 +4,17 @@ import com.google.common.base.MoreObjects;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
- * TODO
+ * 用户尝试登录事件
  */
 public class LoginAttemptEvent extends BaseEvent {
 
     /**
-     * TODO
+     * 登录是否成功
      */
     private Boolean success;
 
     /**
-     * TODO
+     * 登录用户的用户名
      */
     private String username;
 
