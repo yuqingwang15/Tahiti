@@ -46,20 +46,34 @@ Now you can start to generate the serializer source code by executing your newly
 
 Then should find out that you can use `octoteam.tahiti.protocol.SocketMessageProtos` now, which is the protocol serializer and deserializer.
 
-### Start Server
-
-Run `Server` configuration in Intellij IDEA, or:
+## Build JAR
 
 ```bash
-cd Tahiti/Server
-mvn exec:exec
+# Compile
+cd Tahiti
+mvn install
+
+# Pack Server JAR
+cd Server
+mvn assembly:single
+cd ..
+
+# Pack Client JAR
+cd Client
+mvn assembly:single
+cd ..
 ```
 
-### Start Client
-
-Run `Client` configuration in Intellij IDEA, or:
+## Command line
 
 ```bash
-cd Tahiti/Client
-mvn exec:exec
+# Run client
+java -jar Client/target/tahiti.client-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+# Run server
+java -jar Server/target/tahiti.server-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+# Add user "foo"
+java -jar Server/target/tahiti.server-1.0-SNAPSHOT-jar-with-dependencies.jar \
+--username foo --password bar --add
 ```
