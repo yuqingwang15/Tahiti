@@ -13,7 +13,7 @@ import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 /**
- * TODO
+ * messageReceived负责群发消息，channelActive收集所有的客户端链接。
  */
 @ChannelHandler.Sharable
 public class MessageForwardHandler extends MessageHandler {

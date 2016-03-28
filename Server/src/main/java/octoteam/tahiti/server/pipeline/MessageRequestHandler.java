@@ -7,7 +7,7 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 /**
- * TODO
+ * 判断消息类型，如果属于CHAT_SEND_MESSAGE_REQUEST类型则回复成功。
  */
 @ChannelHandler.Sharable
 public class MessageRequestHandler extends MessageHandler {

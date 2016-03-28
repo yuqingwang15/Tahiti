@@ -16,7 +16,10 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 /**
- * TODO
+ * 收到用户登陆信息，验证；
+ * 如果在数据库中，返回成功登陆信息；
+ * 如果数据库里没有该用户,返回用户不存在、
+ * 如果数据库中存在该用户,但是密码输入错误,则返回密码错误。
  */
 @ChannelHandler.Sharable
 public class AuthRequestHandler extends MessageHandler {
