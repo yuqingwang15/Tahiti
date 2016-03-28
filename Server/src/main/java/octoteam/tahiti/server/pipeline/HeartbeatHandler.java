@@ -6,6 +6,9 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
+/**
+ * 每隔30秒接受到IdleStateHandler发来的定时事件，然后现客户端下发心跳消息。
+ */
 @ChannelHandler.Sharable
 public class HeartbeatHandler extends MessageHandler {
 
