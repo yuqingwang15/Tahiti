@@ -42,7 +42,7 @@ public class Account {
 
     public Account(String username, String password) {
         this.username = username;
-        this.salt = RandomStringUtils.random(32);
+        this.salt = RandomStringUtils.randomAlphanumeric(32);
         this.hash = hashPassword(password, salt);
     }
 
