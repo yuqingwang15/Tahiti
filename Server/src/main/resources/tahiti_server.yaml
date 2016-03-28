@@ -2,13 +2,9 @@ chatService:
     bindHost: 0.0.0.0
     bindPort: 6666
 
-database: xxx.db
+database: jdbc:sqlite:resource/server.db
 
 logging: tahiti_server.log
-
-accounts:
-    - { username: swx, password: swx123 }
-    - { username: admin, password: admin888 }
 
 rateLimit:
     perSecond: 5

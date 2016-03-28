@@ -26,8 +26,8 @@ public class Logging {
 
         ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
         exec.scheduleAtFixedRate(this::loggingForServer,
-                3 ,  3 , TimeUnit.SECONDS);
-        
+                3, 3, TimeUnit.SECONDS);
+
     }
 
     //count valid/invalid login
@@ -54,7 +54,7 @@ public class Logging {
     //count forwarded message
     @Subscribe
     public void onForwardedMessage(MessageForwardEvent event) {
-       forwardedMessageTimes++;
+        forwardedMessageTimes++;
     }
 
     //log into server.log and show in console
