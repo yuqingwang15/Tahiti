@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.ui.Reactor;
 import octoteam.tahiti.client.ui.Renderer;
+import octoteam.tahiti.shared.logging.LoggerUtil;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -13,6 +14,8 @@ import java.io.InputStream;
 public class Console {
 
     public static void main(String[] args) throws Exception {
+
+        LoggerUtil.reset();
 
         // Read config
         Yaml yaml = new Yaml();

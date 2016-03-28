@@ -32,10 +32,11 @@ public class Renderer {
     private Store store = new Store();
 
     public Renderer(EventBus eventBus) throws IOException, InterruptedException {
-
         this.eventBus = eventBus;
 
-        Terminal terminal = new DefaultTerminalFactory().createTerminal();
+        Terminal terminal = new DefaultTerminalFactory()
+                .setForceTextTerminal(!"true".equals(System.getenv("POPUP_TERMINAL")))
+                .createTerminal();
         screen = new TerminalScreen(terminal);
         screen.startScreen();
         gui = new UtopiaMultiWindowTextGUI(new SeparateTextGUIThread.Factory(), screen);

@@ -28,8 +28,8 @@ public class StatisticsLogger {
         fileAppender.setFile(filePath);
 
         PatternLayoutEncoder encoder = new PatternLayoutEncoder();
-        encoder.setImmediateFlush(true);
         encoder.setContext(loggerContext);
+        encoder.setImmediateFlush(true);
         encoder.setPattern("%d %-5level - %msg%n");
         encoder.start();
 
