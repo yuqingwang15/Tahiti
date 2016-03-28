@@ -14,7 +14,6 @@ import java.util.concurrent.Callable;
 /**
  * 该模块可以限制管道中的下行消息. 若下行消息超过了限制, 会产生 RateLimitExceededEvent 事件,
  * 并产生状态为 LIMIT_EXCEEDED 的上行消息.
- *
  * 超出限制的消息会被丢弃.
  */
 @ChannelHandler.Sharable
