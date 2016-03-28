@@ -1,7 +1,6 @@
 package octoteam.tahiti.client.ui;
 
 import com.google.common.eventbus.Subscribe;
-import octoteam.tahiti.client.Logging;
 import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.client.event.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
@@ -24,13 +23,10 @@ public class Reactor {
         client.login(loginUsername, loginPassword, msg -> {
             renderer.actionHideLoginStateDialog();
             if (msg.getStatus() == Message.StatusCode.PASSWORD_INCORRECT) {
-                Logging.addLoginFailedTimes();
                 renderer.actionShowMessageDialog("Login failed", "Incorrect password");
             } else if (msg.getStatus() == Message.StatusCode.USERNAME_NOT_FOUND) {
-                Logging.addLoginFailedTimes();
                 renderer.actionShowMessageDialog("Login failed", "Username not found");
             } else if (msg.getStatus() == Message.StatusCode.SUCCESS) {
-                Logging.addLoginSucceededTimes();
                 renderer.actionHideLoginDialog();
                 renderer.actionShowMainWindow();
             }
@@ -58,9 +54,6 @@ public class Reactor {
         }
     }
 
-    //
-
-
     @Subscribe
     public void onLoginCommand(UIOnLoginCommandEvent event) {
         try {
@@ -80,8 +73,6 @@ public class Reactor {
     @Subscribe
     public void onClickSend(UIOnSendCommandEvent event) {
         client.sendMessage(event.getPayload());
-        Logging.addSendMeassageTimes();
-
     }
 
     @Subscribe

@@ -4,6 +4,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
+import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 @ChannelHandler.Sharable
 public class MessageRequestHandler extends MessageHandler {
@@ -15,10 +16,8 @@ public class MessageRequestHandler extends MessageHandler {
             return;
         }
 
-        Message.Builder resp = Message
-                .newBuilder()
-                .setSeqId(msg.getSeqId())
-                .setDirection(Message.DirectionCode.RESPONSE)
+        Message.Builder resp = ProtocolUtil
+                .buildResponse(msg)
                 .setStatus(Message.StatusCode.SUCCESS);
 
         ctx.writeAndFlush(resp.build());

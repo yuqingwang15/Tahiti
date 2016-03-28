@@ -2,6 +2,7 @@ package octoteam.tahiti.client.event;
 
 import com.google.common.base.MoreObjects;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.shared.event.BaseEvent;
 
 public class MessageEvent extends BaseEvent {
 

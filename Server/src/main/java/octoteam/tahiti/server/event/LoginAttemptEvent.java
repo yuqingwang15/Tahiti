@@ -1,6 +1,7 @@
 package octoteam.tahiti.server.event;
 
 import com.google.common.base.MoreObjects;
+import octoteam.tahiti.shared.event.BaseEvent;
 
 public class LoginAttemptEvent extends BaseEvent {
 

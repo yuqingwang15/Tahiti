@@ -1,4 +1,4 @@
-package octoteam.tahiti.client.event;
+package octoteam.tahiti.shared.event;
 
 import com.google.common.base.MoreObjects;
 

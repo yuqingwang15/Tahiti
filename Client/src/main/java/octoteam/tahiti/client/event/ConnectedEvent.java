@@ -1,6 +1,7 @@
 package octoteam.tahiti.client.event;
 
 import com.google.common.base.MoreObjects;
+import octoteam.tahiti.shared.event.BaseEvent;
 
 public class ConnectedEvent extends BaseEvent {
 

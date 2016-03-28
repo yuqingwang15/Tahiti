@@ -6,6 +6,8 @@ public class ClientConfiguration {
 
     private ChatServiceConfiguration chatService;
 
+    private String logFile;
+
     public ChatServiceConfiguration getChatService() {
         return chatService;
     }
@@ -14,10 +16,19 @@ public class ClientConfiguration {
         this.chatService = chatService;
     }
 
+    public String getLogFile() {
+        return logFile;
+    }
+
+    public void setLogFile(String logFile) {
+        this.logFile = logFile;
+    }
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("chatService", chatService)
+                .add("logFile", logFile)
                 .toString();
     }
 }

@@ -8,6 +8,7 @@ import octoteam.tahiti.server.event.MessageEvent;
 import octoteam.tahiti.server.session.Credential;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
+import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends MessageHandler {
@@ -48,10 +49,8 @@ public class AuthFilterHandler extends MessageHandler {
             ctx.fireChannelRead(msg);
         } else {
             // Not authenticated: response NOT_AUTHENTICATED
-            Message.Builder resp = Message
-                    .newBuilder()
-                    .setSeqId(msg.getSeqId())
-                    .setDirection(Message.DirectionCode.RESPONSE)
+            Message.Builder resp = ProtocolUtil
+                    .buildResponse(msg)
                     .setStatus(Message.StatusCode.NOT_AUTHENTICATED);
             ctx.writeAndFlush(resp.build());
         }

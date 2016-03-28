@@ -4,7 +4,7 @@ chatService:
 
 database: jdbc:sqlite:resource/server.db
 
-logging: tahiti_server.log
+logFile: resource/tahiti_server.log
 
 rateLimit:
     perSecond: 5

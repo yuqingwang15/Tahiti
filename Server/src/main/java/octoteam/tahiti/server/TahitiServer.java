@@ -19,6 +19,7 @@ import octoteam.tahiti.server.pipeline.*;
 import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
 import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
 import octoteam.tahiti.server.service.AccountService;
+import octoteam.tahiti.shared.netty.pipeline.UserEventToEventBusHandler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -73,7 +74,7 @@ public class TahitiServer {
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())
                                     .addLast(new MessageForwardHandler())
-                                    .addLast(new UserEventHandler(eventBus))
+                                    .addLast(new UserEventToEventBusHandler(eventBus))
                             ;
                         }
                     });

@@ -27,11 +27,14 @@ public class Renderer {
 
     private UtopiaMultiWindowTextGUI gui;
 
-    private EventBus eventBus = new EventBus();
+    private EventBus eventBus;
 
     private Store store = new Store();
 
-    public Renderer() throws IOException, InterruptedException {
+    public Renderer(EventBus eventBus) throws IOException, InterruptedException {
+
+        this.eventBus = eventBus;
+
         Terminal terminal = new DefaultTerminalFactory().createTerminal();
         screen = new TerminalScreen(terminal);
         screen.startScreen();

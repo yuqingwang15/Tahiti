@@ -13,6 +13,7 @@ import octoteam.tahiti.server.service.AccountService;
 import octoteam.tahiti.server.session.Credential;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
+import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 @ChannelHandler.Sharable
 public class AuthRequestHandler extends MessageHandler {
@@ -31,10 +32,7 @@ public class AuthRequestHandler extends MessageHandler {
         }
 
         UserSignInReqBody body = msg.getUserSignInReq();
-        Message.Builder resp = Message
-                .newBuilder()
-                .setSeqId(msg.getSeqId())
-                .setDirection(Message.DirectionCode.RESPONSE);
+        Message.Builder resp = ProtocolUtil.buildResponse(msg);
 
         try {
             Account account = accountService.getMatchedAccount(body.getUsername(), body.getPassword());

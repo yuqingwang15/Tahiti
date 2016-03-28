@@ -5,10 +5,10 @@ import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
-import octoteam.tahiti.server.event.BaseEvent;
 import octoteam.tahiti.server.repository.AccountRepository;
 import octoteam.tahiti.server.repository.DatabaseAccountRepository;
 import octoteam.tahiti.server.service.AccountService;
+import octoteam.tahiti.shared.event.BaseEvent;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -38,16 +38,17 @@ public class Console {
 
         // Create event bus
         EventBus serverEventBus = new EventBus();
-
-        // Create server
-        TahitiServer server = new TahitiServer(config, serverEventBus, accountService);
-        serverEventBus.register(new Logging());
+        serverEventBus.register(new Logger(config.getLogFile(), 60));
         serverEventBus.register(new Object() {
             @Subscribe
             public void listenAllEvent(BaseEvent event) {
                 System.out.println(event);
             }
         });
+
+        // Create server
+        TahitiServer server = new TahitiServer(config, serverEventBus, accountService);
+
 
         server.run();
 

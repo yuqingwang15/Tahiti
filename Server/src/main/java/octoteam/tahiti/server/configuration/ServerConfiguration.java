@@ -8,7 +8,7 @@ public class ServerConfiguration {
 
     private String database;
 
-    private String logging;
+    private String logFile;
 
     private RateLimitConfiguration rateLimit;
 
@@ -28,12 +28,12 @@ public class ServerConfiguration {
         this.database = database;
     }
 
-    public String getLogging() {
-        return logging;
+    public String getLogFile() {
+        return logFile;
     }
 
-    public void setLogging(String logging) {
-        this.logging = logging;
+    public void setLogFile(String logFile) {
+        this.logFile = logFile;
     }
 
     public RateLimitConfiguration getRateLimit() {
@@ -49,7 +49,7 @@ public class ServerConfiguration {
         return MoreObjects.toStringHelper(this)
                 .add("chatService", chatService)
                 .add("database", database)
-                .add("logging", logging)
+                .add("logFile", logFile)
                 .add("rateLimit", rateLimit)
                 .toString();
     }

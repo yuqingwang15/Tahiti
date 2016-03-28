@@ -7,6 +7,7 @@ import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.SimpleRateLimiter;
 import octoteam.tahiti.server.session.PipelineHelper;
 import octoteam.tahiti.shared.netty.MessageHandler;
+import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 import java.util.concurrent.Callable;
 
@@ -50,10 +51,8 @@ public class RequestRateLimitHandler extends MessageHandler {
     }
 
     private Message buildExceededMsg(Message req) {
-        Message.Builder resp = Message
-                .newBuilder()
-                .setSeqId(req.getSeqId())
-                .setDirection(Message.DirectionCode.RESPONSE)
+        Message.Builder resp = ProtocolUtil
+                .buildResponse(req)
                 .setStatus(Message.StatusCode.LIMIT_EXCEEDED);
         return resp.build();
     }

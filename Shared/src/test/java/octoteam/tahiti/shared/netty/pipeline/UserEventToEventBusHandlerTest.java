@@ -1,4 +1,4 @@
-package octoteam.tahiti.server.pipeline;
+package octoteam.tahiti.shared.netty.pipeline;
 
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.embedded.EmbeddedChannel;
-import octoteam.tahiti.server.event.BaseEvent;
+import octoteam.tahiti.shared.event.BaseEvent;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class UserEventHandlerTest {
+public class UserEventToEventBusHandlerTest {
 
     @Test
     public void testUserEvent() {
@@ -40,7 +40,7 @@ public class UserEventHandlerTest {
             }
         };
 
-        EmbeddedChannel channel = new EmbeddedChannel(raiseEventChannelHandler, new UserEventHandler(eventBus));
+        EmbeddedChannel channel = new EmbeddedChannel(raiseEventChannelHandler, new UserEventToEventBusHandler(eventBus));
         channel.finish();
 
         assertEquals(1, collectedEvents.size());

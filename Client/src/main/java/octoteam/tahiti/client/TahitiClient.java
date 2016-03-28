@@ -15,13 +15,16 @@ import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.event.ConnectErrorEvent;
 import octoteam.tahiti.client.event.ConnectedEvent;
 import octoteam.tahiti.client.event.DisconnectedEvent;
-import octoteam.tahiti.client.pipeline.ResponseHandler;
-import octoteam.tahiti.protocol.SocketMessageProtos;
+import octoteam.tahiti.client.pipeline.HeartbeatEventHandler;
+import octoteam.tahiti.client.pipeline.LoginResponseHandler;
+import octoteam.tahiti.client.pipeline.ResponseCallbackHandler;
+import octoteam.tahiti.client.pipeline.SendMessageFilterHandler;
+import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
+import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
+import octoteam.tahiti.shared.netty.pipeline.UserEventToEventBusHandler;
 
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class TahitiClient {
 
@@ -29,7 +32,7 @@ public class TahitiClient {
 
     private ClientConfiguration config;
 
-    private static AtomicLong msgSequence;
+    private CallbackRepository callbackRepo;
 
     private volatile EventLoopGroup workerGroup;
 
@@ -37,11 +40,9 @@ public class TahitiClient {
 
     private volatile Channel channel;
 
-    private ConcurrentHashMap<Long, Function<Message, Void>> callbacks;
-
-    public TahitiClient(ClientConfiguration config) {
-        this.eventBus = new EventBus();
+    public TahitiClient(ClientConfiguration config, EventBus eventBus) {
         this.config = config;
+        this.eventBus = eventBus;
         this.init();
     }
 
@@ -52,8 +53,7 @@ public class TahitiClient {
     private void init() {
         workerGroup = new NioEventLoopGroup();
         bootstrap = new Bootstrap();
-        msgSequence = new AtomicLong();
-        callbacks = new ConcurrentHashMap<>();
+        callbackRepo = new CallbackRepository();
 
         bootstrap
                 .group(workerGroup)
@@ -68,23 +68,14 @@ public class TahitiClient {
                                 .addLast(new ProtobufEncoder())
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
-                                .addLast(new ResponseHandler(TahitiClient.this));
+                                .addLast(new HeartbeatEventHandler())
+                                .addLast(new ResponseCallbackHandler(callbackRepo))
+                                .addLast(new LoginResponseHandler())
+                                .addLast(new SendMessageFilterHandler())
+                                .addLast(new UserEventToEventBusHandler(eventBus))
+                        ;
                     }
                 });
-    }
-
-    public EventBus getEventBus() {
-        return eventBus;
-    }
-
-    public long getNextSequence() {
-        return msgSequence.incrementAndGet();
-    }
-
-    public long getNextSequence(Function<Message, Void> r) {
-        long seq = getNextSequence();
-        callbacks.put(seq, r);
-        return seq;
     }
 
     public void shutdown() {
@@ -127,21 +118,24 @@ public class TahitiClient {
         }
     }
 
-    public void resolveCallback(long seqId, Message msg) {
-        if (callbacks.containsKey(seqId)) {
-            Function<Message, Void> r = callbacks.get(seqId);
-            callbacks.remove(seqId);
-            r.apply(msg);
-        }
+    private Message.Builder buildRequest(Function<Message, Void> callback) {
+        return Message
+                .newBuilder()
+                .setSeqId(callbackRepo.getNextSequence(callback))
+                .setDirection(Message.DirectionCode.REQUEST);
+    }
+
+    private Message.Builder buildRequest() {
+        return Message
+                .newBuilder()
+                .setSeqId(callbackRepo.getNextSequence())
+                .setDirection(Message.DirectionCode.REQUEST);
     }
 
     public void login(String username, String password, Function<Message, Void> callback) {
-        Message.Builder req = Message
-                .newBuilder()
-                .setSeqId(getNextSequence(callback))
-                .setDirection(Message.DirectionCode.REQUEST)
+        Message.Builder req = buildRequest(callback)
                 .setService(Message.ServiceCode.USER_SIGN_IN_REQUEST)
-                .setUserSignInReq(SocketMessageProtos.UserSignInReqBody.newBuilder()
+                .setUserSignInReq(UserSignInReqBody.newBuilder()
                         .setUsername(username)
                         .setPassword(password)
                 );
@@ -149,12 +143,9 @@ public class TahitiClient {
     }
 
     public void sendMessage(String message) {
-        Message.Builder req = Message
-                .newBuilder()
-                .setSeqId(getNextSequence())
-                .setDirection(Message.DirectionCode.REQUEST)
+        Message.Builder req = buildRequest()
                 .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
-                .setChatMessageReq(SocketMessageProtos.ChatMessageReqBody.newBuilder()
+                .setChatMessageReq(ChatMessageReqBody.newBuilder()
                         .setPayload(message)
                         .setTimestamp(new Date().getTime())
                 );
