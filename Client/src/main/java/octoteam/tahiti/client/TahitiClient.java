@@ -15,10 +15,7 @@ import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.event.ConnectErrorEvent;
 import octoteam.tahiti.client.event.ConnectedEvent;
 import octoteam.tahiti.client.event.DisconnectedEvent;
-import octoteam.tahiti.client.pipeline.HeartbeatEventHandler;
-import octoteam.tahiti.client.pipeline.LoginResponseHandler;
-import octoteam.tahiti.client.pipeline.ResponseCallbackHandler;
-import octoteam.tahiti.client.pipeline.SendMessageFilterHandler;
+import octoteam.tahiti.client.pipeline.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
@@ -71,6 +68,8 @@ public class TahitiClient {
                                 .addLast(new HeartbeatEventHandler())
                                 .addLast(new ResponseCallbackHandler(callbackRepo))
                                 .addLast(new LoginResponseHandler())
+                                .addLast(new SessionExpireEventHandler())
+                                .addLast(new BroadcastEventHandler())
                                 .addLast(new SendMessageFilterHandler())
                                 .addLast(new UserEventToEventBusHandler(eventBus))
                         ;
@@ -126,10 +125,7 @@ public class TahitiClient {
     }
 
     private Message.Builder buildRequest() {
-        return Message
-                .newBuilder()
-                .setSeqId(callbackRepo.getNextSequence())
-                .setDirection(Message.DirectionCode.REQUEST);
+        return buildRequest(null);
     }
 
     public void login(String username, String password, Function<Message, Void> callback) {
@@ -140,6 +136,10 @@ public class TahitiClient {
                         .setPassword(password)
                 );
         channel.writeAndFlush(req.build());
+    }
+
+    public void login(String username, String password) {
+        login(username, password, null);
     }
 
     public void sendMessage(String message) {

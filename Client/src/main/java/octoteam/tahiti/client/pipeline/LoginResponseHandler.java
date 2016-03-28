@@ -7,7 +7,8 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 /**
- * 发送登陆成功事件。
+ * 该模块处理下行消息中的登录响应 (USER_SIGN_IN_REQUEST RESPONSE)
+ * 收到该响应时, 会产生 LoginAttemptEvent
  */
 @ChannelHandler.Sharable
 public class LoginResponseHandler extends MessageHandler {

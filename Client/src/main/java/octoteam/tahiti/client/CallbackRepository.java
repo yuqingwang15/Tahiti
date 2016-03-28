@@ -18,7 +18,7 @@ public class CallbackRepository {
 
     public long getNextSequence(Function<Message, Void> r) {
         long seq = getNextSequence();
-        callbacks.put(seq, r);
+        if (r != null) callbacks.put(seq, r);
         return seq;
     }
 

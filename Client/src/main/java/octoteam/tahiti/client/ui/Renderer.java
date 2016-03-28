@@ -5,6 +5,8 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -13,7 +15,10 @@ import octoteam.tahiti.client.event.UIOnLoginCommandEvent;
 import octoteam.tahiti.client.event.UIOnSendCommandEvent;
 
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class Renderer {
 
@@ -21,7 +26,7 @@ public class Renderer {
     private static final String LOGIN_STATEDIALOG_TEXT = "login.statedialog.text";
     private static final String LOGIN_STATEDIALOG_VISIBLE = "login.statedialog.visible";
     private static final String MAIN_WINDOW_VISIBLE = "main.window.visible";
-    public static final String MAIN_WINDOW_TEXT = "main.window.text";
+    private static final String MAIN_WINDOW_TEXT = "main.window.text";
 
     private Screen screen;
 
@@ -63,7 +68,7 @@ public class Renderer {
         TextBox txtUsername = new TextBox().addTo(panel);
 
         panel.addComponent(new Label("Password"));
-        TextBox txtPassword = new TextBox().addTo(panel);
+        TextBox txtPassword = new TextBox().setMask('*').addTo(panel);
 
         panel.addComponent(new EmptySpace(new TerminalSize(0, 0)));
 
@@ -166,6 +171,7 @@ public class Renderer {
         store.init(MAIN_WINDOW_TEXT, "");
         store.observe(MAIN_WINDOW_TEXT, v -> {
             history.setText((String) v);
+            history.handleKeyStroke(new KeyStroke(KeyType.End));
             gui.updateScreen();
             return null;
         });
@@ -222,9 +228,17 @@ public class Renderer {
         });
     }
 
-    public void actionAppendLog(String s) {
+    private static Format dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public void actionAppendChatMessage(String sender, long timestamp, String content) {
         store.update(() -> {
-            store.put(MAIN_WINDOW_TEXT, s + "\n\n" + store.get(MAIN_WINDOW_TEXT));
+            store.put(MAIN_WINDOW_TEXT, String.format(
+                    "%s\n\n%s (%s):\n%s",
+                    store.get(MAIN_WINDOW_TEXT),
+                    sender,
+                    dateFormat.format(new Date(timestamp)),
+                    content));
         });
     }
+
 }

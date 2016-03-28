@@ -3,17 +3,17 @@ package octoteam.tahiti.client.event;
 import com.google.common.base.MoreObjects;
 import octoteam.tahiti.shared.event.BaseEvent;
 
-/**
- * TODO
- */
-public class SendMessageEvent extends BaseEvent {
+public class ChatMessageEvent extends BaseEvent {
 
     private String payload;
 
+    private String username;
+
     private long timestamp;
 
-    public SendMessageEvent(String payload, long timestamp) {
+    public ChatMessageEvent(String payload, String username, long timestamp) {
         this.payload = payload;
+        this.username = username;
         this.timestamp = timestamp;
     }
 
@@ -23,6 +23,14 @@ public class SendMessageEvent extends BaseEvent {
 
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public long getTimestamp() {
@@ -37,6 +45,7 @@ public class SendMessageEvent extends BaseEvent {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .add("payload", payload)
+                .add("username", username)
                 .add("timestamp", timestamp)
                 .toString();
     }
