@@ -10,16 +10,15 @@ import octoteam.tahiti.server.model.Account;
 import java.sql.SQLException;
 
 /**
- * TODO
+ * 用于操作数据库中的用户表
  */
 public class DatabaseAccountRepository implements AccountRepository {
 
     private Dao<Account, Integer> accountDAO;
 
     /**
-     * TODO
-     *
-     * @param connectionSource
+     * 初始化程序与用户表之间的链接
+     * @param connectionSource 数据库连接
      * @throws Exception
      */
     public DatabaseAccountRepository(ConnectionSource connectionSource) throws Exception {
