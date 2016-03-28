@@ -15,10 +15,7 @@ import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.event.ConnectErrorEvent;
 import octoteam.tahiti.client.event.ConnectedEvent;
 import octoteam.tahiti.client.event.DisconnectedEvent;
-import octoteam.tahiti.client.pipeline.HeartbeatEventHandler;
-import octoteam.tahiti.client.pipeline.LoginResponseHandler;
-import octoteam.tahiti.client.pipeline.ResponseCallbackHandler;
-import octoteam.tahiti.client.pipeline.SendMessageFilterHandler;
+import octoteam.tahiti.client.pipeline.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
@@ -72,6 +69,7 @@ public class TahitiClient {
                                 .addLast(new ResponseCallbackHandler(callbackRepo))
                                 .addLast(new LoginResponseHandler())
                                 .addLast(new SendMessageFilterHandler())
+                                .addLast(new ReceiveMessageHandler())
                                 .addLast(new UserEventToEventBusHandler(eventBus))
                         ;
                     }
