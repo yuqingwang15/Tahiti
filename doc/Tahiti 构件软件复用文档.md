@@ -36,7 +36,7 @@
   	* 客户端响应来自服务端的心跳信息
 
   * ResponseCallbackHandler:
-  	* 根据服务端传来的登陆结果的消息更新UI。
+  	* 根据服务端传来的登陆结果的消息更新UI界面变化。
 
   * LoginResponseHandler:
   	* 提高程序的可扩展性。
@@ -62,11 +62,11 @@
 	* 对于群发的消息，回复发起群发的客户端成功的消息。
 
   * RequestRateLimitHandler:
-	* 实现了每秒钟不能超过5次，每个登陆的账号不能发超过100条的限制（具体数量可以在配置文件中修改）。
+	* 对用户每秒钟发送信息的数量和每个登陆账号可以发送信息的数量做出限制，具体限制根据传入参数的类型决定，具体数量可以在配置文件中修改。
 
   * SessionExpireHandler
-	* 提醒用户在发送超过100条之后session过期
+	* 提醒用户在发送信息数量超过限制之后当前session过期
 
   * UserEventHandler
-	* 	把所有的event都传给eventbus，根据event类型来调用不同的订阅者。
+	* 	把所有产生的event都传给eventbus，根据event类型来调用不同的订阅者。
 
