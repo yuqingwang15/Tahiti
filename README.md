@@ -24,7 +24,7 @@ Tahiti includes JetBrains Intellij IDEA project files. You can directly use IDEA
 
 ### Install ProtoBuf
 
-Tahiti uses ProtoBuf as a data serializer and deserializer between clients and the server. The general step to use ProtoBuf is:
+Tahiti uses ProtoBuf as a data serializer and deserializer between clients and the server (see [SocketMessage.proto](https://github.com/SummerWish/Tahiti/blob/master/Protocol/src/main/proto/SocketMessage.proto) for the definition of the protocol schema). The general step to use ProtoBuf is:
 
 1. Write `.proto` file which defines the schema of the data
 2. Generate source code from `.proto` by using ProtoBuf compiler `protoc`
