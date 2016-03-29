@@ -2,6 +2,20 @@
 
 Tahiti is a simple chatting service.
 
+## Architecture Introduction
+
+### Server
+
+Tahiti is based on the fantastic networking library [Netty](http://netty.io/). Pipeline handlers and events are heavily used.
+
+![Server Overall Architecture](https://raw.githubusercontent.com/SummerWish/Tahiti/master/doc/architecture/server_overall.png)
+
+### Client
+
+Client uses [lantern](https://github.com/mabe02/lanterna) as its Comandline UI renderring library. The UI is state driven, which means UI renderer will render exactly the same UI by giving the same state. By doing so, the data flow of Tahiti client is simple and clean. Unforunately, the state driven UI architecutre is not powered by 3rd-party libraries and we invented our own. See `octoteam.tahiti.client.ui.Store`, which enables storing and retriving states reactively.
+
+![Client Overall Architecture](https://raw.githubusercontent.com/SummerWish/Tahiti/master/doc/architecture/client_overall.png)
+
 ## Getting Started
 
 ### IDE
