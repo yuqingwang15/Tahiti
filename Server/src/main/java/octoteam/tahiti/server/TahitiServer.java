@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 服务端<br>
- *     初始化客户端链接，提供用户验证、收发消息及生成日志服务
+ * 初始化客户端链接，提供用户验证、收发消息及生成日志服务
  */
 public class TahitiServer {
 
@@ -38,8 +38,8 @@ public class TahitiServer {
     /**
      * 根据参数构造并初始化服务端
      *
-     * @param config 服务端相关配置参数
-     * @param eventBus 服务端事件总线
+     * @param config         服务端相关配置参数
+     * @param eventBus       服务端事件总线
      * @param accountService 用户服务
      */
     public TahitiServer(ServerConfiguration config, EventBus eventBus, AccountService accountService) {

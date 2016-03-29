@@ -92,7 +92,7 @@ public class Account {
      * 根据用户明文密码生成哈希值
      *
      * @param password 用户明文密码
-     * @param salt 字符串
+     * @param salt     字符串
      * @return 用户密码哈希值
      */
     public static String hashPassword(String password, String salt) {

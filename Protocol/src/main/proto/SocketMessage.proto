@@ -4,7 +4,7 @@ option java_package = "octoteam.tahiti.protocol";
 option java_outer_classname = "SocketMessageProtos";
 
 // 客户端主动向服务端请求：Request；服务端反馈：Response
-// 服务端向客户端推送：Event；客户端反馈：Ack
+// 服务端向客户端推送：Push；客户端反馈：Ack
 
 message Message {
 
@@ -12,18 +12,18 @@ message Message {
     UNKNOWN_DIRECTIONCODE       = 0;
     REQUEST                     = 1;    // 客户端 -> 服务端(负责生成 seqId)
     RESPONSE                    = 2;    // 服务端 -> 客户端响应(负责回复 seqId)
-    EVENT                       = 3;    // 服务端 -> 客户端(负责生成 seqId)
+    PUSH                        = 3;    // 服务端 -> 客户端(负责生成 seqId)
     ACK                         = 4;    // 客户端 -> 服务端响应(负责回复 seqId)
   }
 
   enum ServiceCode {
     UNKNOWN_SERVICECODE         = 0;
     PING_REQUEST                = 1;    // 测试请求
-    HEARTBEAT_EVENT             = 5;    // 心跳事件
+    HEARTBEAT_PUSH              = 5;    // 心跳事件
     USER_SIGN_IN_REQUEST        = 10;   // 登录请求
     CHAT_SEND_MESSAGE_REQUEST   = 20;   // 发送消息请求
-    SESSION_EXPIRED_EVENT       = 30;   // 会话过期事件
-    CHAT_BROADCAST_EVENT        = 40;   // 消息广播事件
+    SESSION_EXPIRED_PUSH        = 30;   // 会话过期事件
+    CHAT_BROADCAST_PUSH         = 40;   // 消息广播事件
   }
 
   enum StatusCode {
@@ -45,7 +45,7 @@ message Message {
 
   DirectionCode direction       = 2;
 
-  ServiceCode service           = 3;    // 请求的服务,只适用于 REQUEST 和 EVENT
+  ServiceCode service           = 3;    // 请求的服务,只适用于 REQUEST 和 PUSH
 
   StatusCode status             = 4;    // 反馈状态,只适用于 RESPONSE 和 ACK
 
@@ -53,9 +53,9 @@ message Message {
     PingPongBody              pingPong            = 5;
     UserSignInReqBody         userSignInReq       = 10;
     UserSignInRespBody        userSignInResp      = 11;
-    ChatMessageReqBody        chatMessageReq      = 20;
-    SessionExpiredEventBody   sessionExpiredEvent = 30;
-    ChatBroadcastEventBody    chatBroadcastEvent  = 40;
+    ChatSendMessageReqBody    chatSendMessageReq  = 20;
+    SessionExpiredPushBody    sessionExpiredPush  = 30;
+    ChatBroadcastPushBody     chatBroadcastPush   = 40;
   }
 
 }
@@ -73,12 +73,12 @@ message UserSignInRespBody {
   int32 UID                     = 1;    // 登录成功才有
 }
 
-message ChatMessageReqBody {
+message ChatSendMessageReqBody {
   string payload                = 2;
   uint64 timestamp              = 3;
 }
 
-message SessionExpiredEventBody {
+message SessionExpiredPushBody {
   enum Reason {
     UNKNOWN_REASON              = 0;
     EXPIRED                     = 1;
@@ -88,7 +88,7 @@ message SessionExpiredEventBody {
   Reason reason                 = 1;
 }
 
-message ChatBroadcastEventBody {
+message ChatBroadcastPushBody {
   string payload                = 2;
   uint64 timestamp              = 3;
   int32 senderUID               = 4;

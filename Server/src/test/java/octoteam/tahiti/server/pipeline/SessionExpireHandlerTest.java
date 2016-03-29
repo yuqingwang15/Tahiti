@@ -2,7 +2,7 @@ package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredEventBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredPushBody;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
 import org.junit.Test;
@@ -36,10 +36,10 @@ public class SessionExpireHandlerTest {
                 assertTrue(response instanceof Message);
 
                 Message responseMsg = (Message) response;
-                assertEquals(responseMsg.getDirection(), Message.DirectionCode.EVENT);
-                assertEquals(responseMsg.getService(), Message.ServiceCode.SESSION_EXPIRED_EVENT);
-                assertEquals(responseMsg.getSessionExpiredEvent().getReason(),
-                        SessionExpiredEventBody.Reason.EXPIRED);
+                assertEquals(responseMsg.getDirection(), Message.DirectionCode.PUSH);
+                assertEquals(responseMsg.getService(), Message.ServiceCode.SESSION_EXPIRED_PUSH);
+                assertEquals(responseMsg.getSessionExpiredPush().getReason(),
+                        SessionExpiredPushBody.Reason.EXPIRED);
             }
         }
 

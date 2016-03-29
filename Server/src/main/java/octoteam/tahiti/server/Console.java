@@ -9,6 +9,7 @@ import octoteam.tahiti.server.model.Account;
 import octoteam.tahiti.server.repository.AccountRepository;
 import octoteam.tahiti.server.repository.DatabaseAccountRepository;
 import octoteam.tahiti.server.service.AccountService;
+import octoteam.tahiti.server.service.DefaultAccountService;
 import octoteam.tahiti.shared.event.BaseEvent;
 import octoteam.tahiti.shared.logging.LoggerUtil;
 import org.apache.commons.cli.CommandLine;
@@ -50,7 +51,7 @@ public class Console {
         // Open database connection
         ConnectionSource connectionSource = new JdbcConnectionSource(config.getDatabase());
         AccountRepository repository = new DatabaseAccountRepository(connectionSource);
-        AccountService accountService = new AccountService(repository);
+        AccountService accountService = new DefaultAccountService(repository);
 
         if (cmd.hasOption("a")) {
 

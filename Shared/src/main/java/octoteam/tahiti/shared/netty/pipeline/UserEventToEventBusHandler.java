@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
- * 将消息处理队列中产生的用户事件提交至服务端事件总线中
+ * 该模块会将管道中产生的事件全部转发到给定的 EventBus 中
  */
 public class UserEventToEventBusHandler extends ChannelDuplexHandler {
 

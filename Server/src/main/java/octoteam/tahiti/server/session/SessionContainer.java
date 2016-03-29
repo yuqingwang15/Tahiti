@@ -5,7 +5,7 @@ import com.google.common.base.MoreObjects;
 import java.util.HashMap;
 
 /**
- *  用于保存每个链接的特有数据
+ * 用于保存每个链接的特有数据
  */
 public class SessionContainer {
 

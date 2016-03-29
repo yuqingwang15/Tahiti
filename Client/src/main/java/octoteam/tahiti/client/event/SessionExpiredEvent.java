@@ -1,7 +1,7 @@
 package octoteam.tahiti.client.event;
 
 import com.google.common.base.MoreObjects;
-import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredEventBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredPushBody;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
@@ -12,17 +12,17 @@ public class SessionExpiredEvent extends BaseEvent {
     /**
      * 会话过期原因
      */
-    private SessionExpiredEventBody.Reason reason;
+    private SessionExpiredPushBody.Reason reason;
 
-    public SessionExpiredEvent(SessionExpiredEventBody.Reason reason) {
+    public SessionExpiredEvent(SessionExpiredPushBody.Reason reason) {
         this.reason = reason;
     }
 
-    public SessionExpiredEventBody.Reason getReason() {
+    public SessionExpiredPushBody.Reason getReason() {
         return reason;
     }
 
-    public void setReason(SessionExpiredEventBody.Reason reason) {
+    public void setReason(SessionExpiredPushBody.Reason reason) {
         this.reason = reason;
     }
 

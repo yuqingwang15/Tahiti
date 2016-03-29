@@ -31,8 +31,8 @@ public class Credential {
     /**
      * 根据传入参数实例化一个用户凭证
      *
-     * @param UID 用户唯一识别号（int）
-     * @param username 用户名 （String）
+     * @param UID           用户唯一识别号（int）
+     * @param username      用户名 （String）
      * @param authenticated 验证状态（boolean）
      */
     public Credential(int UID, String username, boolean authenticated) {

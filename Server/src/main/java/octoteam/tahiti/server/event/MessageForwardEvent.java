@@ -8,7 +8,6 @@ import octoteam.tahiti.shared.event.BaseEvent;
  * 消息转发事件<br>
  * 当有消息被转发时，MessageForwardEvent 被实例化
  * 并由已加入到 pipeline 中的下一 Handler 处理
- *
  */
 public class MessageForwardEvent extends BaseEvent {
 

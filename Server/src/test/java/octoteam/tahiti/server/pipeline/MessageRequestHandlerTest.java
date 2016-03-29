@@ -1,7 +1,7 @@
 package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.embedded.EmbeddedChannel;
-import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.ChatSendMessageReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import org.junit.Test;
 
@@ -20,7 +20,7 @@ public class MessageRequestHandlerTest {
                 .setSeqId(123)
                 .setDirection(Message.DirectionCode.REQUEST)
                 .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
-                .setChatMessageReq(ChatMessageReqBody.newBuilder()
+                .setChatSendMessageReq(ChatSendMessageReqBody.newBuilder()
                         .setPayload("foo")
                         .setTimestamp(333)
                 )

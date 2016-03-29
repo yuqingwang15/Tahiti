@@ -16,10 +16,10 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 /**
- * 收到用户登陆信息，验证；
- * 如果在数据库中，返回成功登陆信息；
- * 如果数据库里没有该用户,返回用户不存在、
- * 如果数据库中存在该用户,但是密码输入错误,则返回密码错误。
+ * 该模块处理下行的登录请求 (Request)，通过 `AccountService` 进行验证。
+ * 无论成功或者失败，该模块都会发送该请求的响应 (Response) 消息。
+ * 响应消息会处于三种状态中的一种：成功、用户名未找到、用户名或密码错误。
+ * 对于成功的情况，该模块还会标记当前连接状态为已登录。
  */
 @ChannelHandler.Sharable
 public class AuthRequestHandler extends MessageHandler {
@@ -27,7 +27,7 @@ public class AuthRequestHandler extends MessageHandler {
     private final AccountService accountService;
 
     /**
-     * @param accountService 用于查找用户
+     * @param accountService 账户服务模块
      */
     public AuthRequestHandler(AccountService accountService) {
         this.accountService = accountService;

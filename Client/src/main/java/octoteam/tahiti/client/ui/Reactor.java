@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.client.event.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
-import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredEventBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredPushBody;
 import org.apache.commons.lang3.StringUtils;
 
 public class Reactor {
@@ -44,7 +44,7 @@ public class Reactor {
     @Subscribe
     public void onSessionExpired(SessionExpiredEvent event) {
         renderer.actionAppendNotice("Session expired. You are logged out.");
-        if (event.getReason() == SessionExpiredEventBody.Reason.EXPIRED) {
+        if (event.getReason() == SessionExpiredPushBody.Reason.EXPIRED) {
             client.login(loginUsername, loginPassword);
         }
     }

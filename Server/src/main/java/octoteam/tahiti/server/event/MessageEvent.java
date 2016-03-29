@@ -6,8 +6,8 @@ import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
  * 消息事件<br><br>
- *     消息<br>
- *     消息是否来自已验证的链接<br>
+ * 消息<br>
+ * 消息是否来自已验证的链接<br>
  */
 public class MessageEvent extends BaseEvent {
 

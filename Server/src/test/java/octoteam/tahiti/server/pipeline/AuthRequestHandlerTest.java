@@ -5,6 +5,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.server.repository.MemoryAccountRepository;
 import octoteam.tahiti.server.service.AccountService;
+import octoteam.tahiti.server.service.DefaultAccountService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +20,7 @@ public class AuthRequestHandlerTest {
     @Before
     public void initialize() {
         repository = new MemoryAccountRepository();
-        accountService = new AccountService(repository);
+        accountService = new DefaultAccountService(repository);
 
         repository.createAccount("testUser", "password123");    // ID = 1
     }

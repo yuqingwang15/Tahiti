@@ -8,8 +8,8 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 /**
- * 该模块会在收到 IdleStateEvent 时发送 HEARTBEAT_EVENT 上行消息.
- * 需要配合 IdleStateHandler 所提供的 IdleStateEvent 来实现心跳功能.
+ * 该模块会在收到 IdleStateEvent 时发送 HEARTBEAT_PUSH 上行消息。
+ * 需要配合 IdleStateHandler 所提供的 IdleStateEvent 来实现心跳功能。
  */
 @ChannelHandler.Sharable
 public class HeartbeatHandler extends MessageHandler {
@@ -20,8 +20,8 @@ public class HeartbeatHandler extends MessageHandler {
         if (evt instanceof IdleStateEvent) {
             Message.Builder heartbeat = Message
                     .newBuilder()
-                    .setDirection(Message.DirectionCode.EVENT)
-                    .setService(Message.ServiceCode.HEARTBEAT_EVENT);
+                    .setDirection(Message.DirectionCode.PUSH)
+                    .setService(Message.ServiceCode.HEARTBEAT_PUSH);
 
             ctx
                     .writeAndFlush(heartbeat.build())

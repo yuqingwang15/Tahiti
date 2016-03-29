@@ -18,8 +18,8 @@ public class SendMessageFilterHandler extends MessageHandler {
     protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) throws Exception {
         if (msg.getService() == Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST) {
             ctx.fireUserEventTriggered(new SendMessageEvent(
-                    msg.getChatMessageReq().getPayload(),
-                    msg.getChatMessageReq().getTimestamp()
+                    msg.getChatSendMessageReq().getPayload(),
+                    msg.getChatSendMessageReq().getTimestamp()
             ));
         }
         super.messageSent(ctx, msg, promise);

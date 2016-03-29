@@ -1,7 +1,7 @@
 package octoteam.tahiti.server.pipeline;
 
 import io.netty.channel.embedded.EmbeddedChannel;
-import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.ChatSendMessageReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import org.junit.Test;
 
@@ -26,7 +26,7 @@ public class MessageForwardHandlerTest {
                 .setSeqId(1038)
                 .setDirection(Message.DirectionCode.REQUEST)
                 .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
-                .setChatMessageReq(ChatMessageReqBody.newBuilder()
+                .setChatSendMessageReq(ChatSendMessageReqBody.newBuilder()
                         .setPayload("HELLO :P")
                         .setTimestamp(Calendar.getInstance().getTimeInMillis())
                 ).build();
@@ -46,11 +46,11 @@ public class MessageForwardHandlerTest {
             assertTrue(response instanceof Message);
 
             Message responseMsg = (Message) response;
-            assertEquals(Message.DirectionCode.EVENT, responseMsg.getDirection());
-            assertEquals(Message.ServiceCode.CHAT_BROADCAST_EVENT, responseMsg.getService());
-            assertEquals(Message.BodyCase.CHATBROADCASTEVENT, responseMsg.getBodyCase());
-            assertEquals("HELLO :P", responseMsg.getChatBroadcastEvent().getPayload());
-            assertEquals("Guest", responseMsg.getChatBroadcastEvent().getSenderUsername());
+            assertEquals(Message.DirectionCode.PUSH, responseMsg.getDirection());
+            assertEquals(Message.ServiceCode.CHAT_BROADCAST_PUSH, responseMsg.getService());
+            assertEquals(Message.BodyCase.CHATBROADCASTPUSH, responseMsg.getBodyCase());
+            assertEquals("HELLO :P", responseMsg.getChatBroadcastPush().getPayload());
+            assertEquals("Guest", responseMsg.getChatBroadcastPush().getSenderUsername());
         }
 
     }
@@ -64,7 +64,7 @@ public class MessageForwardHandlerTest {
                 .setSeqId(1038)
                 .setDirection(Message.DirectionCode.REQUEST)
                 .setService(Message.ServiceCode.PING_REQUEST)
-                .setChatMessageReq(ChatMessageReqBody.newBuilder()
+                .setChatSendMessageReq(ChatSendMessageReqBody.newBuilder()
                         .setPayload("HELLO :P")
                         .setTimestamp(Calendar.getInstance().getTimeInMillis())
                 ).build();

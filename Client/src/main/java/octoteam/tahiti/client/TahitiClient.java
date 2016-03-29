@@ -16,7 +16,7 @@ import octoteam.tahiti.client.event.ConnectErrorEvent;
 import octoteam.tahiti.client.event.ConnectedEvent;
 import octoteam.tahiti.client.event.DisconnectedEvent;
 import octoteam.tahiti.client.pipeline.*;
-import octoteam.tahiti.protocol.SocketMessageProtos.ChatMessageReqBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.ChatSendMessageReqBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.UserSignInReqBody;
 import octoteam.tahiti.shared.netty.pipeline.UserEventToEventBusHandler;
@@ -65,11 +65,11 @@ public class TahitiClient {
                                 .addLast(new ProtobufEncoder())
                                 .addLast(new ProtobufVarint32FrameDecoder())
                                 .addLast(new ProtobufDecoder(Message.getDefaultInstance()))
-                                .addLast(new HeartbeatEventHandler())
+                                .addLast(new HeartbeatPushHandler())
                                 .addLast(new ResponseCallbackHandler(callbackRepo))
                                 .addLast(new LoginResponseHandler())
-                                .addLast(new SessionExpireEventHandler())
-                                .addLast(new BroadcastEventHandler())
+                                .addLast(new SessionExpiredPushHandler())
+                                .addLast(new BroadcastPushHandler())
                                 .addLast(new SendMessageFilterHandler())
                                 .addLast(new UserEventToEventBusHandler(eventBus))
                         ;
@@ -145,7 +145,7 @@ public class TahitiClient {
     public void sendMessage(String message, Function<Message, Void> callback) {
         Message.Builder req = buildRequest(callback)
                 .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
-                .setChatMessageReq(ChatMessageReqBody.newBuilder()
+                .setChatSendMessageReq(ChatSendMessageReqBody.newBuilder()
                         .setPayload(message)
                         .setTimestamp(new Date().getTime())
                 );

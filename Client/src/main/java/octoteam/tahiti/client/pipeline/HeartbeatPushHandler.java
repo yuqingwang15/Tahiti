@@ -7,15 +7,14 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 /**
- * 该模块处理下行消息中的心跳事件 (HEARTBEAT_EVENT),
- * 在收到心跳事件时发送上行消息 HEARTBEAT_EVENT ACK.
+ * 该模块接收到下行的 HEARTBEAT_PUSH 后，会发送上行的 ACK。
  */
 @ChannelHandler.Sharable
-public class HeartbeatEventHandler extends MessageHandler {
+public class HeartbeatPushHandler extends MessageHandler {
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {
-        if (msg.getService() == Message.ServiceCode.HEARTBEAT_EVENT) {
+        if (msg.getService() == Message.ServiceCode.HEARTBEAT_PUSH) {
             ctx.writeAndFlush(ProtocolUtil.buildAck(msg));
         }
         ctx.fireChannelRead(msg);

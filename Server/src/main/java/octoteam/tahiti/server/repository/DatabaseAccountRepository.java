@@ -18,6 +18,7 @@ public class DatabaseAccountRepository implements AccountRepository {
 
     /**
      * 初始化程序与用户表之间的链接
+     *
      * @param connectionSource 数据库连接
      * @throws Exception
      */

@@ -4,10 +4,10 @@ import com.google.common.base.MoreObjects;
 
 /**
  * 服务端配置信息<br>
- *     数据库<br>
- *     日志文件<br>
- *     Socket ip 及端口配置<br>
- *     RateLimit 相关配置（次数限制及频率限制）<br>
+ * 数据库<br>
+ * 日志文件<br>
+ * Socket ip 及端口配置<br>
+ * RateLimit 相关配置（次数限制及频率限制）<br>
  */
 public class ServerConfiguration {
 

@@ -5,7 +5,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import octoteam.tahiti.protocol.SocketMessageProtos.ChatBroadcastEventBody;
+import octoteam.tahiti.protocol.SocketMessageProtos.ChatBroadcastPushBody;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.server.event.MessageForwardEvent;
 import octoteam.tahiti.server.session.Credential;
@@ -32,11 +32,11 @@ public class MessageForwardHandler extends MessageHandler {
             }
             Message.Builder resp = Message
                     .newBuilder()
-                    .setDirection(Message.DirectionCode.EVENT)
-                    .setService(Message.ServiceCode.CHAT_BROADCAST_EVENT)
-                    .setChatBroadcastEvent(ChatBroadcastEventBody.newBuilder()
-                            .setPayload(msg.getChatMessageReq().getPayload())
-                            .setTimestamp(msg.getChatMessageReq().getTimestamp())
+                    .setDirection(Message.DirectionCode.PUSH)
+                    .setService(Message.ServiceCode.CHAT_BROADCAST_PUSH)
+                    .setChatBroadcastPush(ChatBroadcastPushBody.newBuilder()
+                            .setPayload(msg.getChatSendMessageReq().getPayload())
+                            .setTimestamp(msg.getChatSendMessageReq().getTimestamp())
                             .setSenderUID(currentCredential.getUID())
                             .setSenderUsername(currentCredential.getUsername())
                     );

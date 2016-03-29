@@ -11,10 +11,10 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 /**
- * 该模块可以在未登录情况下过滤管道中的上行 EVENT 消息和下行 REQUEST 消息.
- * 该模块会对每一个收到的下行 REQUEST 消息产生 MessageEvent 事件, 事件中标记了该消息收到时是否已经登录.
- * 对于被过滤的下行消息, 该模块还会发送状态为 NOT_AUTHENTICATED 的上行消息.
- * 被过滤的消息会被丢弃.
+ * 该模块可以在未登录情况下过滤管道中的上行推送 (Push) 消息和下行请求 (Request) 消息.
+ * 该模块会对每一个收到的下行 REQUEST 消息产生 MessageEvent 事件, 事件中标记了该消息
+ * 收到时是否已经登录. 对于被过滤的下行消息, 该模块还会发送状态为 NOT_AUTHENTICATED
+ * 的上行响应 (Response) 消息. 被过滤的消息会被丢弃.
  */
 @ChannelHandler.Sharable
 public class AuthFilterHandler extends MessageHandler {
@@ -34,13 +34,13 @@ public class AuthFilterHandler extends MessageHandler {
      * 被动回应直接通过；
      * 主动回应需要判断客户端用户身份的有效性，如果该用户已经登陆，则下发信息;如果该用户处于未登陆状态,则不处理该消息.					，则不处理该消息。
      *
-     * @param ctx 管道环境
-     * @param msg 将要发送的消息
+     * @param ctx     管道环境
+     * @param msg     将要发送的消息
      * @param promise 消息传递过程中的数据保证
      */
     @Override
     protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
-        if (msg.getDirection() != Message.DirectionCode.EVENT) {
+        if (msg.getDirection() != Message.DirectionCode.PUSH) {
             ctx.write(msg, promise);
             return;
         }
