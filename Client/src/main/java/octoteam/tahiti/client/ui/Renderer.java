@@ -233,11 +233,27 @@ public class Renderer {
     public void actionAppendChatMessage(String sender, long timestamp, String content) {
         store.update(() -> {
             store.put(MAIN_WINDOW_TEXT, String.format(
-                    "%s\n\n%s (%s):\n%s",
+                    "%s%s (%s):\n%s\n\n",
                     store.get(MAIN_WINDOW_TEXT),
                     sender,
                     dateFormat.format(new Date(timestamp)),
                     content));
+        });
+    }
+
+    public void actionAppendNotice(String content) {
+        String prefixed = "";
+        String[] line = content.split("\n");
+        for (String l : line) prefixed += "# " + l + "\n";
+
+        final String p = prefixed;
+
+        store.update(() -> {
+            store.put(MAIN_WINDOW_TEXT, String.format(
+                    "%s# NOTICE\n%s\n\n",
+                    store.get(MAIN_WINDOW_TEXT),
+                    p.trim()
+                    ));
         });
     }
 

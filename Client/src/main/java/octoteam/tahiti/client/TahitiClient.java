@@ -142,8 +142,8 @@ public class TahitiClient {
         login(username, password, null);
     }
 
-    public void sendMessage(String message) {
-        Message.Builder req = buildRequest()
+    public void sendMessage(String message, Function<Message, Void> callback) {
+        Message.Builder req = buildRequest(callback)
                 .setService(Message.ServiceCode.CHAT_SEND_MESSAGE_REQUEST)
                 .setChatMessageReq(ChatMessageReqBody.newBuilder()
                         .setPayload(message)
@@ -151,6 +151,10 @@ public class TahitiClient {
                 );
         Message msg = req.build();
         channel.writeAndFlush(msg);
+    }
+
+    public void sendMessage(String message) {
+        sendMessage(message);
     }
 
 }

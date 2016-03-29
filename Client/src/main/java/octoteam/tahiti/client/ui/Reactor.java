@@ -5,6 +5,7 @@ import octoteam.tahiti.client.TahitiClient;
 import octoteam.tahiti.client.event.*;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredEventBody;
+import org.apache.commons.lang3.StringUtils;
 
 public class Reactor {
 
@@ -42,6 +43,7 @@ public class Reactor {
      */
     @Subscribe
     public void onSessionExpired(SessionExpiredEvent event) {
+        renderer.actionAppendNotice("Session expired. You are logged out.");
         if (event.getReason() == SessionExpiredEventBody.Reason.EXPIRED) {
             client.login(loginUsername, loginPassword);
         }
@@ -78,6 +80,18 @@ public class Reactor {
     }
 
     /**
+     * 处理登录响应: 在界面上显示您已经登录
+     *
+     * @param event
+     */
+    @Subscribe
+    public void onLoginResponse(LoginAttemptEvent event) {
+        if (event.isSuccess()) {
+            renderer.actionAppendNotice("You are logged in.");
+        }
+    }
+
+    /**
      * 处理登录按钮事件: 显示正在连接到服务器并发起登录请求
      *
      * @param event
@@ -100,12 +114,22 @@ public class Reactor {
 
     /**
      * 处理发送按钮事件: 发送消息给服务端
+     * 若发送失败, 则在界面上显示失败信息
      *
      * @param event
      */
     @Subscribe
     public void onClickSend(UIOnSendCommandEvent event) {
-        client.sendMessage(event.getPayload());
+        client.sendMessage(event.getPayload(), msg -> {
+            if (msg.getStatus() != Message.StatusCode.SUCCESS) {
+                renderer.actionAppendNotice(String.format(
+                        "Failed to deliver \"%s\"\nReason: %s",
+                        StringUtils.abbreviate(event.getPayload(), 20),
+                        msg.getStatus().toString()
+                        ));
+            }
+            return null;
+        });
     }
 
     /**

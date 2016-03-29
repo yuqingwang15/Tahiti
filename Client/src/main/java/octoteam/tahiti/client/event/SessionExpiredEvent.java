@@ -2,8 +2,9 @@ package octoteam.tahiti.client.event;
 
 import com.google.common.base.MoreObjects;
 import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredEventBody;
+import octoteam.tahiti.shared.event.BaseEvent;
 
-public class SessionExpiredEvent {
+public class SessionExpiredEvent extends BaseEvent {
 
     private SessionExpiredEventBody.Reason reason;
 
