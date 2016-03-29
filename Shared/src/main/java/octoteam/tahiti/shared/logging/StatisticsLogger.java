@@ -14,9 +14,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 父日志对象,
- * 初始化一个日志对象, 根据日志输出路径创建输出器 Appender 并对其进行日志输出模式 Pattern 的配置,
- * 并按给定时间间隔定时执行日志记录.
+ * 该模块实现了可统计的日志, 该模块定期将统计值写入日志, 派生类可调用该模块接口修改统计值
  */
 public abstract class StatisticsLogger {
 
@@ -56,10 +54,10 @@ public abstract class StatisticsLogger {
     }
 
     /**
-     * 构造函数 按给定路径初始化日志对象,并按给定时间间隔定时执行.
+     * 构造函数 按给定时间间隔定时写入给定路径的日志
      *
      * @param filePath      日志的存储路径
-     * @param periodSeconds 日志执行记录的时间周期,单位为秒
+     * @param periodSeconds 记录的时间周期,单位为秒
      */
     public StatisticsLogger(String filePath, int periodSeconds) {
         initLogger(filePath);

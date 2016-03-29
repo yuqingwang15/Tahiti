@@ -20,7 +20,7 @@ public abstract class MessageHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * 当从外部收到消息是被调用，默认是向消息处理队列中的下一 Handler 传递消息，子类可以通过覆写这个方法实现自定义的消息处理行为
+     * 当从外部收到消息时被调用，默认是向消息处理队列中的下一 Handler 传递消息，子类可以通过覆写这个方法实现自定义的消息处理行为
      *
      * @param ctx 当前 Handler 所处的队列环境，可向相同环境内的 Handler 传递消息
      * @param msg 收到的消息 （Message）
@@ -44,7 +44,7 @@ public abstract class MessageHandler extends ChannelDuplexHandler {
      *
      * @param ctx     当前 Handler 所处的队列环境，可向相同环境内的 Handler 传递消息
      * @param msg     发送的消息 （Message）
-     * @param promise 消息传递过程中的数据保证
+     * @param promise 消息成功发送的 Promise
      * @throws Exception
      */
     protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) throws Exception {

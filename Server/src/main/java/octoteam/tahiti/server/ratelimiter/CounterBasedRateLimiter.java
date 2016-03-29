@@ -1,7 +1,7 @@
 package octoteam.tahiti.server.ratelimiter;
 
 /**
- * 计数器，限制阈值（不限时间）
+ * 提供基于计数的限流器接口。获得令牌超过允许次数限制后，就无法继续获得令牌。
  */
 public class CounterBasedRateLimiter implements SimpleRateLimiter {
 

@@ -6,7 +6,7 @@ package octoteam.tahiti.server.ratelimiter;
 public interface SimpleRateLimiter {
 
     /**
-     * 判断是否超出阈值
+     * 尝试获取令牌
      *
      * @return 如果未超出阈值返回 true，否则返回 false。
      */
