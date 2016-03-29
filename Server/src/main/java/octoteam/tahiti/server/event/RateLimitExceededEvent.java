@@ -14,7 +14,7 @@ public class RateLimitExceededEvent extends BaseEvent {
     public static final String NAME_PER_SECOND = "perSecond";
 
     /**
-     * TODO
+     * 事件的具体类型， perSession（有效消息的发送次数超过阈值） 或 perSecond（有效消息发送次数超过 1 秒内消息阈值） 中的一种
      */
     private String name;
 
