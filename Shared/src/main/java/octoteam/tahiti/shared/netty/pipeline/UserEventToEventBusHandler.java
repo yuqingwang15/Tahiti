@@ -1,14 +1,14 @@
 package octoteam.tahiti.shared.netty.pipeline;
 
 import com.google.common.eventbus.EventBus;
-import io.netty.channel.ChannelHandlerAdapter;
+import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
  * TODO
  */
-public class UserEventToEventBusHandler extends ChannelHandlerAdapter {
+public class UserEventToEventBusHandler extends ChannelDuplexHandler {
 
     private final EventBus eventBus;
 

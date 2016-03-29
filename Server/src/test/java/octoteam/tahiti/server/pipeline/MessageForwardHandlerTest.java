@@ -7,8 +7,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class MessageForwardHandlerTest {
 
@@ -17,7 +16,11 @@ public class MessageForwardHandlerTest {
 
         // MessageForwardHandler should construct CHAT_BROADCAST_EVENT message only when received CHAT_SEND_MESSAGE_REQUEST message
 
-        EmbeddedChannel channel = new EmbeddedChannel(new MessageForwardHandler());
+        EmbeddedChannel channelSender = new EmbeddedChannel(new NaiveChannelId(0), new MessageForwardHandler());
+        EmbeddedChannel channelReceivers[] = new EmbeddedChannel[3];
+        for (int i = 0; i < 3; ++i) {
+            channelReceivers[i] = new EmbeddedChannel(new NaiveChannelId(i + 1), new MessageForwardHandler());
+        }
 
         Message msgRequest = Message.newBuilder()
                 .setSeqId(1038)
@@ -28,13 +31,28 @@ public class MessageForwardHandlerTest {
                         .setTimestamp(Calendar.getInstance().getTimeInMillis())
                 ).build();
 
-        channel.writeInbound(msgRequest);
-        channel.finish();
+        channelSender.writeInbound(msgRequest);
+        channelSender.finish();
 
-        assertEquals(msgRequest, channel.readInbound());
+        assertEquals(msgRequest, channelSender.readInbound());
+        assertNull(channelSender.readOutbound());
 
-        // not writing CHAT_BROADCAST_EVENT message to itself
-        assertNull(channel.readOutbound());
+        for (int i = 0; i < 3; ++i) {
+            channelReceivers[i].finish();
+
+            assertNull(channelReceivers[i].readInbound());
+
+            Object response = channelReceivers[i].readOutbound();
+            assertTrue(response instanceof Message);
+
+            Message responseMsg = (Message) response;
+            assertEquals(Message.DirectionCode.EVENT, responseMsg.getDirection());
+            assertEquals(Message.ServiceCode.CHAT_BROADCAST_EVENT, responseMsg.getService());
+            assertEquals(Message.BodyCase.CHATBROADCASTEVENT, responseMsg.getBodyCase());
+            assertEquals("HELLO :P", responseMsg.getChatBroadcastEvent().getPayload());
+            assertEquals("Guest", responseMsg.getChatBroadcastEvent().getSenderUsername());
+        }
+
     }
 
     @Test

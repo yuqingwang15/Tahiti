@@ -1,6 +1,6 @@
 package octoteam.tahiti.shared.netty;
 
-import io.netty.channel.ChannelHandlerAdapter;
+import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
@@ -8,7 +8,7 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 /**
  * TODO
  */
-public abstract class MessageHandler extends ChannelHandlerAdapter {
+public abstract class MessageHandler extends ChannelDuplexHandler {
 
     @Override
     final public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
