@@ -24,7 +24,7 @@
 - 选择技术和框架
 - 架构搭建
 
-### 李平山
+### 李平山 ([nicktogo](https://github.com/nicktogo))
 
 - 消息限制模块
 - 消息转发模块
