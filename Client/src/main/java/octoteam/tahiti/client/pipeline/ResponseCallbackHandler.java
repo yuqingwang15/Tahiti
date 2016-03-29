@@ -7,7 +7,8 @@ import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.shared.netty.MessageHandler;
 
 /**
- *
+ * 该模块处理服务端对请求的响应. 若发送对应请求时指定了回调函数,
+ * 则会调用该回调函数, 实现回调式 Request - Response
  */
 @ChannelHandler.Sharable
 public class ResponseCallbackHandler extends MessageHandler {

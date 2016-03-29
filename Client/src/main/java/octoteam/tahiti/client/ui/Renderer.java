@@ -253,7 +253,7 @@ public class Renderer {
                     "%s# NOTICE\n%s\n\n",
                     store.get(MAIN_WINDOW_TEXT),
                     p.trim()
-                    ));
+            ));
         });
     }
 

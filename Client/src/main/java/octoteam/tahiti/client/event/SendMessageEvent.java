@@ -4,12 +4,18 @@ import com.google.common.base.MoreObjects;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
- * 用户发送需要转发的消息事件.
+ * 用户准备发送消息事件
  */
 public class SendMessageEvent extends BaseEvent {
 
+    /**
+     * 消息内容
+     */
     private String payload;
 
+    /**
+     * 发送时间
+     */
     private long timestamp;
 
     public SendMessageEvent(String payload, long timestamp) {
