@@ -11,7 +11,7 @@
   
 ## 总结
 
-项目历时两周，团队成员协同开发，基于开源网络应用框架 `Netty` 实现了一个 `C/S` 聊天程序。
+项目历时两周，团队成员协同开发，基于开源网络应用框架 Netty 实现了一个 C/S 聊天程序。
 
 经过这个项目，我们发现在项目前期划分好模块，做好架构的模块化，可以在后期大大降低协同开发时候产生的代码冲突。
 
@@ -19,27 +19,30 @@
 
 ## 分工 
 
-### 施闻轩 ([SummerWish](https://github.com/SummerWish/))
+### 施闻轩 1352978 [@SummerWish](https://github.com/SummerWish/)
 
-- 选择技术和框架
-- 架构搭建
+- 基础架构搭建: 已完成，已测试
+- 程序文档
 
-### 李平山 ([nicktogo](https://github.com/nicktogo))
+### 李平山 1352840 [@nicktogo](https://github.com/nicktogo)
 
-- 消息限制模块
-- 消息转发模块
+- 消息过滤模块: 已完成，已测试
+- 消息转发模块: 已完成，已测试
+- 程序文档
+- 管理文档
 
-### 张航 （[HermanZzz](https://github.com/HermanZzz)）
+### 张航 1352960 [@HermanZzz](https://github.com/HermanZzz)
 
-- 日志记录模块
+- 日志记录模块: 已完成，已测试
+- 程序文档
 
-### 刘林青
+### 刘林青 1354361 [@likicode](https://github.com/likicode)
 
-- TODO
+- 消息转发模块: 已完成，已测试
+- 复用文档
 
-### 王雨晴 
+### 王雨晴 1353302 [@yuqingwang15](https://github.com/yuqingwang15)
 
-- TODO
-
-## 完成情况
-
+- 数据库模块: 部分完成
+- 数据库操作工具模块: 部分完成
+- 程序文档

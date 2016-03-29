@@ -2,12 +2,25 @@
 
 Tahiti is a simple chatting service.  
 
+## Documentation
+
+[API Documentation 程序文档](https://summerwish.github.io/Tahiti/)
+
+[Reuse Documentation 复用文档](https://github.com/SummerWish/Tahiti/blob/master/doc/Tahiti%20%E6%9E%84%E4%BB%B6%E8%BD%AF%E4%BB%B6%E5%A4%8D%E7%94%A8%E6%96%87%E6%A1%A3.md)
+
+[Manage Documentation 管理文档](https://github.com/SummerWish/Tahiti/blob/master/doc/Tahiti%20%E7%AE%A1%E7%90%86%E6%96%87%E6%A1%A3.md)
+
 ## Group Members
-### 施闻轩 ([SummerWish](https://github.com/SummerWish/))  
-### 李平山 1352840 ([nicktogo](https://github.com/nicktogo))  
-### 张航 （[HermanZzz](https://github.com/HermanZzz)）  
-### 刘林青  
-### 王雨晴  
+
+施闻轩 1352978 [@SummerWish](https://github.com/SummerWish/)
+
+李平山 1352840 [@nicktogo](https://github.com/nicktogo)
+
+张航 1352960 [@HermanZzz](https://github.com/HermanZzz)
+
+刘林青 1354361 [@likicode](https://github.com/likicode)
+
+王雨晴 1353302 [@yuqingwang15](https://github.com/yuqingwang15)
 
 ## Architecture Introduction
 
