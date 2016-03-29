@@ -5,11 +5,16 @@ import com.google.common.eventbus.Subscribe;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
+import octoteam.tahiti.server.model.Account;
 import octoteam.tahiti.server.repository.AccountRepository;
 import octoteam.tahiti.server.repository.DatabaseAccountRepository;
 import octoteam.tahiti.server.service.AccountService;
 import octoteam.tahiti.shared.event.BaseEvent;
 import octoteam.tahiti.shared.logging.LoggerUtil;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -22,6 +27,14 @@ public class Console {
     public static void main(String[] args) throws Exception {
 
         LoggerUtil.reset();
+
+        // Commandline Options
+        Options options = new Options();
+        options.addOption("a", "add", false, "Add user");
+        options.addOption("u", "username", true, "Username");
+        options.addOption("p", "password", true, "Password");
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args);
 
         // Read config
         Yaml yaml = new Yaml();
@@ -39,22 +52,37 @@ public class Console {
         AccountRepository repository = new DatabaseAccountRepository(connectionSource);
         AccountService accountService = new AccountService(repository);
 
-        // Create event bus
-        EventBus serverEventBus = new EventBus();
-        serverEventBus.register(new Logger(config.getLogFile(), 60));
-        serverEventBus.register(new Object() {
-            @Subscribe
-            public void listenAllEvent(BaseEvent event) {
-                System.out.println(event);
+        if (cmd.hasOption("a")) {
+
+            Account account = repository.lookupAccountByUsername(cmd.getOptionValue("u"));
+
+            if (account != null) {
+                System.out.println("Create user failed: Username exists.");
+            } else {
+                repository.createAccount(cmd.getOptionValue("u"), cmd.getOptionValue("p"));
+                System.out.println("Create user succeeded.");
             }
-        });
 
-        // Create server
-        TahitiServer server = new TahitiServer(config, serverEventBus, accountService);
+            connectionSource.close();
 
+        } else {
 
-        server.run();
+            // Create event bus
+            EventBus serverEventBus = new EventBus();
+            serverEventBus.register(new Logger(config.getLogFile(), 60));
+            serverEventBus.register(new Object() {
+                @Subscribe
+                public void listenAllEvent(BaseEvent event) {
+                    System.out.println(event);
+                }
+            });
 
+            // Create server
+            TahitiServer server = new TahitiServer(config, serverEventBus, accountService);
+
+            server.run();
+
+        }
     }
 
 }
