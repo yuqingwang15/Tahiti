@@ -29,7 +29,7 @@ public class Credential {
     private boolean authenticated;
 
     /**
-     * TODO
+     * 根据传入参数实例化一个用户凭证
      *
      * @param UID 用户唯一识别号（int）
      * @param username 用户名 （String）
