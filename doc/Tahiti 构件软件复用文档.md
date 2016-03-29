@@ -22,44 +22,40 @@
 ###接口说明
 - client端：
   * HeartbeatHandler:
-  客户端每隔30秒将接受到来自服务端的心跳信息。
+  	* 客户端响应来自服务端的心跳信息
 
-  * ResponseCallbackHandler
-  根据服务端传来的登陆结果的消息更新UI。
+  * ResponseCallbackHandler:
+  	* 根据服务端传来的登陆结果的消息更新UI。
 
-  * LoginResponseHandler
-  提高程序的可扩展性。
+  * LoginResponseHandler:
+  	* 提高程序的可扩展性。
 
-  * SendMessageHandler
-提高程序的可扩展性。
+  * SendMessageHandler:
+	* 提高程序的可扩展性。
 
 - server端：
-  1. AuthFilterHandler: 
-作用：验证服务端收发消息的身份有效性
+  * AuthFilterHandler: 
+	* 验证服务端收发消息的身份有效性
 
-  2. AuthRequestHandler：
-作用：处理客户端登陆消息。
+  * AuthRequestHandler：
+	* 处理客户端登陆消息。
 
-  3. HeartbeatHandler
-作用：每隔30秒，向客户端发送心跳。
+  * HeartbeatHandler:
+	* 在收到 IdleStateEvent 发送 HEARTBEAT_EVENT，从而在配合 IdleStateHandler 的情况下可以实现心跳功能
 
-  4. MessageForwardHandler
-作用：收集所有客户端的链接。
-	2》如果客户端接受CHAT_SEND_MESSAGE_REQUEST类的消息，则群发给其它所有的客户端。
+  * MessageForwardHandler:
+	* 收集所有客户端的链接
+	* 如果客户端接受CHAT_SEND_MESSAGE_REQUEST类的消息，则群发给其它所有的客户端。
 
->MessageRequestHandler
-作用：对于群发的消息，回复发起群发的客户端成功的消息。
-方法：判断消息类型，如果属于CHAT_SEND_MESSAGE_REQUEST类型则回复成功。
+  * MessageRequestHandler:
+	* 对于群发的消息，回复发起群发的客户端成功的消息。
 
->RequestRateLimitHandler
-作用：实现了每秒钟不能超过5次，每个登陆的账号不能发超过100条的限制（具体数量可以在配置文件中修改）。
-方法：构造函数：根据不同的传入参数构造相应的方法：（perSecond）一种基于时间，（perSession）一种基于session
+  * RequestRateLimitHandler:
+	* 实现了每秒钟不能超过5次，每个登陆的账号不能发超过100条的限制（具体数量可以在配置文件中修改）。
 
->SessionExpireHandler
-作用：提醒用户在发送超过100条之后session过期
-方法：传入一个RateLimitExceededEvent类型的event，如果event.getName()为NAME_PER_SESSION，给客户端发送session过期的消息。
+  * SessionExpireHandler
+	* 提醒用户在发送超过100条之后session过期
 
->UserEventHandler
-作用：把所有的event都传给eventbus，根据event类型来调用不同的订阅者。
-方法：该Handler处于所有pipeline的末端，将pipeline所有的event post到eventbus中。
+  * UserEventHandler
+	* 	把所有的event都传给eventbus，根据event类型来调用不同的订阅者。
 
