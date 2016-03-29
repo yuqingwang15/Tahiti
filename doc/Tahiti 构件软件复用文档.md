@@ -11,6 +11,17 @@
   * 版本：protoc 3.0
   * 安装:
     1. 在.proto文件中定义需要做串行化的数据结构信息。例如
+    ```
+    message Message{
+	    enum DirectionCode {
+	    UNKNOWN_DIRECTIONCODE       = 0;
+	    REQUEST                     = 1;    // 客户端 -> 服务端(负责生成 seqId)
+	    RESPONSE                    = 2;    // 服务端 -> 客户端响应(负责回复 seqId)
+	    EVENT                       = 3;    // 服务端 -> 客户端(负责生成 seqId)
+	    ACK                         = 4;    // 客户端 -> 服务端响应(负责回复 seqId)
+  	    }
+    }
+    ```
     2. 定义好报文格式（message）之后，调用protobuf的编辑器protoc 将.proto文件编译成特定语言的类
     3. 运用生成的类串行化或者反串行化数据。
 - 给maven设置环境变量
