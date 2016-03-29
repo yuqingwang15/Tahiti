@@ -19,7 +19,7 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 public class MessageForwardHandler extends MessageHandler {
 
     /**
-     * TODO
+     * 收集所有与服务端成功建立起连接的客户端
      */
     private final static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
