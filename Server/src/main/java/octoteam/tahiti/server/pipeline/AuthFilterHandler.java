@@ -20,10 +20,8 @@ import octoteam.tahiti.shared.protocol.ProtocolUtil;
 public class AuthFilterHandler extends MessageHandler {
 
     /**
-     * TODO
-     *
-     * @param ctx
-     * @return
+     * @param ctx 管道环境
+     * @return 已登录则返回 true，否则返回 false
      */
     private boolean isContextAuthenticated(ChannelHandlerContext ctx) {
         Credential c = (Credential) PipelineHelper.getSession(ctx).get("credential");
@@ -36,9 +34,9 @@ public class AuthFilterHandler extends MessageHandler {
      * 被动回应直接通过；
      * 主动回应需要判断客户端用户身份的有效性，如果该用户已经登陆，则下发信息;如果该用户处于未登陆状态,则不处理该消息.					，则不处理该消息。
      *
-     * @param ctx
-     * @param msg
-     * @param promise
+     * @param ctx 管道环境
+     * @param msg 将要发送的消息
+     * @param promise 消息传递过程中的数据保证
      */
     @Override
     protected void messageSent(ChannelHandlerContext ctx, Message msg, ChannelPromise promise) {
@@ -58,8 +56,8 @@ public class AuthFilterHandler extends MessageHandler {
     /**
      * 如果不属于request类消息则直接下发到下一个handler，如果属于request则先验证合法性。
      *
-     * @param ctx
-     * @param msg
+     * @param ctx 管道环境
+     * @param msg 收到的消息
      */
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) {

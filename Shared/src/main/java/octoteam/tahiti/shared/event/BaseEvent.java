@@ -3,7 +3,7 @@ package octoteam.tahiti.shared.event;
 import com.google.common.base.MoreObjects;
 
 /**
- * TODO
+ * 所有自定义事件的基类
  */
 public class BaseEvent {
 

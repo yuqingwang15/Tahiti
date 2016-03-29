@@ -13,25 +13,25 @@ import java.security.NoSuchAlgorithmException;
 public class Account {
 
     /**
-     * TODO
+     * 用户唯一 id
      */
     @DatabaseField(generatedId = true)
     private int id;
 
     /**
-     * TODO
+     * 用户名
      */
     @DatabaseField(canBeNull = false)
     private String username;
 
     /**
-     * TODO
+     * 用户密码哈希值
      */
     @DatabaseField(canBeNull = false)
     private String hash;
 
     /**
-     * TODO
+     * 生成用户密码哈希值的字符串
      */
     @DatabaseField(canBeNull = false)
     private String salt;
@@ -79,21 +79,21 @@ public class Account {
     }
 
     /**
-     * TODO
+     * 匹配用户密码
      *
-     * @param password
-     * @return
+     * @param password 用户明文密码
+     * @return 匹配则返回 true，否则返回 false
      */
     public boolean isPasswordMatches(String password) {
         return hashPassword(password, salt).equals(hash);
     }
 
     /**
-     * TODO
+     * 根据用户明文密码生成哈希值
      *
-     * @param password
-     * @param salt
-     * @return
+     * @param password 用户明文密码
+     * @param salt 字符串
+     * @return 用户密码哈希值
      */
     public static String hashPassword(String password, String salt) {
         try {

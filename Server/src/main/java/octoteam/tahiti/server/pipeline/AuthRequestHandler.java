@@ -27,9 +27,7 @@ public class AuthRequestHandler extends MessageHandler {
     private final AccountService accountService;
 
     /**
-     * TODO
-     *
-     * @param accountService
+     * @param accountService 用于查找用户
      */
     public AuthRequestHandler(AccountService accountService) {
         this.accountService = accountService;

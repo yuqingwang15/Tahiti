@@ -12,12 +12,12 @@ import octoteam.tahiti.shared.event.BaseEvent;
 public class MessageEvent extends BaseEvent {
 
     /**
-     * TODO
+     * 消息的接收方或发送方是否已登录
      */
     private boolean authenticated;
 
     /**
-     * TODO
+     * 触发事件的消息
      */
     private Message message;
 

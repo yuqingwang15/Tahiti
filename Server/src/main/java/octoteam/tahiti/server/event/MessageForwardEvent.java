@@ -13,7 +13,7 @@ import octoteam.tahiti.shared.event.BaseEvent;
 public class MessageForwardEvent extends BaseEvent {
 
     /**
-     * TODO
+     * 被转发的消息
      */
     private Message message;
 

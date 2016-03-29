@@ -7,7 +7,7 @@ import octoteam.tahiti.shared.netty.MessageHandler;
 import octoteam.tahiti.shared.protocol.ProtocolUtil;
 
 /**
- * TODO
+ * 仅用于测试，回应客户端发送的 PINT_REQUEST 消息
  */
 @ChannelHandler.Sharable
 public class PingRequestHandler extends MessageHandler {
