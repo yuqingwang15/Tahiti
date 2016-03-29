@@ -5,19 +5,19 @@ import octoteam.tahiti.server.model.Account;
 public interface AccountRepository {
 
     /**
-     * TODO
+     * 根据用户名查找用户
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 成功查找到该用户则返回 Account，否则返回 null
      */
     public Account lookupAccountByUsername(String username);
 
     /**
-     * TODO
+     * 根据指定用户名及密码创建用户
      *
-     * @param username
-     * @param password
-     * @return
+     * @param username 用户名
+     * @param password 密码
+     * @return 创建成功则返回创建的 Account， 否则返回 null
      */
     public Account createAccount(String username, String password);
 

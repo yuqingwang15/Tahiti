@@ -1,7 +1,7 @@
 package octoteam.tahiti.server.service;
 
 /**
- * TODO
+ * 在数据库或内存内找不到用户时抛出
  */
 public class AccountNotFoundException extends Throwable {
 }

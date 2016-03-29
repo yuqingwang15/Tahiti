@@ -5,7 +5,7 @@ import octoteam.tahiti.server.model.Account;
 import java.util.HashMap;
 
 /**
- * TODO
+ * 用于操作内存内的用户表，用于测试，不建议在实际环境中使用
  */
 public class MemoryAccountRepository implements AccountRepository {
 

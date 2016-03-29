@@ -4,36 +4,36 @@ import com.google.common.base.MoreObjects;
 import octoteam.tahiti.server.model.Account;
 
 /**
- * TODO
+ * 存放于 Session 的用户凭证
  */
 public class Credential {
 
     /**
-     * TODO
+     * 用户唯一识别号
      */
     private int UID;
 
     /**
-     * TODO
+     * 用户名
      */
     private String username;
 
     /**
-     * TODO
+     * 用户
      */
     private Account account;
 
     /**
-     * TODO
+     * 验证状态
      */
     private boolean authenticated;
 
     /**
      * TODO
      *
-     * @param UID
-     * @param username
-     * @param authenticated
+     * @param UID 用户唯一识别号（int）
+     * @param username 用户名 （String）
+     * @param authenticated 验证状态（boolean）
      */
     public Credential(int UID, String username, boolean authenticated) {
         this.UID = UID;
@@ -45,7 +45,7 @@ public class Credential {
     /**
      * 由 Account Model 构造一个标记为已登录的认证信息
      *
-     * @param account
+     * @param account 用户
      */
     public Credential(Account account) {
         this.UID = account.getId();
@@ -67,9 +67,9 @@ public class Credential {
     }
 
     /**
-     * TODO
+     * 判断此凭证是否已被验证
      *
-     * @return
+     * @return 已验证返回 true，否则返回 false。
      */
     public boolean isAuthenticated() {
         return authenticated;
