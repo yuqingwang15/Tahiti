@@ -6,7 +6,7 @@ Tahiti is a simple chatting service.
 ### 施闻轩 ([SummerWish](https://github.com/SummerWish/))  
 ### 李平山 1352840 ([nicktogo](https://github.com/nicktogo))  
 ### 张航 （[HermanZzz](https://github.com/HermanZzz)）  
-### 刘林青  
+### 刘林青 ([likicode](https://github.com/likicode/))
 ### 王雨晴  
 
 ## Architecture Introduction
