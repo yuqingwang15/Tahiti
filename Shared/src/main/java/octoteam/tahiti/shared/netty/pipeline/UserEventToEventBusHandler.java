@@ -6,16 +6,16 @@ import io.netty.channel.ChannelHandlerContext;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
- * TODO
+ * 将消息处理队列中产生的用户事件提交至服务端事件总线中
  */
 public class UserEventToEventBusHandler extends ChannelDuplexHandler {
 
     private final EventBus eventBus;
 
     /**
-     * TODO
+     * 设置处理用户事件的服务端事件总线
      *
-     * @param eventBus
+     * @param eventBus 服务端事件总线 （EventBus）
      */
     public UserEventToEventBusHandler(EventBus eventBus) {
         this.eventBus = eventBus;
