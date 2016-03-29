@@ -29,9 +29,9 @@
 - 消息限制模块
 - 消息转发模块
 
-### 张航
+### 张航 （[HermanZzz](https://github.com/HermanZzz)）
 
-- TODO
+- 日志记录模块
 
 ### 刘林青
 
