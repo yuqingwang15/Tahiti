@@ -61,10 +61,8 @@ public class RequestRateLimitHandler extends MessageHandler {
     }
 
     /**
-     * TODO
-     *
-     * @param req
-     * @return
+     * @param req 超出限额的消息
+     * @return message 状态为 LIMIT_EXCEEDED 的下行消息
      */
     private Message buildExceededMsg(Message req) {
         Message.Builder resp = ProtocolUtil
