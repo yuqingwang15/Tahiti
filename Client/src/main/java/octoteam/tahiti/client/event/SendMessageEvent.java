@@ -4,7 +4,7 @@ import com.google.common.base.MoreObjects;
 import octoteam.tahiti.shared.event.BaseEvent;
 
 /**
- * TODO
+ * 用户发送需要转发的消息事件.
  */
 public class SendMessageEvent extends BaseEvent {
 

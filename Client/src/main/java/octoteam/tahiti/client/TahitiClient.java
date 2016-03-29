@@ -71,6 +71,7 @@ public class TahitiClient {
                                 .addLast(new SessionExpireEventHandler())
                                 .addLast(new BroadcastEventHandler())
                                 .addLast(new SendMessageFilterHandler())
+                                .addLast(new ReceiveMessageHandler())
                                 .addLast(new UserEventToEventBusHandler(eventBus))
                         ;
                     }

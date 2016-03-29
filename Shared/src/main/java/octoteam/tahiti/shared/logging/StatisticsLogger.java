@@ -14,7 +14,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * TODO
+ * 父日志对象,
+ * 初始化一个日志对象, 根据日志输出路径创建输出器 Appender 并对其进行日志输出模式 Pattern 的配置,
+ * 并按给定时间间隔定时执行日志记录.
  */
 public abstract class StatisticsLogger {
 
@@ -54,10 +56,10 @@ public abstract class StatisticsLogger {
     }
 
     /**
-     * TODO
+     * 构造函数 按给定路径初始化日志对象,并按给定时间间隔定时执行.
      *
-     * @param filePath
-     * @param periodSeconds
+     * @param filePath      日志的存储路径
+     * @param periodSeconds 日志执行记录的时间周期,单位为秒
      */
     public StatisticsLogger(String filePath, int periodSeconds) {
         initLogger(filePath);
@@ -65,19 +67,19 @@ public abstract class StatisticsLogger {
     }
 
     /**
-     * TODO
+     * 通过输入新键值对,初始化需要记录的事件信息,时间对应初始次数值为0.
      *
-     * @param key
+     * @param key 要记录的事件名称
      */
     protected void clear(String key) {
         counters.put(key, new AtomicInteger());
     }
 
     /**
-     * TODO
+     * 对相应记录事件的次数值进行加1
      *
-     * @param key
-     * @return
+     * @param key 要增加发生次数的事件名称
+     * @return 事件目前发生的总次数
      */
     protected int increase(String key) {
         return counters.get(key).incrementAndGet();
