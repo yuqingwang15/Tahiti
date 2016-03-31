@@ -3,7 +3,7 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
-import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
+import octoteam.tahiti.ratelimiter.CounterBasedRateLimiter;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

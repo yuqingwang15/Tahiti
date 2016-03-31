@@ -12,12 +12,12 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
+import octoteam.tahiti.ratelimiter.CounterBasedRateLimiter;
+import octoteam.tahiti.ratelimiter.TimeBasedRateLimiter;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
 import octoteam.tahiti.server.pipeline.*;
-import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
-import octoteam.tahiti.server.ratelimiter.TimeBasedRateLimiter;
 import octoteam.tahiti.server.service.AccountService;
 import octoteam.tahiti.shared.netty.pipeline.UserEventToEventBusHandler;
 

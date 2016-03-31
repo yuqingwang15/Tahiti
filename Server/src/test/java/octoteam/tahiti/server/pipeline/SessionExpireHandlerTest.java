@@ -3,8 +3,8 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.SessionExpiredPushBody;
+import octoteam.tahiti.ratelimiter.CounterBasedRateLimiter;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
-import octoteam.tahiti.server.ratelimiter.CounterBasedRateLimiter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
