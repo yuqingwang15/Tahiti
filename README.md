@@ -20,7 +20,7 @@ Tahiti is a simple chatting service.
 
 刘林青 1354361 [@likicode](https://github.com/likicode)
 
-王雨晴 1353302 [@yuqingwang15](https://github.com/yuqingwang15)
+王雨晴 1354202 [@yuqingwang15](https://github.com/yuqingwang15)
 
 ## Architecture Introduction
 
