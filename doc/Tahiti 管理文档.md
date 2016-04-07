@@ -43,7 +43,7 @@
 - 复用文档
 - 程序文档
 
-### 王雨晴 1353302 [@yuqingwang15](https://github.com/yuqingwang15)
+### 王雨晴 1354202 [@yuqingwang15](https://github.com/yuqingwang15)
 
 - 数据库模块: 部分完成
 - 数据库操作工具模块: 部分完成
