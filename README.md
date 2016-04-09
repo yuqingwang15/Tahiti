@@ -1,8 +1,16 @@
 # Tahiti
 
-Tahiti is a simple chatting service.  
+## Reuseable Components
+
+[Config Management 配置管理构件](https://github.com/SummerWish/TahitiConfigManager)：动态地加载配置，支持 JSON、Yaml、INI 格式
+
+[Performance Monitor 性能监控构件](https://github.com/SummerWish/TahitiPerformanceMonitor)：监控计数型指标和数值型指标，定时生成报告写入文件
+
+[Quota Limiter 配额限制构件](https://github.com/SummerWish/TahitiQuotaLimiter)：限制每秒请求次数限制或限制总计请求次数
 
 ## Documentation
+
+[Discussion Solutions 讨论课解决方案](https://github.com/SummerWish/Tahiti/tree/master/doc/discussion_1)
 
 [API Documentation 程序文档](https://summerwish.github.io/Tahiti/)
 
