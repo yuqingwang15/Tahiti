@@ -4,29 +4,21 @@ import com.google.common.eventbus.EventBus;
 import octoteam.tahiti.client.configuration.ClientConfiguration;
 import octoteam.tahiti.client.ui.Reactor;
 import octoteam.tahiti.client.ui.Renderer;
-import octoteam.tahiti.shared.logging.LoggerUtil;
-import org.yaml.snakeyaml.Yaml;
+import octoteam.tahiti.config.ConfigManager;
+import octoteam.tahiti.config.loader.YamlLoader;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.nio.file.Paths;
 
 public class Console {
 
     public static void main(String[] args) throws Exception {
 
-        LoggerUtil.reset();
-
-        // Read config
-        Yaml yaml = new Yaml();
-        ClientConfiguration config;
-        InputStream in;
-        try {
-            in = new FileInputStream("resource/tahiti_client.yaml");
-        } catch (FileNotFoundException e) {
-            in = Console.class.getClass().getResourceAsStream("/tahiti_client.yaml");
-        }
-        config = yaml.loadAs(in, ClientConfiguration.class);
+        // Load configuration
+        ConfigManager configManager = new ConfigManager(new YamlLoader(),
+                "resource/tahiti_client.yaml",
+                Paths.get(Console.class.getClass().getResource("/tahiti_client.yaml").toURI()).toString()
+        );
+        ClientConfiguration config = configManager.loadToBean(ClientConfiguration.class);
 
         // Create event bus
         EventBus clientEventBus = new EventBus();
@@ -36,7 +28,7 @@ public class Console {
         Reactor reactor = new Reactor(client, renderer);
 
         clientEventBus.register(reactor);
-        clientEventBus.register(new Logger(config.getLogFile(), 60));
+        clientEventBus.register(new IndexLogger(config.getLogFile(), 60));
 
         renderer.actionShowLoginDialog();
 

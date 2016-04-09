@@ -12,8 +12,8 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
-import octoteam.tahiti.ratelimiter.CounterBasedRateLimiter;
-import octoteam.tahiti.ratelimiter.TimeBasedRateLimiter;
+import octoteam.tahiti.quota.CapacityLimiter;
+import octoteam.tahiti.quota.ThroughputLimiter;
 import octoteam.tahiti.server.configuration.ChatServiceConfiguration;
 import octoteam.tahiti.server.configuration.ServerConfiguration;
 import octoteam.tahiti.server.event.RateLimitExceededEvent;
@@ -80,12 +80,12 @@ public class TahitiServer {
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
                                             RateLimitExceededEvent.NAME_PER_SECOND,
-                                            () -> new TimeBasedRateLimiter(config.getRateLimit().getPerSecond()))
+                                            () -> new ThroughputLimiter(config.getRateLimit().getPerSecond()))
                                     )
                                     .addLast(new RequestRateLimitHandler(
                                             ServiceCode.CHAT_SEND_MESSAGE_REQUEST,
                                             RateLimitExceededEvent.NAME_PER_SESSION,
-                                            () -> new CounterBasedRateLimiter(config.getRateLimit().getPerSession()))
+                                            () -> new CapacityLimiter(config.getRateLimit().getPerSession()))
                                     )
                                     .addLast(new SessionExpireHandler())
                                     .addLast(new MessageRequestHandler())

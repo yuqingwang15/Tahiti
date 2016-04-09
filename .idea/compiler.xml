@@ -24,7 +24,6 @@
         <processorPath useClasspath="true" />
         <module name="Client" />
         <module name="Protocol" />
-        <module name="RateLimiter" />
         <module name="Server" />
         <module name="Shared" />
       </profile>
@@ -32,7 +31,6 @@
     <bytecodeTargetLevel>
       <module name="Client" target="1.8" />
       <module name="Protocol" target="1.8" />
-      <module name="RateLimiter" target="1.8" />
       <module name="Server" target="1.8" />
       <module name="Shared" target="1.8" />
       <module name="Tahiti" target="1.8" />

@@ -3,7 +3,7 @@ package octoteam.tahiti.server.pipeline;
 import io.netty.channel.embedded.EmbeddedChannel;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message;
 import octoteam.tahiti.protocol.SocketMessageProtos.Message.ServiceCode;
-import octoteam.tahiti.ratelimiter.CounterBasedRateLimiter;
+import octoteam.tahiti.quota.CapacityLimiter;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -17,7 +17,7 @@ public class RequestRateLimitHandlerTest {
 
         EmbeddedChannel channel = new EmbeddedChannel(new RequestRateLimitHandler(
                 ServiceCode.PING_REQUEST,
-                "foo", () -> new CounterBasedRateLimiter(2)
+                "foo", () -> new CapacityLimiter(2)
         ));
 
         for (int i = 0; i < 5; ++i) {
@@ -42,7 +42,7 @@ public class RequestRateLimitHandlerTest {
 
         EmbeddedChannel channel = new EmbeddedChannel(new RequestRateLimitHandler(
                 ServiceCode.PING_REQUEST,
-                "foo", () -> new CounterBasedRateLimiter(2)
+                "foo", () -> new CapacityLimiter(2)
         ));
 
         // Not limited request

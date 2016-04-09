@@ -4,23 +4,33 @@ import com.google.common.eventbus.Subscribe;
 import octoteam.tahiti.server.event.LoginAttemptEvent;
 import octoteam.tahiti.server.event.MessageEvent;
 import octoteam.tahiti.server.event.MessageForwardEvent;
-import octoteam.tahiti.shared.logging.StatisticsLogger;
+import otcoteam.tahiti.performance.PerformanceMonitor;
+import otcoteam.tahiti.performance.recorder.CountingRecorder;
+import otcoteam.tahiti.performance.reporter.RollingFileReporter;
 
-public class Logger extends StatisticsLogger {
+import java.util.concurrent.TimeUnit;
 
-    public static final String VALID_LOGIN = "Valid login";
-    public static final String INVALID_LOGIN = "Invalid login";
-    public static final String RECEIVED_MESSAGE = "Received message";
-    public static final String IGNORED_MESSAGE = "Ignored message";
-    public static final String FORWARDED_MESSAGE = "Forwarded message";
+class IndexLogger {
 
-    public Logger(String filePath, int periodSeconds) {
-        super(filePath, periodSeconds);
-        clear(VALID_LOGIN);
-        clear(INVALID_LOGIN);
-        clear(RECEIVED_MESSAGE);
-        clear(IGNORED_MESSAGE);
-        clear(FORWARDED_MESSAGE);
+    private static final String VALID_LOGIN = "VALID_LOGIN";
+    private static final String INVALID_LOGIN = "INVALID_LOGIN";
+    private static final String RECEIVED_MESSAGE = "RECEIVED_MESSAGE";
+    private static final String IGNORED_MESSAGE = "IGNORED_MESSAGE";
+    private static final String FORWARDED_MESSAGE = "FORWARDED_MESSAGE";
+
+    private PerformanceMonitor monitor;
+
+    IndexLogger(String filePattern, int periodSeconds) {
+        monitor = new PerformanceMonitor(
+                new RollingFileReporter(filePattern),
+                periodSeconds,
+                TimeUnit.SECONDS
+        );
+        monitor.addRecorder(VALID_LOGIN, new CountingRecorder("Valid login times"));
+        monitor.addRecorder(INVALID_LOGIN, new CountingRecorder("Invalid login times"));
+        monitor.addRecorder(RECEIVED_MESSAGE, new CountingRecorder("Received messages"));
+        monitor.addRecorder(IGNORED_MESSAGE, new CountingRecorder("Ignored messages"));
+        monitor.addRecorder(FORWARDED_MESSAGE, new CountingRecorder("Forwarded messages"));
     }
 
     /**
@@ -33,9 +43,9 @@ public class Logger extends StatisticsLogger {
     @Subscribe
     public void onLoginAttempt(LoginAttemptEvent event) {
         if (event.getSuccess()) {
-            increase(VALID_LOGIN);
+            monitor.record(VALID_LOGIN);
         } else {
-            increase(INVALID_LOGIN);
+            monitor.record(INVALID_LOGIN);
         }
     }
 
@@ -49,9 +59,9 @@ public class Logger extends StatisticsLogger {
     @Subscribe
     public void onMessage(MessageEvent event) {
         if (event.isAuthenticated()) {
-            increase(RECEIVED_MESSAGE);
+            monitor.record(RECEIVED_MESSAGE);
         } else {
-            increase(IGNORED_MESSAGE);
+            monitor.record(IGNORED_MESSAGE);
         }
     }
 
@@ -64,7 +74,7 @@ public class Logger extends StatisticsLogger {
      */
     @Subscribe
     public void onForwardedMessage(MessageForwardEvent event) {
-        increase(FORWARDED_MESSAGE);
+        monitor.record(FORWARDED_MESSAGE);
     }
 
 }
