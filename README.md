@@ -12,15 +12,15 @@ Tahiti is a simple chatting service.
 
 ## Group Members
 
-施闻轩 1352978 [@SummerWish](https://github.com/SummerWish/)
-
 李平山 1352840 [@nicktogo](https://github.com/nicktogo)
 
 张航 1352960 [@HermanZzz](https://github.com/HermanZzz)
 
-刘林青 1354361 [@likicode](https://github.com/likicode)
+施闻轩 1352978 [@SummerWish](https://github.com/SummerWish/)
 
 王雨晴 1354202 [@yuqingwang15](https://github.com/yuqingwang15)
+
+刘林青 1354361 [@likicode](https://github.com/likicode)
 
 ## Architecture Introduction
 
