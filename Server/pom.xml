@@ -12,7 +12,7 @@
     <repositories>
         <repository>
             <id>tahiti</id>
-            <url>http://10.60.40.241:8888/repository/internal/</url>
+            <url>http://sse.tongji.edu.cn/tahiti-maven/repository/internal/</url>
             <releases>
                 <enabled>false</enabled>
             </releases>

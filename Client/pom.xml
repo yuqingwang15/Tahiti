@@ -9,6 +9,19 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <repositories>
+        <repository>
+            <id>tahiti</id>
+            <url>http://sse.tongji.edu.cn/tahiti-maven/repository/internal/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <artifactId>tahiti-client</artifactId>
     <dependencies>
         <dependency>
