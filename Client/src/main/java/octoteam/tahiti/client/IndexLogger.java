@@ -12,23 +12,18 @@ import java.util.concurrent.TimeUnit;
 
 class IndexLogger {
 
-    private static final String SUCCESSFUL_LOGIN = "SUCCESSFUL_LOGIN";
-    private static final String FAILED_LOGIN = "FAILED_LOGIN";
-    private static final String SENT_MESSAGE = "SENT_MESSAGE";
-    private static final String RECEIVED_MESSAGE = "RECEIVED_MESSAGE";
-
-    private PerformanceMonitor monitor;
+    private final CountingRecorder successfulLoginRecorder;
+    private final CountingRecorder failedLoginRecorder;
+    private final CountingRecorder sendMessageRecorder;
+    private final CountingRecorder receivedMessageRecorder;
 
     IndexLogger(String filePattern, int periodSeconds) {
-        monitor = new PerformanceMonitor(
-                new RollingFileReporter(filePattern),
-                periodSeconds,
-                TimeUnit.SECONDS
-        );
-        monitor.addRecorder(SUCCESSFUL_LOGIN, new CountingRecorder("Successful login times"));
-        monitor.addRecorder(FAILED_LOGIN, new CountingRecorder("Failed login times"));
-        monitor.addRecorder(SENT_MESSAGE, new CountingRecorder("Sent messages"));
-        monitor.addRecorder(RECEIVED_MESSAGE, new CountingRecorder("Received messages"));
+        new PerformanceMonitor(new RollingFileReporter(filePattern))
+                .addRecorder(successfulLoginRecorder = new CountingRecorder("Successful login times"))
+                .addRecorder(failedLoginRecorder = new CountingRecorder("Failed login times"))
+                .addRecorder(sendMessageRecorder = new CountingRecorder("Sent messages"))
+                .addRecorder(receivedMessageRecorder = new CountingRecorder("Received messages"))
+                .start(periodSeconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -41,9 +36,9 @@ class IndexLogger {
     @Subscribe
     public void onLogin(LoginAttemptEvent event) {
         if (event.isSuccess()) {
-            monitor.record(SUCCESSFUL_LOGIN);
+            successfulLoginRecorder.record();
         } else {
-            monitor.record(FAILED_LOGIN);
+            failedLoginRecorder.record();
         }
     }
 
@@ -56,9 +51,8 @@ class IndexLogger {
      */
     @Subscribe
     public void onSendMessage(SendMessageEvent event) {
-        monitor.record(SENT_MESSAGE);
+        sendMessageRecorder.record();
     }
-
 
     /**
      * 订阅用户收到他人消息事件 ChatMessageEvent
@@ -69,7 +63,7 @@ class IndexLogger {
      */
     @Subscribe
     public void onReceiveChatMessage(ChatMessageEvent event) {
-        monitor.record(RECEIVED_MESSAGE);
+        receivedMessageRecorder.record();
     }
 
 }

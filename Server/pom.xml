@@ -14,8 +14,12 @@
             <id>tahiti-nexus-snapshots</id>
             <name>Tahiti NEXUS</name>
             <url>http://sse.tongji.edu.cn/tahiti/nexus/content/groups/public</url>
-            <releases><enabled>false</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 

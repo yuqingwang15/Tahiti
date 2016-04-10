@@ -12,25 +12,20 @@ import java.util.concurrent.TimeUnit;
 
 class IndexLogger {
 
-    private static final String VALID_LOGIN = "VALID_LOGIN";
-    private static final String INVALID_LOGIN = "INVALID_LOGIN";
-    private static final String RECEIVED_MESSAGE = "RECEIVED_MESSAGE";
-    private static final String IGNORED_MESSAGE = "IGNORED_MESSAGE";
-    private static final String FORWARDED_MESSAGE = "FORWARDED_MESSAGE";
-
-    private PerformanceMonitor monitor;
+    private CountingRecorder validLoginRecorder;
+    private CountingRecorder invalidLoginRecorder;
+    private CountingRecorder receivedMessageRecorder;
+    private CountingRecorder ignoredMessageRecorder;
+    private CountingRecorder forwardedMessageRecorder;
 
     IndexLogger(String filePattern, int periodSeconds) {
-        monitor = new PerformanceMonitor(
-                new RollingFileReporter(filePattern),
-                periodSeconds,
-                TimeUnit.SECONDS
-        );
-        monitor.addRecorder(VALID_LOGIN, new CountingRecorder("Valid login times"));
-        monitor.addRecorder(INVALID_LOGIN, new CountingRecorder("Invalid login times"));
-        monitor.addRecorder(RECEIVED_MESSAGE, new CountingRecorder("Received messages"));
-        monitor.addRecorder(IGNORED_MESSAGE, new CountingRecorder("Ignored messages"));
-        monitor.addRecorder(FORWARDED_MESSAGE, new CountingRecorder("Forwarded messages"));
+        new PerformanceMonitor(new RollingFileReporter(filePattern))
+                .addRecorder(validLoginRecorder = new CountingRecorder("Valid login times"))
+                .addRecorder(invalidLoginRecorder = new CountingRecorder("Invalid login times"))
+                .addRecorder(receivedMessageRecorder = new CountingRecorder("Received messages"))
+                .addRecorder(ignoredMessageRecorder = new CountingRecorder("Ignored messages"))
+                .addRecorder(forwardedMessageRecorder = new CountingRecorder("Forwarded messages"))
+                .start(periodSeconds, TimeUnit.SECONDS);
     }
 
     /**
@@ -43,9 +38,9 @@ class IndexLogger {
     @Subscribe
     public void onLoginAttempt(LoginAttemptEvent event) {
         if (event.getSuccess()) {
-            monitor.record(VALID_LOGIN);
+            validLoginRecorder.record();
         } else {
-            monitor.record(INVALID_LOGIN);
+            invalidLoginRecorder.record();
         }
     }
 
@@ -59,9 +54,9 @@ class IndexLogger {
     @Subscribe
     public void onMessage(MessageEvent event) {
         if (event.isAuthenticated()) {
-            monitor.record(RECEIVED_MESSAGE);
+            receivedMessageRecorder.record();
         } else {
-            monitor.record(IGNORED_MESSAGE);
+            ignoredMessageRecorder.record();
         }
     }
 
@@ -74,7 +69,7 @@ class IndexLogger {
      */
     @Subscribe
     public void onForwardedMessage(MessageForwardEvent event) {
-        monitor.record(FORWARDED_MESSAGE);
+        forwardedMessageRecorder.record();
     }
 
 }
